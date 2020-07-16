@@ -1,0 +1,1741 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>TOPI &mdash; tvm 0.5.dev documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/tvm_theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="VTA API" href="vta/index.html" />
+    <link rel="prev" title="Developer API" href="dev.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/tvm-logo-small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vta/index.html">VTA: Deep Learning Accelerator Stack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy/index.html">Deploy and Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribute to TVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../langref/index.html">Language Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Python API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tvm.html">tvm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intrin.html">tvm.intrin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tensor.html">tvm.tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schedule.html">tvm.schedule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="target.html">tvm.target</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build.html">tvm.build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="module.html">tvm.module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ndarray.html">tvm.ndarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="container.html">tvm.container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function.html">tvm.Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autotvm.html">tvm.autotvm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_runtime.html">tvm.contrib.graph_runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rpc.html">tvm.rpc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bridge.html">Framework Bridge APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contrib.html">Additional Contrib APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev.html">Developer API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">TOPI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#list-of-operators">List of operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#list-of-schedules">List of schedules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">topi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#topi-nn">topi.nn</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#topi-image">topi.image</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-topi.generic">topi.generic</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="vta/index.html">VTA API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nnvm/index.html">NNVM API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hybrid.html">tvm.hybrid</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_links.html">Links to C++ and JS API References</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Design and Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nnvm_top.html">NNVM Core Tensor Operators</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">Index</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tvm</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Python API</a> &raquo;</li>
+        
+      <li>TOPI</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api/python/topi.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-topi">
+<span id="topi"></span><h1>TOPI<a class="headerlink" href="#module-topi" title="Permalink to this headline">¶</a></h1>
+<p>TVM Operator Inventory.</p>
+<p>TOPI is the operator collection library for TVM, to provide sugars
+for constructing compute declaration as well as optimized schedules.</p>
+<p>Some of the schedule function may have been specially optimized for a
+specific workload.</p>
+<div class="section" id="list-of-operators">
+<h2>List of operators<a class="headerlink" href="#list-of-operators" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.identity</span></code>(x)</p></td>
+<td><p>Take identity of input x.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.negative</span></code>(x)</p></td>
+<td><p>Take negation of input x.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.floor</span></code>(x)</p></td>
+<td><p>Take floor of input x.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.ceil</span></code>(x)</p></td>
+<td><p>Take ceil of input x.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.trunc</span></code>(x)</p></td>
+<td><p>Take truncated value of the input of x, element-wise.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.round</span></code>(x)</p></td>
+<td><p>Round elements of x to nearest integer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.abs</span></code>(x)</p></td>
+<td><p>Take absolute value of the input of x, element-wise.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.exp</span></code>(x)</p></td>
+<td><p>Take exponential of input x.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.tanh</span></code>(x)</p></td>
+<td><p>Take hyperbolic tanh of input x.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.log</span></code>(x)</p></td>
+<td><p>Take logarithm of input x.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.sqrt</span></code>(x)</p></td>
+<td><p>Take square root of input x.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.sigmoid</span></code>(x)</p></td>
+<td><p>Take sigmoid tanh of input x.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.clip</span></code>(x, a_min, a_max)</p></td>
+<td><p>Clip (limit) the values in an array.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.cast</span></code>(x, dtype)</p></td>
+<td><p>Cast input to specified data type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.transpose</span></code>(a[, axes])</p></td>
+<td><p>Permute the dimensions of an array.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.flip</span></code>(a[, axis])</p></td>
+<td><p>Flip/reverse elements of an array in a particular axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.strided_slice</span></code>(a, begin, end[, strides])</p></td>
+<td><p>Slice of an array.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.expand_dims</span></code>(a, axis[, num_newaxis])</p></td>
+<td><p>Expand the shape of an array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.reshape</span></code>(a, newshape)</p></td>
+<td><p>Reshape the array</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.squeeze</span></code>(a[, axis])</p></td>
+<td><p>Remove single-dimensional entries from the shape of an array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.concatenate</span></code>(a_tuple[, axis])</p></td>
+<td><p>Join a sequence of arrays along an existing axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.split</span></code>(ary, indices_or_sections[, axis])</p></td>
+<td><p>Split an array into multiple sub-arrays.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.take</span></code>(a, indices[, axis])</p></td>
+<td><p>Take elements from an array along an axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.full</span></code>(shape, dtype, fill_value)</p></td>
+<td><p>Fill tensor with fill_value</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.full_like</span></code>(x, fill_value)</p></td>
+<td><p>Construct a tensor with same shape as input tensor,</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.nn.relu</span></code>(x)</p></td>
+<td><p>Take relu of input x.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.nn.leaky_relu</span></code>(x, alpha)</p></td>
+<td><p>Take leaky relu of input x.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.nn.dilate</span></code>(data, strides[, name])</p></td>
+<td><p>Dilate data with zeros.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.nn.pool</span></code>(data, kernel, stride, padding, …)</p></td>
+<td><p>Perform pooling on height and width dimension of data.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.nn.global_pool</span></code>(data, pool_type[, layout])</p></td>
+<td><p>Perform global pooling on height and width dimension of data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.nn.upsampling</span></code>(data, scale[, layout, method])</p></td>
+<td><p>Perform upsampling on the data.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.nn.softmax</span></code>(x[, axis])</p></td>
+<td><p>Perform softmax activation on the data</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.nn.log_softmax</span></code>(x)</p></td>
+<td><p>Perform log softmax activation on the data</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.nn.conv2d_nchw</span></code>(Input, Filter, stride, …)</p></td>
+<td><p>Convolution operator in NCHW layout.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.nn.conv2d_hwcn</span></code>(Input, Filter, stride, …)</p></td>
+<td><p>Convolution operator in HWCN layout.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.nn.depthwise_conv2d_nchw</span></code>(Input, Filter, …)</p></td>
+<td><p>Depthwise convolution nchw forward operator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.nn.depthwise_conv2d_nhwc</span></code>(Input, Filter, …)</p></td>
+<td><p>Depthwise convolution nhwc forward operator.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.max</span></code>(data[, axis, keepdims])</p></td>
+<td><p>Maximum of array elements over a given axis or a list of axes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.sum</span></code>(data[, axis, keepdims])</p></td>
+<td><p>Sum of array elements over a given axis or a list of axes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.min</span></code>(data[, axis, keepdims])</p></td>
+<td><p>Minimum of array elements over a given axis or a list of axes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.argmax</span></code>(data[, axis, keepdims])</p></td>
+<td><p>Returns the indices of the maximum values along an axis.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.argmin</span></code>(data[, axis, keepdims])</p></td>
+<td><p>Returns the indices of the minimum values along an axis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.prod</span></code>(data[, axis, keepdims])</p></td>
+<td><p>Product of array elements over a given axis or a list of axes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.broadcast_to</span></code>(data, shape)</p></td>
+<td><p>Broadcast the src to the target shape</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.add</span></code>(lhs, rhs)</p></td>
+<td><p>Addition with auto-broadcasting</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.subtract</span></code>(lhs, rhs)</p></td>
+<td><p>Subtraction with auto-broadcasting</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.multiply</span></code>(lhs, rhs)</p></td>
+<td><p>Multiplication with auto-broadcasting</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.divide</span></code>(lhs, rhs)</p></td>
+<td><p>Division with auto-broadcasting</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.mod</span></code>(lhs, rhs)</p></td>
+<td><p>Modulus with auto-broadcasting</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.maximum</span></code>(lhs, rhs)</p></td>
+<td><p>Take element-wise maximum of two tensors with auto-broadcasting</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.minimum</span></code>(lhs, rhs)</p></td>
+<td><p>Take element-wise maximum of two tensors with auto-broadcasting</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.power</span></code>(lhs, rhs)</p></td>
+<td><p>Power with auto-broadcasting</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.greater</span></code>(lhs, rhs)</p></td>
+<td><p>Compute (lhs&gt;rhs) with auto-broadcasting</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.less</span></code>(lhs, rhs)</p></td>
+<td><p>Compute (lhs&lt;rhs) with auto-broadcasting</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.equal</span></code>(lhs, rhs)</p></td>
+<td><p>Compute (lhs==rhs) with auto-broadcasting</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.not_equal</span></code>(lhs, rhs)</p></td>
+<td><p>Compute (lhs!=rhs) with auto-broadcasting</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.greater_equal</span></code>(lhs, rhs)</p></td>
+<td><p>Compute (lhs&gt;=rhs) with auto-broadcasting</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.less_equal</span></code>(lhs, rhs)</p></td>
+<td><p>Compute (lhs&lt;=rhs) with auto-broadcasting</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.image.resize</span></code>(data, size[, layout, …])</p></td>
+<td><p>Perform resize operation on the data.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="list-of-schedules">
+<h2>List of schedules<a class="headerlink" href="#list-of-schedules" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.generic.schedule_conv2d_nchw</span></code>(outs)</p></td>
+<td><p>Schedule for conv2d_nchw</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.generic.schedule_depthwise_conv2d_nchw</span></code>(outs)</p></td>
+<td><p>Schedule for depthwise_conv2d_nchw</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.generic.schedule_reduce</span></code>(outs)</p></td>
+<td><p>Schedule for reduction</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.generic.schedule_broadcast</span></code>(outs)</p></td>
+<td><p>Schedule for injective op.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">topi.generic.schedule_injective</span></code>(outs)</p></td>
+<td><p>Schedule for injective op.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id1">
+<h2>topi<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="topi.negative">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">negative</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.negative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take negation of input x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.identity">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">identity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.identity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take identity of input x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.floor">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">floor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.floor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take floor of input x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.ceil">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">ceil</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.ceil" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take ceil of input x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.trunc">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">trunc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.trunc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take truncated value of the input of x, element-wise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.round">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">round</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.round" title="Permalink to this definition">¶</a></dt>
+<dd><p>Round elements of x to nearest integer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.abs">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">abs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.abs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take absolute value of the input of x, element-wise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.exp">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">exp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take exponential of input x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.tanh">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">tanh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.tanh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take hyperbolic tanh of input x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.log">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take logarithm of input x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.sqrt">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">sqrt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.sqrt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take square root of input x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.sigmoid">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">sigmoid</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.sigmoid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take sigmoid tanh of input x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.clip">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">clip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">a_min</span></em>, <em class="sig-param"><span class="n">a_max</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.clip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clip (limit) the values in an array. Given an interval, values
+outside the interval are clipped to the interval edges.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p></li>
+<li><p><strong>a_min</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Minimum value.</p></li>
+<li><p><strong>a_max</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Maximum value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.cast">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">cast</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">dtype</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.cast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cast input to specified data type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – Input argument.</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Data type.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.transpose">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">transpose</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">axes</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.transpose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permute the dimensions of an array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>tvm.Tensor</em>) – The tensor to be expanded.</p></li>
+<li><p><strong>axes</strong> (<em>tuple of ints</em><em>, </em><em>optional</em>) – By default, reverse the dimensions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.flip">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">flip</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.flip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flip/reverse elements of an array in a particular axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>tvm.Tensor</em>) – The tensor to be expanded.</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – The axis along which the tensors will be reveresed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.strided_slice">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">strided_slice</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">begin</span></em>, <em class="sig-param"><span class="n">end</span></em>, <em class="sig-param"><span class="n">strides</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.strided_slice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Slice of an array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>tvm.Tensor</em>) – The tensor to be sliced.</p></li>
+<li><p><strong>begin</strong> (<em>list of int</em>) – The indices to begin with in the slicing.</p></li>
+<li><p><strong>end</strong> (<em>list of int</em>) – Indicies indicating end of the slice.</p></li>
+<li><p><strong>strides</strong> (<em>list of int</em><em>, </em><em>optional</em>) – Specifies the stride values, it can be negative
+in that case, the input tensor will be reversed
+in that particular axis.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.expand_dims">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">expand_dims</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">axis</span></em>, <em class="sig-param"><span class="n">num_newaxis</span><span class="o">=</span><span class="default_value">1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.expand_dims" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expand the shape of an array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>tvm.Tensor</em>) – The tensor to be expanded.</p></li>
+<li><p><strong>num_newaxis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Number of newaxis to be inserted on axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.reshape">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">reshape</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">newshape</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.reshape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reshape the array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>tvm.Tensor</em>) – The tensor to be reshaped</p></li>
+<li><p><strong>newshape</strong> (<em>tuple of ints</em>) – The new shape</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.squeeze">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">squeeze</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.squeeze" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove single-dimensional entries from the shape of an array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>tvm.Tensor</em>) – </p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>tuple of ints</em><em>, </em><em>optional</em>) – Selects a subset of the single-dimensional entries in the shape.
+If an axis is selected with shape entry greater than one, an error is raised.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>squeezed</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.concatenate">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">concatenate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a_tuple</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.concatenate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Join a sequence of arrays along an existing axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a_tuple</strong> (<em>tuple of tvm.Tensor</em>) – The arrays to concatenate</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – The axis along which the arrays will be joined. Default is 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.split">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">split</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ary</span></em>, <em class="sig-param"><span class="n">indices_or_sections</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split an array into multiple sub-arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ary</strong> (<em>tvm.Tensor</em>) – </p></li>
+<li><p><strong>indices_or_sections</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>1-D array</em>) – </p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple of tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.take">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">take</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">indices</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.take" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take elements from an array along an axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>tvm.Tensor</em>) – The source array.</p></li>
+<li><p><strong>indices</strong> (<em>tvm.Tensor</em>) – The indices of the values to extract.</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – The axis over which to select values. By default,
+the flattened input array is used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.full">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">full</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">dtype</span></em>, <em class="sig-param"><span class="n">fill_value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.full" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fill tensor with fill_value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shape</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – Input tensor shape.</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Data type</p></li>
+<li><p><strong>fill_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Value to be filled</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.full_like">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">full_like</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">fill_value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.full_like" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Construct a tensor with same shape as input tensor,</dt><dd><p>then fill tensor with fill_value.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p></li>
+<li><p><strong>fill_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Value to be filled</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.max">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">max</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximum of array elements over a given axis or a list of axes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>tvm.Tensor</em>) – The input tvm tensor</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>tuple of int</em>) – Axis or axes along which the max operation is performed.
+The default, axis=None, will find the max element from all of the elements of the input
+array. If axis is negative it counts from the last to the first axis.</p></li>
+<li><p><strong>keepdims</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – If this is set to True, the axes which are reduced are left in the result as dimensions
+with size one.
+With this option, the result will broadcast correctly against the input array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.sum">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">sum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sum of array elements over a given axis or a list of axes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>tvm.Tensor</em>) – The input tvm tensor</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>tuple of int</em>) – Axis or axes along which a sum is performed.
+The default, axis=None, will sum all of the elements of the input array.
+If axis is negative it counts from the last to the first axis.</p></li>
+<li><p><strong>keepdims</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – If this is set to True, the axes which are reduced are left in the result as dimensions
+with size one.
+With this option, the result will broadcast correctly against the input array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.min">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">min</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum of array elements over a given axis or a list of axes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>tvm.Tensor</em>) – The input tvm tensor</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>tuple of int</em>) – Axis or axes along which a minimum operation is performed.
+The default, axis=None, will find the minimum element from all of the elements of the
+input array. If axis is negative it counts from the last to the first axis.</p></li>
+<li><p><strong>keepdims</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – If this is set to True, the axes which are reduced are left in the result as dimensions
+with size one.
+With this option, the result will broadcast correctly against the input array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.prod">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">prod</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">keepdims</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.prod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Product of array elements over a given axis or a list of axes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>tvm.Tensor</em>) – The input tvm tensor</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.8)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>tuple of int</em>) – Axis or axes along which a prod operation is performed.
+The default, axis=None, will get the prod element over all of the elements of the
+input array. If axis is negative it counts from the last to the first axis.</p></li>
+<li><p><strong>keepdims</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – If this is set to True, the axes which are reduced are left in the result as dimensions
+with size one.
+With this option, the result will broadcast correctly against the input array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.broadcast_to">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">broadcast_to</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">shape</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.broadcast_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Broadcast the src to the target shape</p>
+<p>We follows the numpy broadcasting rule.
+See also <a class="reference external" href="https://docs.scipy.org/doc/numpy/user/basics.broadcasting.html">https://docs.scipy.org/doc/numpy/user/basics.broadcasting.html</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>tvm.Tensor</em>) – The input data</p></li>
+<li><p><strong>shape</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – The target shape to be broadcasted.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.add">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lhs</span></em>, <em class="sig-param"><span class="n">rhs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Addition with auto-broadcasting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left operand</p></li>
+<li><p><strong>rhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong> – Returns Expr if both operands are Expr.
+Otherwise returns Tensor.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor or <a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr">Expr</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.subtract">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">subtract</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lhs</span></em>, <em class="sig-param"><span class="n">rhs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.subtract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subtraction with auto-broadcasting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left operand</p></li>
+<li><p><strong>rhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong> – Returns Expr if both operands are Expr.
+Otherwise returns Tensor.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor or <a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr">Expr</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.multiply">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">multiply</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lhs</span></em>, <em class="sig-param"><span class="n">rhs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.multiply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiplication with auto-broadcasting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left operand</p></li>
+<li><p><strong>rhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong> – Returns Expr if both operands are Expr.
+Otherwise returns Tensor.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor or <a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr">Expr</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.divide">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">divide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lhs</span></em>, <em class="sig-param"><span class="n">rhs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.divide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Division with auto-broadcasting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left operand</p></li>
+<li><p><strong>rhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong> – Returns Expr if both operands are Expr.
+Otherwise returns Tensor.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor or <a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr">Expr</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.mod">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">mod</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lhs</span></em>, <em class="sig-param"><span class="n">rhs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.mod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modulus with auto-broadcasting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left operand</p></li>
+<li><p><strong>rhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong> – Returns Expr if both operands are Expr.
+Otherwise returns Tensor.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor or <a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr">Expr</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.maximum">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">maximum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lhs</span></em>, <em class="sig-param"><span class="n">rhs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.maximum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take element-wise maximum of two tensors with auto-broadcasting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left operand</p></li>
+<li><p><strong>rhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong> – Returns Expr if both operands are Expr.
+Otherwise returns Tensor.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor or <a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr">Expr</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.minimum">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">minimum</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lhs</span></em>, <em class="sig-param"><span class="n">rhs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.minimum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take element-wise maximum of two tensors with auto-broadcasting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left operand</p></li>
+<li><p><strong>rhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong> – Returns Expr if both operands are Expr.
+Otherwise returns Tensor.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor or <a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr">Expr</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.power">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">power</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lhs</span></em>, <em class="sig-param"><span class="n">rhs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Power with auto-broadcasting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left operand</p></li>
+<li><p><strong>rhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong> – Returns Expr if both operands are Expr.
+Otherwise returns Tensor.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor or <a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr">Expr</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.greater">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">greater</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lhs</span></em>, <em class="sig-param"><span class="n">rhs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.greater" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute (lhs&gt;rhs) with auto-broadcasting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left operand</p></li>
+<li><p><strong>rhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong> – Returns Expr if both operands are Expr.
+Otherwise returns Tensor.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor or <a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr">Expr</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.less">
+<code class="sig-prename descclassname">topi.</code><code class="sig-name descname">less</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lhs</span></em>, <em class="sig-param"><span class="n">rhs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.less" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute (lhs&lt;rhs) with auto-broadcasting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left operand</p></li>
+<li><p><strong>rhs</strong> (<em>tvm.Tensor</em><em> or </em><a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right operand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong> – Returns Expr if both operands are Expr.
+Otherwise returns Tensor.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor or <a class="reference internal" href="dev.html#tvm.expr.Expr" title="tvm.expr.Expr">Expr</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="topi-nn">
+<h2>topi.nn<a class="headerlink" href="#topi-nn" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="topi.nn.relu">
+<code class="sig-prename descclassname">topi.nn.</code><code class="sig-name descname">relu</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.nn.relu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take relu of input x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.nn.leaky_relu">
+<code class="sig-prename descclassname">topi.nn.</code><code class="sig-name descname">leaky_relu</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">alpha</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.nn.leaky_relu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take leaky relu of input x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>tvm.Tensor</em>) – Input argument.</p></li>
+<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – The slope for the small gradient when x &lt; 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>y</strong> – The result.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.nn.dilate">
+<code class="sig-prename descclassname">topi.nn.</code><code class="sig-name descname">dilate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">strides</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'DilatedInput'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.nn.dilate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dilate data with zeros.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>tvm.Tensor</em>) – n-D, can be any layout.</p></li>
+<li><p><strong>strides</strong> (<em>list / tuple of n ints</em>) – Dilation stride on each dimension, 1 means no dilation.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – The name prefix operators generated</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Output</strong> – n-D, the same layout as data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.nn.pool">
+<code class="sig-prename descclassname">topi.nn.</code><code class="sig-name descname">pool</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">kernel</span></em>, <em class="sig-param"><span class="n">stride</span></em>, <em class="sig-param"><span class="n">padding</span></em>, <em class="sig-param"><span class="n">pool_type</span></em>, <em class="sig-param"><span class="n">ceil_mode</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">layout</span><span class="o">=</span><span class="default_value">'NCHW'</span></em>, <em class="sig-param"><span class="n">count_include_pad</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.nn.pool" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Perform pooling on height and width dimension of data.</dt><dd><p>It decides the height and width dimension according to the layout string,
+in which ‘W’ and ‘H’ means width and height respectively.
+Width and height dimension cannot be split.
+For example, NCHW, NCHW16c, etc. are valid for pool,
+while NCHW16w, NCHW16h are not.
+See parameter <cite>layout</cite> for more information of the layout string convention.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>tvm.Tensor</em>) – n-D with shape of layout</p></li>
+<li><p><strong>kernel</strong> (<em>list/tuple of two ints</em>) – Kernel size, [kernel_height, kernel_width]</p></li>
+<li><p><strong>stride</strong> (<em>list/tuple of two ints</em>) – Stride size, [stride_height, stride_width]</p></li>
+<li><p><strong>padding</strong> (<em>list/tuple of four ints</em>) – Pad size, [pad_top, pad_left, pad_bottom, pad_right]]</p></li>
+<li><p><strong>pool_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Pool type, ‘max’ or ‘avg’</p></li>
+<li><p><strong>ceil_mode</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Whether to use ceil when calculating output size.</p></li>
+<li><p><strong>layout</strong> (<em>string</em>) – Layout of the input data.
+The layout is supposed to be composed of upper cases, lower cases and numbers,
+where upper case indicates a dimension and
+the corresponding lower case with factor size indicates the split dimension.
+For example, NCHW16c can describe a 5-D tensor of
+[batch_size, channel, height, width, channel_block],
+in which channel_block=16 is a split of dimension channel.</p></li>
+<li><p><strong>count_include_pad</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Whether include padding in the calculation when pool_type is ‘avg’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>output</strong> – n-D in the same layout</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.nn.global_pool">
+<code class="sig-prename descclassname">topi.nn.</code><code class="sig-name descname">global_pool</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">pool_type</span></em>, <em class="sig-param"><span class="n">layout</span><span class="o">=</span><span class="default_value">'NCHW'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.nn.global_pool" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Perform global pooling on height and width dimension of data.</dt><dd><p>It decides the height and width dimension according to the layout string,
+in which ‘W’ and ‘H’ means width and height respectively.
+Width and height dimension cannot be split.
+For example, NCHW, NCHW16c, etc. are valid for pool,
+while NCHW16w, NCHW16h are not.
+See parameter <cite>layout</cite> for more information of the layout string convention.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>tvm.Tensor</em>) – n-D with shape of layout</p></li>
+<li><p><strong>pool_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Pool type, ‘max’ or ‘avg’</p></li>
+<li><p><strong>layout</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Layout of the input data.
+The layout is supposed to be composed of upper cases, lower cases and numbers,
+where upper case indicates a dimension and
+the corresponding lower case with factor size indicates the split dimension.
+For example, NCHW16c can describe a 5-D tensor of
+[batch_size, channel, height, width, channel_block],
+in which channel_block=16 is a split of dimension channel.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>output</strong> – n-D in same layout with height and width dimension size of 1.
+e.g., for NCHW, the output shape will be [batch, channel, 1, 1]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.nn.upsampling">
+<code class="sig-prename descclassname">topi.nn.</code><code class="sig-name descname">upsampling</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">scale</span></em>, <em class="sig-param"><span class="n">layout</span><span class="o">=</span><span class="default_value">'NCHW'</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'NEAREST_NEIGHBOR'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.nn.upsampling" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Perform upsampling on the data.</dt><dd><p>Nearest neighbor and bilinear upsampling are supported.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<em>tvm.Tensor</em>) – inputs is a 4-D tensor with shape
+[batch, channel, in_height, in_width]
+or  [batch, in_height, in_width, channel]</p></li>
+<li><p><strong>scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Scaling factor</p></li>
+<li><p><strong>layout</strong> (<em>string</em><em>, </em><em>optional</em>) – either “NCHW” or “NHWC”</p></li>
+<li><p><strong>method</strong> (<em>{&quot;BILINEAR&quot;</em><em>, </em><em>&quot;NEAREST_NEIGHBOR&quot;}</em>) – Method to be used for upsampling.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>output</strong> – 4-D with shape [batch, channel, in_height*scale, in_width*scale]
+or [batch, in_height*scale, in_width*scale, channel]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.nn.softmax">
+<code class="sig-prename descclassname">topi.nn.</code><code class="sig-name descname">softmax</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">axis</span><span class="o">=</span><span class="default_value">- 1</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.nn.softmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform softmax activation on the data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>tvm.Tensor</em>) – can be any dimension</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – channel axis</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>output</strong> – output shape is the same as input</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.nn.log_softmax">
+<code class="sig-prename descclassname">topi.nn.</code><code class="sig-name descname">log_softmax</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.nn.log_softmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform log softmax activation on the data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>tvm.Tensor</em>) – 2-D input data</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>output</strong> – 2-D output with same shape</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.nn.conv2d_nchw">
+<code class="sig-prename descclassname">topi.nn.</code><code class="sig-name descname">conv2d_nchw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Input</span></em>, <em class="sig-param"><span class="n">Filter</span></em>, <em class="sig-param"><span class="n">stride</span></em>, <em class="sig-param"><span class="n">padding</span></em>, <em class="sig-param"><span class="n">out_dtype</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.nn.conv2d_nchw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convolution operator in NCHW layout.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Input</strong> (<em>tvm.Tensor</em>) – 4-D with shape [batch, in_channel, in_height, in_width]</p></li>
+<li><p><strong>Filter</strong> (<em>tvm.Tensor</em>) – 4-D with shape [num_filter, in_channel, filter_height, filter_width]</p></li>
+<li><p><strong>stride</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>a list/tuple of two ints</em>) – Stride size, or [stride_height, stride_width]</p></li>
+<li><p><strong>padding</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Padding size, or [‘VALID’, ‘SAME’]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Output</strong> – 4-D with shape [batch, out_channel, out_height, out_width]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.nn.conv2d_hwcn">
+<code class="sig-prename descclassname">topi.nn.</code><code class="sig-name descname">conv2d_hwcn</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Input</span></em>, <em class="sig-param"><span class="n">Filter</span></em>, <em class="sig-param"><span class="n">stride</span></em>, <em class="sig-param"><span class="n">padding</span></em>, <em class="sig-param"><span class="n">out_dtype</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.nn.conv2d_hwcn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convolution operator in HWCN layout.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Input</strong> (<em>tvm.Tensor</em>) – 4-D with shape [in_height, in_width, in_channel, batch]</p></li>
+<li><p><strong>Filter</strong> (<em>tvm.Tensor</em>) – 4-D with shape [filter_height, filter_width, in_channel, num_filter]</p></li>
+<li><p><strong>stride</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><em>a list/tuple of two ints</em>) – Stride size, or [stride_height, stride_width]</p></li>
+<li><p><strong>padding</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Padding size, or [‘VALID’, ‘SAME’]</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>output</strong> – 4-D with shape [out_height, out_width, out_channel, batch]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.nn.depthwise_conv2d_nchw">
+<code class="sig-prename descclassname">topi.nn.</code><code class="sig-name descname">depthwise_conv2d_nchw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Input</span></em>, <em class="sig-param"><span class="n">Filter</span></em>, <em class="sig-param"><span class="n">stride</span></em>, <em class="sig-param"><span class="n">padding</span></em>, <em class="sig-param"><span class="n">out_dtype</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.nn.depthwise_conv2d_nchw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depthwise convolution nchw forward operator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Input</strong> (<em>tvm.Tensor</em>) – 4-D with shape [batch, in_channel, in_height, in_width]</p></li>
+<li><p><strong>Filter</strong> (<em>tvm.Tensor</em>) – 4-D with shape [in_channel, channel_multiplier, filter_height, filter_width]</p></li>
+<li><p><strong>stride</strong> (<em>tuple of two ints</em>) – The spatial stride along height and width</p></li>
+<li><p><strong>padding</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Padding size, or [‘VALID’, ‘SAME’]</p></li>
+<li><p><strong>out_dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – Output data type</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Output</strong> – 4-D with shape [batch, out_channel, out_height, out_width]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.nn.depthwise_conv2d_nhwc">
+<code class="sig-prename descclassname">topi.nn.</code><code class="sig-name descname">depthwise_conv2d_nhwc</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Input</span></em>, <em class="sig-param"><span class="n">Filter</span></em>, <em class="sig-param"><span class="n">stride</span></em>, <em class="sig-param"><span class="n">padding</span></em>, <em class="sig-param"><span class="n">out_dtype</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.nn.depthwise_conv2d_nhwc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depthwise convolution nhwc forward operator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Input</strong> (<em>tvm.Tensor</em>) – 4-D with shape [batch, in_height, in_width, in_channel]</p></li>
+<li><p><strong>Filter</strong> (<em>tvm.Tensor</em>) – 4-D with shape [filter_height, filter_width, in_channel, channel_multiplier]</p></li>
+<li><p><strong>stride</strong> (<em>tuple of two ints</em>) – The spatial stride along height and width</p></li>
+<li><p><strong>padding</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Padding size, or [‘VALID’, ‘SAME’]</p></li>
+<li><p><strong>out_dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – Output data type</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Output</strong> – 4-D with shape [batch, out_height, out_width, out_channel]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="topi-image">
+<h2>topi.image<a class="headerlink" href="#topi-image" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="topi.image.resize">
+<code class="sig-prename descclassname">topi.image.</code><code class="sig-name descname">resize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">size</span></em>, <em class="sig-param"><span class="n">layout</span><span class="o">=</span><span class="default_value">'NCHW'</span></em>, <em class="sig-param"><span class="n">align_corners</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'BILINEAR'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.image.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform resize operation on the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<em>tvm.Tensor</em>) – inputs is a 4-D tensor with shape
+[batch, channel, in_height, in_width]
+or  [batch, in_height, in_width, channel]</p></li>
+<li><p><strong>size</strong> (<em>Tuple</em>) – Output resolution scale to</p></li>
+<li><p><strong>layout</strong> (<em>string</em><em>, </em><em>optional</em>) – either “NCHW” or “NHWC”</p></li>
+<li><p><strong>align_corners</strong> (<em>Boolean</em><em>, </em><em>optional</em>) – To preserve the values at the corner pixels</p></li>
+<li><p><strong>method</strong> (<em>{&quot;BILINEAR&quot;</em><em>, </em><em>&quot;NEAREST_NEIGHBOR&quot;}</em>) – Method to be used for resizing.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>output</strong> – 4-D with shape [batch, channel, in_height*scale, in_width*scale]
+or [batch, in_height*scale, in_width*scale, channel]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tvm.Tensor</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-topi.generic">
+<span id="topi-generic"></span><h2>topi.generic<a class="headerlink" href="#module-topi.generic" title="Permalink to this headline">¶</a></h2>
+<p>Generic declaration and schedules.</p>
+<p>This is a recommended way of using TOPI API.
+To use the generic schedule function, user must set
+the current target scope using with block. See also <a class="reference internal" href="target.html#module-tvm.target" title="tvm.target"><code class="xref any py py-mod docutils literal notranslate"><span class="pre">tvm.target</span></code></a></p>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create schedule that dispatches to topi.cuda.schedule_injective</span>
+<span class="k">with</span> <span class="n">tvm</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">):</span>
+  <span class="n">s</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">generic</span><span class="o">.</span><span class="n">schedule_injective</span><span class="p">(</span><span class="n">outs</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt id="topi.generic.schedule_conv2d_nchw">
+<code class="sig-prename descclassname">topi.generic.</code><code class="sig-name descname">schedule_conv2d_nchw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">outs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.generic.schedule_conv2d_nchw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Schedule for conv2d_nchw</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>outs</strong> (<em>Array of Tensor</em>) – The computation graph description of conv2d_nchw
+in the format of an array of tensors.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>sch</strong> – The computation schedule for the op.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="schedule.html#tvm.schedule.Schedule" title="tvm.schedule.Schedule">Schedule</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.generic.schedule_depthwise_conv2d_nchw">
+<code class="sig-prename descclassname">topi.generic.</code><code class="sig-name descname">schedule_depthwise_conv2d_nchw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">outs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.generic.schedule_depthwise_conv2d_nchw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Schedule for depthwise_conv2d_nchw</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>outs</strong> (<em>Array of Tensor</em>) – The computation graph description of depthwise_conv2d_nchw
+in the format of an array of tensors.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>sch</strong> – The computation schedule for the op.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="schedule.html#tvm.schedule.Schedule" title="tvm.schedule.Schedule">Schedule</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.generic.schedule_reduce">
+<code class="sig-prename descclassname">topi.generic.</code><code class="sig-name descname">schedule_reduce</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">outs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.generic.schedule_reduce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Schedule for reduction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>outs</strong> (<em>Array of Tensor</em>) – The computation graph description of reduce
+in the format of an array of tensors.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>sch</strong> – The computation schedule for the op.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="schedule.html#tvm.schedule.Schedule" title="tvm.schedule.Schedule">Schedule</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.generic.schedule_broadcast">
+<code class="sig-prename descclassname">topi.generic.</code><code class="sig-name descname">schedule_broadcast</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">outs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.generic.schedule_broadcast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Schedule for injective op.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>outs</strong> (<em>Array of Tensor</em>) – The computation graph description of reduce in the format
+of an array of tensors.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>sch</strong> – The computation schedule for the op.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="schedule.html#tvm.schedule.Schedule" title="tvm.schedule.Schedule">Schedule</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="topi.generic.schedule_injective">
+<code class="sig-prename descclassname">topi.generic.</code><code class="sig-name descname">schedule_injective</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">outs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#topi.generic.schedule_injective" title="Permalink to this definition">¶</a></dt>
+<dd><p>Schedule for injective op.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>outs</strong> (<em>Array of Tensor</em>) – The computation graph description of reduce in the format
+of an array of tensors.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>sch</strong> – The computation schedule for the op.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="schedule.html#tvm.schedule.Schedule" title="tvm.schedule.Schedule">Schedule</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="vta/index.html" class="btn btn-neutral float-right" title="VTA API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dev.html" class="btn btn-neutral float-left" title="Developer API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2017, tvm developers
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75982049-2', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

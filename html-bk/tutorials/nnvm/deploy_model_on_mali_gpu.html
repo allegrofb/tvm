@@ -1,0 +1,503 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Deploy the Pretrained Model on ARM Mali GPU &mdash; tvm 0.5.dev documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/tvm_theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Compile YOLO-V2 in DarkNet Models" href="from_darknet.html" />
+    <link rel="prev" title="Deploy the Pretrained Model on Raspberry Pi" href="deploy_model_on_rasp.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/tvm-logo-small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../nnvm_quick_start.html">Quick Start Tutorial for Compiling Deep Learning Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cross_compilation_and_rpc.html">Cross Compilation and RPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../get_started.html">Get Started with TVM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#tensor-expression-and-schedules">Tensor Expression and Schedules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#optimize-tensor-operators">Optimize Tensor Operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#auto-tuning">Auto tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#developer-tutorials">Developer Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#topi-tvm-operator-inventory">TOPI: TVM Operator Inventory</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#compile-deep-learning-models">Compile Deep Learning Models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="using_external_lib.html">Using External Libraries in NNVM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="from_coreml.html">Compile CoreML Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="from_onnx.html">Compile ONNX Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="get_started.html">Get Started with NNVM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="from_mxnet.html">Compile MXNet Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="from_keras.html">Compile Keras Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deploy_model_on_rasp.html">Deploy the Pretrained Model on Raspberry Pi</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Deploy the Pretrained Model on ARM Mali GPU</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#build-tvm-runtime-on-device">Build TVM Runtime on Device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-up-rpc-server-on-device">Set Up RPC Server on Device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#prepare-the-pre-trained-model">Prepare the Pre-trained Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compile-the-graph">Compile The Graph</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deploy-the-model-remotely-by-rpc">Deploy the Model Remotely by RPC</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="from_darknet.html">Compile YOLO-V2 in DarkNet Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deploy_ssd.html">Deploy Single Shot Multibox Detector(SSD) model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="from_tensorflow.html">Compile Tensorflow Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="from_mxnet_to_webgl.html">Deploy Deep Learning Models to OpenGL and WebGL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../vta/index.html">VTA: Deep Learning Accelerator Stack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy/index.html">Deploy and Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribute to TVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../langref/index.html">Language Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_links.html">Links to C++ and JS API References</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Design and Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nnvm_top.html">NNVM Core Tensor Operators</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">Index</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tvm</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Tutorials</a> &raquo;</li>
+        
+      <li>Deploy the Pretrained Model on ARM Mali GPU</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/tutorials/nnvm/deploy_model_on_mali_gpu.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-nnvm-deploy-model-on-mali-gpu-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="deploy-the-pretrained-model-on-arm-mali-gpu">
+<span id="tutorial-deploy-model-on-mali-gpu"></span><span id="sphx-glr-tutorials-nnvm-deploy-model-on-mali-gpu-py"></span><h1>Deploy the Pretrained Model on ARM Mali GPU<a class="headerlink" href="#deploy-the-pretrained-model-on-arm-mali-gpu" title="Permalink to this headline">¶</a></h1>
+<p><strong>Author</strong>: <a class="reference external" href="https://lmzheng.net/">Lianmin Zheng</a>, <a class="reference external" href="https://ziheng.org/">Ziheng Jiang</a></p>
+<p>This is an example of using NNVM to compile a ResNet model and
+deploy it on Firefly-RK3399 with ARM Mali GPU. We will use the
+Mali-T860 MP4 GPU on this board to accelerate the inference.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tvm</span>
+<span class="kn">import</span> <span class="nn">nnvm.compiler</span>
+<span class="kn">import</span> <span class="nn">nnvm.testing</span>
+<span class="kn">from</span> <span class="nn">tvm</span> <span class="kn">import</span> <span class="n">rpc</span>
+<span class="kn">from</span> <span class="nn">tvm.contrib</span> <span class="kn">import</span> <span class="n">util</span><span class="p">,</span> <span class="n">graph_runtime</span> <span class="k">as</span> <span class="n">runtime</span>
+</pre></div>
+</div>
+<div class="section" id="build-tvm-runtime-on-device">
+<h2>Build TVM Runtime on Device<a class="headerlink" href="#build-tvm-runtime-on-device" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to build tvm runtime on the remote device.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All instructions in both this section and next section should be
+executed on the target device, e.g. Rk3399. And we assume it
+has Linux running.</p>
+</div>
+<p>Since we do compilation on local machine, the remote device is only used
+for running the generated code. We only need to build tvm runtime on
+the remote device. Make sure you have opencl driver in your board.
+You can refer to <a class="reference external" href="https://gist.github.com/mli/585aed2cec0b5178b1a510f9f236afa2">tutorial</a>
+to setup OS and opencl driver for rk3399.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone --recursive https://github.com/dmlc/tvm
+<span class="nb">cd</span> tvm
+cp cmake/config.cmake .
+sed -i <span class="s2">&quot;s/USE_OPENCL OFF/USE_OPENCL ON/&quot;</span> config.cmake
+make runtime -j4
+</pre></div>
+</div>
+<p>After building runtime successfully, we need to set environment varibles
+in <code class="code docutils literal notranslate"><span class="pre">~/.bashrc</span></code> file. We can edit <code class="code docutils literal notranslate"><span class="pre">~/.bashrc</span></code>
+using <code class="code docutils literal notranslate"><span class="pre">vi</span> <span class="pre">~/.bashrc</span></code> and add the line below (Assuming your TVM
+directory is in <code class="code docutils literal notranslate"><span class="pre">~/tvm</span></code>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">PYTHONPATH</span><span class="o">=</span><span class="nv">$PYTHONPATH</span>:~/tvm/python
+</pre></div>
+</div>
+<p>To update the environment variables, execute <code class="code docutils literal notranslate"><span class="pre">source</span> <span class="pre">~/.bashrc</span></code>.</p>
+</div>
+<div class="section" id="set-up-rpc-server-on-device">
+<h2>Set Up RPC Server on Device<a class="headerlink" href="#set-up-rpc-server-on-device" title="Permalink to this headline">¶</a></h2>
+<p>To start an RPC server, run the following command on your remote device
+(Which is RK3399 in our example).</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python -m tvm.exec.rpc_server --host <span class="m">0</span>.0.0.0 --port<span class="o">=</span><span class="m">9090</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>If you see the line below, it means the RPC server started
+successfully on your device.</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>INFO:root:RPCServer: <span class="nb">bind</span> to <span class="m">0</span>.0.0.0:9090
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="prepare-the-pre-trained-model">
+<h2>Prepare the Pre-trained Model<a class="headerlink" href="#prepare-the-pre-trained-model" title="Permalink to this headline">¶</a></h2>
+<p>Back to the host machine, which should have a full TVM installed (with LLVM).</p>
+<p>We will use pre-trained model from
+<a class="reference external" href="https://mxnet.incubator.apache.org/api/python/gluon/model_zoo.html">MXNet Gluon model zoo</a>.
+You can found more details about this part at tutorial <a class="reference internal" href="from_mxnet.html#tutorial-from-mxnet"><span class="std std-ref">Compile MXNet Models</span></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">mxnet.gluon.model_zoo.vision</span> <span class="kn">import</span> <span class="n">get_model</span>
+<span class="kn">from</span> <span class="nn">mxnet.gluon.utils</span> <span class="kn">import</span> <span class="n">download</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># only one line to get the model</span>
+<span class="n">block</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">(</span><span class="s1">&#39;resnet18_v1&#39;</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In order to test our model, here we download an image of cat and
+transform its format.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">img_name</span></a> <span class="o">=</span> <span class="s1">&#39;cat.jpg&#39;</span>
+<span class="n">download</span><span class="p">(</span><span class="s1">&#39;https://github.com/dmlc/mxnet.js/blob/master/data/cat.png?raw=true&#39;</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">img_name</span></a><span class="p">)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">img_name</span></a><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">transform_image</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="o">-</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">123.</span><span class="p">,</span> <span class="mf">117.</span><span class="p">,</span> <span class="mf">104.</span><span class="p">])</span>
+    <span class="n">image</span> <span class="o">/=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">58.395</span><span class="p">,</span> <span class="mf">57.12</span><span class="p">,</span> <span class="mf">57.375</span><span class="p">])</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/arrays.html#numpy.newaxis" title="numpy.newaxis" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-data"><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span></a><span class="p">,</span> <span class="p">:]</span>
+    <span class="k">return</span> <span class="n">image</span>
+
+<a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-class"><span class="n">x</span></a> <span class="o">=</span> <span class="n">transform_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>synset is used to transform the label from number of ImageNet class to
+the word human can understand.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">synset_url</span></a> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;https://gist.githubusercontent.com/zhreshold/&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;4d0b62f3d01426887599d4f7ede23ee5/raw/&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;596b27d23537e5a1b5751d2b0481ef172f58b539/&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;imagenet1000_clsid_to_human.txt&#39;</span><span class="p">])</span>
+
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">synset_name</span></a> <span class="o">=</span> <span class="s1">&#39;synset.txt&#39;</span>
+<span class="n">download</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">synset_url</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">synset_name</span></a><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">synset_name</span></a><span class="p">)</span> <span class="k">as</span> <a href="https://docs.python.org/3/library/io.html#io.TextIOWrapper" title="io.TextIOWrapper" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="p">:</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">synset</span></a> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><a href="https://docs.python.org/3/library/io.html#io.TextIOWrapper" title="io.TextIOWrapper" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">f</span></a><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Now we would like to port the Gluon model to a portable computational graph.
+It’s as easy as several lines.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># We support MXNet static graph(symbol) and HybridBlock in mxnet.gluon</span>
+<span class="n">net</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">params</span></a> <span class="o">=</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">frontend</span><span class="o">.</span><span class="n">from_mxnet</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+<span class="c1"># we want a probability so add a softmax operator</span>
+<span class="n">net</span> <span class="o">=</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">sym</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">net</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here are some basic data workload configurations.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_size</span></a> <span class="o">=</span> <span class="mi">1</span>
+<a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_classes</span></a> <span class="o">=</span> <span class="mi">1000</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">image_shape</span></a> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data_shape</span></a> <span class="o">=</span> <span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_size</span></a><span class="p">,)</span> <span class="o">+</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">image_shape</span></a>
+<a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">out_shape</span></a> <span class="o">=</span> <span class="p">(</span><a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">batch_size</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/functions.html#int" title="builtins.int" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">num_classes</span></a><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="compile-the-graph">
+<h2>Compile The Graph<a class="headerlink" href="#compile-the-graph" title="Permalink to this headline">¶</a></h2>
+<p>To compile the graph, we call the <a class="reference internal" href="../../api/python/nnvm/compiler.html#nnvm.compiler.build" title="nnvm.compiler.build"><code class="xref any py py-func docutils literal notranslate"><span class="pre">nnvm.compiler.build</span></code></a> function
+with the graph configuration and parameters. As we use OpenCL for
+GPU computing, the tvm will generate both OpenCL kernel code and ARM
+CPU host code. The CPU host code is used for calling OpenCL kernels.
+In order to generate correct CPU code, we need to specify the target
+triplet for host ARM device by setting the parameter <code class="code docutils literal notranslate"><span class="pre">target_host</span></code>.</p>
+<p>If we run the example on our x86 server for demonstration, we can simply
+set it as <code class="code docutils literal notranslate"><span class="pre">llvm</span></code>. If running it on the RK3399, we need to
+specify its instruction set. Set <code class="code docutils literal notranslate"><span class="pre">local_demo</span></code> to False if you
+want to run this tutorial with a real device.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/functions.html#bool" title="builtins.bool" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">local_demo</span></a> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="k">if</span> <a href="https://docs.python.org/3/library/functions.html#bool" title="builtins.bool" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">local_demo</span></a><span class="p">:</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">target_host</span></a> <span class="o">=</span> <span class="s2">&quot;llvm&quot;</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">target</span></a> <span class="o">=</span> <span class="s2">&quot;llvm&quot;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># Here is the setting for my rk3399 board</span>
+    <span class="c1"># If you don&#39;t use rk3399, you can query your target triple by</span>
+    <span class="c1"># execute `gcc -v` on your board.</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">target_host</span></a> <span class="o">=</span> <span class="s2">&quot;llvm -target=aarch64-linux-gnu&quot;</span>
+
+    <span class="c1"># set target as  `tvm.target.mali` instead of &#39;opencl&#39; to enable</span>
+    <span class="c1"># optimization for mali</span>
+    <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">target</span></a> <span class="o">=</span> <a href="../../api/python/target.html#tvm.target.mali" title="tvm.target.mali" class="sphx-glr-backref-module-tvm-target sphx-glr-backref-type-py-function"><span class="n">tvm</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">mali</span></a><span class="p">()</span>
+
+<span class="k">with</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">build_config</span><span class="p">(</span><span class="n">opt_level</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">graph</span><span class="p">,</span> <a href="../../api/python/module.html#tvm.module.Module" title="tvm.module.Module" class="sphx-glr-backref-module-tvm-module sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lib</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">params</span></a> <span class="o">=</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">target</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">target</span></a><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">data_shape</span></a><span class="p">},</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">params</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">params</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">target_host</span></a><span class="o">=</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">target_host</span></a><span class="p">)</span>
+
+<span class="c1"># After `nnvm.compiler.build`, you will get three return values: graph,</span>
+<span class="c1"># library and the new parameter, since we do some optimization that will</span>
+<span class="c1"># change the parameters but keep the result of model as the same.</span>
+
+<span class="c1"># Save the library at local temporary directory.</span>
+<a href="../../api/python/contrib.html#tvm.contrib.util.TempDirectory" title="tvm.contrib.util.TempDirectory" class="sphx-glr-backref-module-tvm-contrib-util sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">tmp</span></a> <span class="o">=</span> <a href="../../api/python/contrib.html#tvm.contrib.util.tempdir" title="tvm.contrib.util.tempdir" class="sphx-glr-backref-module-tvm-contrib-util sphx-glr-backref-type-py-function"><span class="n">util</span><span class="o">.</span><span class="n">tempdir</span></a><span class="p">()</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lib_fname</span></a> <span class="o">=</span> <a href="../../api/python/contrib.html#tvm.contrib.util.TempDirectory.relpath" title="tvm.contrib.util.TempDirectory.relpath" class="sphx-glr-backref-module-tvm-contrib-util sphx-glr-backref-type-py-method"><span class="n">tmp</span><span class="o">.</span><span class="n">relpath</span></a><span class="p">(</span><span class="s1">&#39;net.tar&#39;</span><span class="p">)</span>
+<a href="../../api/python/module.html#tvm.module.Module.export_library" title="tvm.module.Module.export_library" class="sphx-glr-backref-module-tvm-module sphx-glr-backref-type-py-method"><span class="n">lib</span><span class="o">.</span><span class="n">export_library</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lib_fname</span></a><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deploy-the-model-remotely-by-rpc">
+<h2>Deploy the Model Remotely by RPC<a class="headerlink" href="#deploy-the-model-remotely-by-rpc" title="Permalink to this headline">¶</a></h2>
+<p>With RPC, you can deploy the model remotely from your host machine
+to the remote device.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># obtain an RPC session from remote device.</span>
+<span class="k">if</span> <a href="https://docs.python.org/3/library/functions.html#bool" title="builtins.bool" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">local_demo</span></a><span class="p">:</span>
+    <a href="../../api/python/rpc.html#tvm.rpc.LocalSession" title="tvm.rpc.LocalSession" class="sphx-glr-backref-module-tvm-rpc sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">remote</span></a> <span class="o">=</span> <a href="../../api/python/rpc.html#tvm.rpc.LocalSession" title="tvm.rpc.LocalSession" class="sphx-glr-backref-module-tvm-rpc sphx-glr-backref-type-py-class"><span class="n">rpc</span><span class="o">.</span><span class="n">LocalSession</span></a><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># The following is my environment, change this to the IP address of your target device</span>
+    <span class="n">host</span> <span class="o">=</span> <span class="s1">&#39;10.77.1.145&#39;</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="mi">9090</span>
+    <a href="../../api/python/rpc.html#tvm.rpc.LocalSession" title="tvm.rpc.LocalSession" class="sphx-glr-backref-module-tvm-rpc sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">remote</span></a> <span class="o">=</span> <a href="../../api/python/rpc.html#tvm.rpc.connect" title="tvm.rpc.connect" class="sphx-glr-backref-module-tvm-rpc sphx-glr-backref-type-py-function"><span class="n">rpc</span><span class="o">.</span><span class="n">connect</span></a><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+
+<span class="c1"># upload the library to remote device and load it</span>
+<a href="../../api/python/rpc.html#tvm.rpc.LocalSession.upload" title="tvm.rpc.LocalSession.upload" class="sphx-glr-backref-module-tvm-rpc sphx-glr-backref-type-py-method"><span class="n">remote</span><span class="o">.</span><span class="n">upload</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#str" title="builtins.str" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">lib_fname</span></a><span class="p">)</span>
+<a href="../../api/python/module.html#tvm.module.Module" title="tvm.module.Module" class="sphx-glr-backref-module-tvm-module sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rlib</span></a> <span class="o">=</span> <a href="../../api/python/rpc.html#tvm.rpc.LocalSession.load_module" title="tvm.rpc.LocalSession.load_module" class="sphx-glr-backref-module-tvm-rpc sphx-glr-backref-type-py-method"><span class="n">remote</span><span class="o">.</span><span class="n">load_module</span></a><span class="p">(</span><span class="s1">&#39;net.tar&#39;</span><span class="p">)</span>
+
+<span class="n">ctx</span> <span class="o">=</span> <a href="../../api/python/rpc.html#tvm.rpc.LocalSession.cpu" title="tvm.rpc.LocalSession.cpu" class="sphx-glr-backref-module-tvm-rpc sphx-glr-backref-type-py-method"><span class="n">remote</span><span class="o">.</span><span class="n">cpu</span></a><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <a href="https://docs.python.org/3/library/functions.html#bool" title="builtins.bool" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">local_demo</span></a> <span class="k">else</span> <a href="../../api/python/rpc.html#tvm.rpc.LocalSession.cl" title="tvm.rpc.LocalSession.cl" class="sphx-glr-backref-module-tvm-rpc sphx-glr-backref-type-py-method"><span class="n">remote</span><span class="o">.</span><span class="n">cl</span></a><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># upload the parameter</span>
+<a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rparams</span></a> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">tvm</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">params</span></a><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+<span class="c1"># create the remote runtime module</span>
+<a href="../../api/python/graph_runtime.html#tvm.contrib.graph_runtime.GraphModule" title="tvm.contrib.graph_runtime.GraphModule" class="sphx-glr-backref-module-tvm-contrib-graph_runtime sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">module</span></a> <span class="o">=</span> <a href="../../api/python/graph_runtime.html#tvm.contrib.graph_runtime.create" title="tvm.contrib.graph_runtime.create" class="sphx-glr-backref-module-tvm-contrib-graph_runtime sphx-glr-backref-type-py-function"><span class="n">runtime</span><span class="o">.</span><span class="n">create</span></a><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <a href="../../api/python/module.html#tvm.module.Module" title="tvm.module.Module" class="sphx-glr-backref-module-tvm-module sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rlib</span></a><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+<span class="c1"># set parameter</span>
+<a href="../../api/python/graph_runtime.html#tvm.contrib.graph_runtime.GraphModule.set_input" title="tvm.contrib.graph_runtime.GraphModule.set_input" class="sphx-glr-backref-module-tvm-contrib-graph_runtime sphx-glr-backref-type-py-method"><span class="n">module</span><span class="o">.</span><span class="n">set_input</span></a><span class="p">(</span><span class="o">**</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rparams</span></a><span class="p">)</span>
+<span class="c1"># set input data</span>
+<a href="../../api/python/graph_runtime.html#tvm.contrib.graph_runtime.GraphModule.set_input" title="tvm.contrib.graph_runtime.GraphModule.set_input" class="sphx-glr-backref-module-tvm-contrib-graph_runtime sphx-glr-backref-type-py-method"><span class="n">module</span><span class="o">.</span><span class="n">set_input</span></a><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">tvm</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-class"><span class="n">x</span></a><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)))</span>
+<span class="c1"># run</span>
+<a href="../../api/python/graph_runtime.html#tvm.contrib.graph_runtime.GraphModule.run" title="tvm.contrib.graph_runtime.GraphModule.run" class="sphx-glr-backref-module-tvm-contrib-graph_runtime sphx-glr-backref-type-py-method"><span class="n">module</span><span class="o">.</span><span class="n">run</span></a><span class="p">()</span>
+<span class="c1"># get output</span>
+<a href="../../api/python/ndarray.html#tvm.ndarray.NDArray" title="tvm.ndarray.NDArray" class="sphx-glr-backref-module-tvm-ndarray sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">out</span></a> <span class="o">=</span> <a href="../../api/python/graph_runtime.html#tvm.contrib.graph_runtime.GraphModule.get_output" title="tvm.contrib.graph_runtime.GraphModule.get_output" class="sphx-glr-backref-module-tvm-contrib-graph_runtime sphx-glr-backref-type-py-method"><span class="n">module</span><span class="o">.</span><span class="n">get_output</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tvm</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#tuple" title="builtins.tuple" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">out_shape</span></a><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">))</span>
+<span class="c1"># get top1 result</span>
+<span class="n">top1</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.argmax" title="numpy.argmax" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">argmax</span></a><span class="p">(</span><a href="../../api/python/ndarray.html#tvm.ndarray.NDArray.asnumpy" title="tvm.ndarray.NDArray.asnumpy" class="sphx-glr-backref-module-tvm-ndarray sphx-glr-backref-type-py-method"><span class="n">out</span><span class="o">.</span><span class="n">asnumpy</span></a><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;TVM prediction top-1: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">synset</span></a><span class="p">[</span><span class="n">top1</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>TVM prediction top-1: tiger cat
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.900 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-nnvm-deploy-model-on-mali-gpu-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/c68943b9a7bdaaa79d8ae6acf4db8d6a/deploy_model_on_mali_gpu.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">deploy_model_on_mali_gpu.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/cf48d51e23c92bfb2560b2734b1efb71/deploy_model_on_mali_gpu.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">deploy_model_on_mali_gpu.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="from_darknet.html" class="btn btn-neutral float-right" title="Compile YOLO-V2 in DarkNet Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="deploy_model_on_rasp.html" class="btn btn-neutral float-left" title="Deploy the Pretrained Model on Raspberry Pi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2017, tvm developers
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75982049-2', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

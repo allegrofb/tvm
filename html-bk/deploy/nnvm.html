@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>} &mdash; tvm 0.5.dev documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/tvm_theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Integrate TVM into Your Project" href="integrate.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="android.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/tvm-logo-small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vta/index.html">VTA: Deep Learning Accelerator Stack</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Deploy and Integration</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cpp_deploy.html">Deploy TVM Module using C++ API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">}</a></li>
+<li class="toctree-l2"><a class="reference internal" href="integrate.html">Integrate TVM into Your Project</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute/index.html">Contribute to TVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../langref/index.html">Language Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_links.html">Links to C++ and JS API References</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Design and Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nnvm_top.html">NNVM Core Tensor Operators</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tvm</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Deploy and Integration</a> &raquo;</li>
+        
+      <li>}</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/deploy/nnvm.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p># Deploy NNVM Modules
+NNVM compiled modules are fully embedded in TVM runtime as long as <code class="docutils literal notranslate"><span class="pre">`GRAPH_RUNTIME`</span></code> option
+is enabled in tvm runtime.</p>
+<p>In a nutshell, we will need three items to deploy a compiled module.
+Checkout our tutorials on getting started with NNVM compiler for more details.</p>
+<ul class="simple">
+<li><p>The graph json data which contains the execution graph.</p></li>
+<li><p>The tvm module library of compiled functions.</p></li>
+<li><p>The parameter blobs for stored parameters.</p></li>
+</ul>
+<p>We can then use TVM’s runtime API to deploy the compiled module.
+Here is an example in python.</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>python
+import tvm</p>
+<p># tvm module for compiled functions.
+loaded_lib = tvm.module.load(“deploy.so”)
+# json graph
+loaded_json = open(temp.relpath(“deploy.json”)).read()
+# parameters in binary
+loaded_params = bytearray(open(temp.relpath(“deploy.params”), “rb”).read())</p>
+<p>fcreate = tvm.get_global_func(“tvm.graph_runtime.create”)
+ctx = tvm.gpu(0)
+gmodule = fcreate(loaded_json, loaded_lib, ctx.device_type, ctx.device_id)
+set_input, get_output, run = gmodule[“set_input”], gmodule[“get_output”], gmodule[“run”]
+set_input(“x”, tvm.nd.array(x_np))
+gmodule[“load_params”](loaded_params)
+run()
+out = tvm.nd.empty(shape)
+get_output(0, out)
+print(out.asnumpy())
+<a href="#id5"><span class="problematic" id="id6">``</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a></p>
+<p>An example in c++.
+<a href="#id9"><span class="problematic" id="id10">``</span></a><a href="#id11"><span class="problematic" id="id12">`</span></a>cpp
+#include &lt;dlpack/dlpack.h&gt;
+#include &lt;tvm/runtime/module.h&gt;
+#include &lt;tvm/runtime/registry.h&gt;
+#include &lt;tvm/runtime/packed_func.h&gt;</p>
+<p>#include &lt;fstream&gt;
+#include &lt;iterator&gt;
+#include &lt;algorithm&gt;</p>
+<p>int main()
+{</p>
+<blockquote>
+<div><p>// tvm module for compiled functions
+tvm::runtime::Module mod_syslib = tvm::runtime::Module::LoadFromFile(“deploy.so”);</p>
+<p>// json graph
+std::ifstream json_in(“deploy.json”, std::ios::in);
+std::string json_data((std::istreambuf_iterator&lt;char&gt;(json_in)), std::istreambuf_iterator&lt;char&gt;());
+json_in.close();</p>
+<p>// parameters in binary
+std::ifstream params_in(“deploy.params”, std::ios::binary);
+std::string params_data((std::istreambuf_iterator&lt;char&gt;(params_in)), std::istreambuf_iterator&lt;char&gt;());
+params_in.close();</p>
+<p>// parameters need to be TVMByteArray type to indicate the binary data
+TVMByteArray params_arr;
+params_arr.data = params_data.c_str();
+params_arr.size = params_data.length();</p>
+<p>int dtype_code = kDLFloat;
+int dtype_bits = 32;
+int dtype_lanes = 1;
+int device_type = kDLCPU;
+int device_id = 0;</p>
+<p>// get global function module for graph runtime
+tvm::runtime::Module mod = (<a href="#id13"><span class="problematic" id="id14">*</span></a>tvm::runtime::Registry::Get(“tvm.graph_runtime.create”))(json_data, mod_syslib, device_type, device_id);</p>
+<p>DLTensor* x;
+int in_ndim = 4;
+int64_t in_shape[4] = {1, 3, 224, 224};
+TVMArrayAlloc(in_shape, in_ndim, dtype_code, dtype_bits, dtype_lanes, device_type, device_id, &amp;x);
+// load image data saved in binary
+std::ifstream data_fin(“cat.bin”, std::ios::binary);
+data_fin.read(static_cast&lt;char*&gt;(x-&gt;data), 3 * 224 * 224 * 4);</p>
+<p>// get the function from the module(set input data)
+tvm::runtime::PackedFunc set_input = mod.GetFunction(“set_input”);
+set_input(“data”, x);</p>
+<p>// get the function from the module(load patameters)
+tvm::runtime::PackedFunc load_params = mod.GetFunction(“load_params”);
+load_params(params_arr);</p>
+<p>// get the function from the module(run it)
+tvm::runtime::PackedFunc run = mod.GetFunction(“run”);
+run();</p>
+<p>DLTensor* y;
+int out_ndim = 1;
+int64_t out_shape[1] = {1000, };
+TVMArrayAlloc(out_shape, out_ndim, dtype_code, dtype_bits, dtype_lanes, device_type, device_id, &amp;y);</p>
+<p>// get the function from the module(get output data)
+tvm::runtime::PackedFunc get_output = mod.GetFunction(“get_output”);
+get_output(0, y);</p>
+<p>// get the maximum position in output vector
+auto y_iter = static_cast&lt;float*&gt;(y-&gt;data);
+auto max_iter = std::max_element(y_iter, y_iter + 1000);
+auto max_index = std::distance(y_iter, max_iter);
+std::cout &lt;&lt; “The maximum position in output vector is: ” &lt;&lt; max_index &lt;&lt; std::endl;</p>
+<p>TVMArrayFree(x);
+TVMArrayFree(y);</p>
+<p>return 0;</p>
+</div></blockquote>
+<div class="section" id="id15">
+<h1>}<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h1>
+<p>## Deploy as System Module
+C++ additionally support deployment as system module.
+This process need few additional options as given below to NNVM build.</p>
+<ul class="simple">
+<li><p>For target llvm append –system-lib as <code class="docutils literal notranslate"><span class="pre">`target=llvm</span> <span class="pre">--system-lib`</span></code></p></li>
+<li><p>For a GPU build (or non llvm) the additional option should be given to targat_host as <code class="docutils literal notranslate"><span class="pre">`target_host=llvm</span> <span class="pre">--system-lib`</span></code></p></li>
+</ul>
+<p>Module export require additional options for not to compile but save as <code class="docutils literal notranslate"><span class="pre">`lib.export_library</span> <span class="pre">(path,</span> <span class="pre">fcompile=False)`</span></code></p>
+<p>The output of above API is a tar compressed file containing object file <code class="docutils literal notranslate"><span class="pre">`(lib.o)`</span></code> and cpp source file <code class="docutils literal notranslate"><span class="pre">`(devc.cc)`</span></code> which embeds device blob. Thease two files should be compiled along with other files or objects while building c++ application.
+Please refer to [Makefile](<a class="reference external" href="https://github.com/dmlc/tvm/tree/master/apps/howto_deploy/Makefile#L32">https://github.com/dmlc/tvm/tree/master/apps/howto_deploy/Makefile#L32</a>) for a reference.</p>
+<p>The c++ code to load this system module require the below change.</p>
+<dl class="simple">
+<dt><a href="#id16"><span class="problematic" id="id17">``</span></a><a href="#id18"><span class="problematic" id="id19">`</span></a>cpp</dt><dd><p>// tvm module for compiled functions
+tvm::runtime::Module mod_syslib = (<a href="#id20"><span class="problematic" id="id21">*</span></a>tvm::runtime::Registry::Get(“module._GetSystemLib”))();</p>
+</dd>
+</dl>
+<p><a href="#id22"><span class="problematic" id="id23">``</span></a><a href="#id24"><span class="problematic" id="id25">`</span></a></p>
+<p>Based on the build environment the system object, device blob source should be included in the final executable. An example with bazel build is given below.
+<a href="#id26"><span class="problematic" id="id27">``</span></a><a href="#id28"><span class="problematic" id="id29">`</span></a>bash
+cc_library(</p>
+<blockquote>
+<div><p>name = “host_module”,
+srcs = [“lib.o”],
+alwayslink=1</p>
+</div></blockquote>
+<p>)</p>
+<dl class="simple">
+<dt>cc_library(</dt><dd><p>name = “device_module”,
+srcs = [“devc.cc”],
+alwayslink=1</p>
+</dd>
+</dl>
+<p>)</p>
+<dl class="simple">
+<dt>cc_library(</dt><dd><p>name = “tvm_runtime”,
+srcs = [“libtvm_runtime_pack.cc”],</p>
+</dd>
+</dl>
+<p>)</p>
+<dl>
+<dt>cc_binary(</dt><dd><p>name = “bazel_deploy”,
+srcs = [“cpp_deploy.cc”],
+deps = [</p>
+<blockquote>
+<div><p>“:tvm_runtime”, “:host_module”, “:device_module”</p>
+</div></blockquote>
+<p>],
+linkopts = [ “-lpthread -ldl” ]</p>
+</dd>
+</dl>
+<p>)</p>
+<p><a href="#id30"><span class="problematic" id="id31">``</span></a><a href="#id32"><span class="problematic" id="id33">`</span></a></p>
+<p>This build directive creates
+- new library <code class="docutils literal notranslate"><span class="pre">`host_module`</span></code> out of <code class="docutils literal notranslate"><span class="pre">`lib.o`</span></code>
+- new library <code class="docutils literal notranslate"><span class="pre">`device_module`</span></code> out of <code class="docutils literal notranslate"><span class="pre">`devc.cc`</span></code></p>
+<p>These intermediate modules can be used as a dependency to final deploy application.</p>
+<p>In bazel <code class="docutils literal notranslate"><span class="pre">`alwayslink=1`</span></code> enforce embedding entire lib into application (even though it doesn’t call any API from this module).</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="integrate.html" class="btn btn-neutral float-right" title="Integrate TVM into Your Project" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="android.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2017, tvm developers
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75982049-2', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

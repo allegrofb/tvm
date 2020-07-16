@@ -1,0 +1,12 @@
+
+:orphan:
+
+.. _sphx_glr_tutorials_dev_sg_execution_times:
+
+Computation times
+=================
+**00:00.007** total execution time for **tutorials_dev** files:
+
++---------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_tutorials_dev_low_level_custom_pass.py` (``low_level_custom_pass.py``) | 00:00.007 | 0.0 MB |
++---------------------------------------------------------------------------------------+-----------+--------+

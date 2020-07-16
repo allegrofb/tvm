@@ -1,0 +1,461 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>VTA Installation Guide &mdash; tvm 0.5.dev documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/tvm_theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="VTA Design and Developer Guide" href="dev/index.html" />
+    <link rel="prev" title="VTA: Deep Learning Accelerator Stack" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/tvm-logo-small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">VTA: Deep Learning Accelerator Stack</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">VTA Installation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/index.html">VTA Design and Developer Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/index.html">VTA Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#literature">Literature</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../deploy/index.html">Deploy and Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute/index.html">Contribute to TVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../langref/index.html">Language Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_links.html">Links to C++ and JS API References</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Design and Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nnvm_top.html">NNVM Core Tensor Operators</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tvm</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">VTA: Deep Learning Accelerator Stack</a> &raquo;</li>
+        
+      <li>VTA Installation Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/vta/install.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="vta-installation-guide">
+<h1>VTA Installation Guide<a class="headerlink" href="#vta-installation-guide" title="Permalink to this headline">¶</a></h1>
+<p>We present three installation guides, each extending on the previous one:
+1. [Simulator installation](#vta-simulator-installation)
+2. [Hardware test setup](#vta-pynq-based-test-setup)
+3. [FPGA toolchain installation](#vta-fpga-toolchain-installation)</p>
+<p>## VTA Simulator Installation</p>
+<p>You need [TVM installed](<a class="reference external" href="https://docs.tvm.ai/install/index.html">https://docs.tvm.ai/install/index.html</a>) on your machine.
+For a quick and easy start, use the pre-built [TVM Docker image](<a class="reference external" href="https://docs.tvm.ai/install/docker.html">https://docs.tvm.ai/install/docker.html</a>).</p>
+<p>The VTA simulator library is built by default with TVM.
+Add the VTA library to your python path to run the VTA examples.</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">export</span> <span class="pre">PYTHONPATH=/path/to/vta/python:${PYTHONPATH}</span>
+<span class="pre">`</span></code></p>
+<p>### Testing your VTA Simulation Setup</p>
+<p>To ensure that you’ve properly installed the VTA python package, run the following 2D convolution testbench.</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">python</span> <span class="pre">&lt;tvm</span> <span class="pre">root&gt;/vta/tests/python/integration/test_benchmark_topi_conv2d.py</span>
+<span class="pre">`</span></code></p>
+<p>&gt; Note: You’ll notice that for every convolution layer, the throughput gets reported in GOPS. These numbers are actually the computational throughput that the simulator achieves, by evaluating the convolutions in software.</p>
+<p>You are invited to try out our [VTA programming tutorials](<a class="reference external" href="https://docs.tvm.ai/vta/tutorials/index.html">https://docs.tvm.ai/vta/tutorials/index.html</a>).</p>
+<p>### Advanced Configuration (optional)</p>
+<p>VTA is a generic configurable deep learning accelerator.
+The configuration is specified by <cite>vta_config.json</cite> under the TVM root folder.
+This file provides an architectural specification of the VTA accelerator to parameterize the TVM compiler stack and the VTA hardware stack.</p>
+<p>The VTA configuration file also specifies the TVM compiler target.
+When <cite>TARGET</cite> is set to <cite>sim</cite>, all TVM workloads execute on the VTA simulator.
+You can modify the content of the configuration file to rebuild VTA to a different parameterization.
+To do so,</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">cd</span> <span class="pre">&lt;tvm</span> <span class="pre">root&gt;</span>
+<span class="pre">cp</span> <span class="pre">vta/config/vta_config.json</span> <span class="pre">vta_config.json</span>
+<span class="pre">#</span> <span class="pre">edit</span> <span class="pre">vta_config.json</span>
+<span class="pre">make</span> <span class="pre">vta</span>
+<span class="pre">`</span></code></p>
+<p>## VTA Pynq-Based Test Setup</p>
+<p>This second guide extends the <em>VTA Simulator Installation</em> guide above to run FPGA hardware tests of the complete TVM and VTA software-hardware stack.
+In terms of hardware components you’ll need:
+* The [Pynq](<a class="reference external" href="http://www.pynq.io/">http://www.pynq.io/</a>) FPGA development board which can be acquired for $200, or $150 for academics from [Digilent](<a class="reference external" href="https://store.digilentinc.com/pynq-z1-python-productivity-for-zynq/">https://store.digilentinc.com/pynq-z1-python-productivity-for-zynq/</a>).
+* An Ethernet-to-USB adapter to connect the Pynq board to your development machine.
+* An 8+GB micro SD card.
+* An AC to DC 12V 3A power adapter.</p>
+<p>This guide covers the following themes:
+1. Pynq board setup instructions.
+2. Pynq-side RPC server build and deployment.
+3. Revisiting the test examples from the <em>VTA Simulator Installation</em> guide, this time executing on the Pynq board.</p>
+<p>### Pynq Board Setup</p>
+<p>Setup your Pynq board based on the [Pynq board getting started tutorial](<a class="reference external" href="http://pynq.readthedocs.io/en/latest/getting_started.html">http://pynq.readthedocs.io/en/latest/getting_started.html</a>).
+You should follow the instructions up to and including the <em>Turning On the PYNQ-Z1</em> step (no need to pursue the tutorial beyond this point).
+* Make sure that you’ve downloaded the latest Pynq image, [PYNQ-Z1 v2.1](<a class="reference external" href="http://pynq-testing.readthedocs.io/en/image_v2.2/getting_started/pynq_image.html">http://pynq-testing.readthedocs.io/en/image_v2.2/getting_started/pynq_image.html</a>) (released 21 Feb 2018), and have imaged your SD card with it (we recommend the free [Etcher](<a class="reference external" href="https://etcher.io/">https://etcher.io/</a>) program).
+* For this test setup, follow the [“Connect to a Computer”](<a class="reference external" href="http://pynq.readthedocs.io/en/latest/getting_started.html#connect-to-a-computer">http://pynq.readthedocs.io/en/latest/getting_started.html#connect-to-a-computer</a>) Ethernet setup instructions. To be able to talk to the board, make sure to [assign your computer a static IP address](<a class="reference external" href="http://pynq.readthedocs.io/en/latest/appendix.html#assign-your-computer-a-static-ip">http://pynq.readthedocs.io/en/latest/appendix.html#assign-your-computer-a-static-ip</a>)</p>
+<p>Once the board is powered on and connected to your development machine, try connecting to it to make sure you’ve properly set up your Pynq board:
+<code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">#</span> <span class="pre">To</span> <span class="pre">connect</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">Pynq</span> <span class="pre">board</span> <span class="pre">use</span> <span class="pre">the</span> <span class="pre">[username,</span> <span class="pre">password]</span> <span class="pre">combo:</span> <span class="pre">[xilinx,</span> <span class="pre">xilinx]</span>
+<span class="pre">ssh</span> <span class="pre">xilinx&#64;192.168.2.99</span>
+<span class="pre">`</span></code></p>
+<p>### Pynq-Side RPC Server Build &amp; Deployment</p>
+<p>Because the direct board-to-computer connection prevents the board from directly accessing the internet, we’ll need to mount the Pynq’s file system to your development machine’s file system with [sshfs](<a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-use-sshfs-to-mount-remote-file-systems-over-ssh">https://www.digitalocean.com/community/tutorials/how-to-use-sshfs-to-mount-remote-file-systems-over-ssh</a>). Next we directly clone the TVM repository into the sshfs mountpoint on your development machine.</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">#</span> <span class="pre">On</span> <span class="pre">the</span> <span class="pre">Host-side</span>
+<span class="pre">mkdir</span> <span class="pre">&lt;mountpoint&gt;</span>
+<span class="pre">sshfs</span> <span class="pre">xilinx&#64;192.168.2.99:/home/xilinx</span> <span class="pre">&lt;mountpoint&gt;</span>
+<span class="pre">cd</span> <span class="pre">&lt;mountpoint&gt;</span>
+<span class="pre">git</span> <span class="pre">clone</span> <span class="pre">--recursive</span> <span class="pre">https://github.com/dmlc/tvm</span>
+<span class="pre">#</span> <span class="pre">When</span> <span class="pre">finished,</span> <span class="pre">you</span> <span class="pre">can</span> <span class="pre">leave</span> <span class="pre">the</span> <span class="pre">moutpoint</span> <span class="pre">and</span> <span class="pre">unmount</span> <span class="pre">the</span> <span class="pre">directory</span>
+<span class="pre">cd</span> <span class="pre">~</span>
+<span class="pre">sudo</span> <span class="pre">umount</span> <span class="pre">&lt;mountpoint&gt;</span>
+<span class="pre">`</span></code></p>
+<p>Now that we’ve cloned the VTA repository in the Pynq’s file system, we can ssh into it and launch the build of the TVM-based RPC server.
+The build process should take roughly 5 minutes.</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">ssh</span> <span class="pre">xilinx&#64;192.168.2.99</span>
+<span class="pre">#</span> <span class="pre">Build</span> <span class="pre">TVM</span> <span class="pre">runtime</span> <span class="pre">library</span> <span class="pre">(takes</span> <span class="pre">5</span> <span class="pre">mins)</span>
+<span class="pre">cd</span> <span class="pre">/home/xilinx/tvm</span>
+<span class="pre">mkdir</span> <span class="pre">build</span>
+<span class="pre">cp</span> <span class="pre">cmake/config.cmake</span> <span class="pre">build/.</span>
+<span class="pre">#</span> <span class="pre">Copy</span> <span class="pre">pynq</span> <span class="pre">specific</span> <span class="pre">configuration</span>
+<span class="pre">cp</span> <span class="pre">vta/config/pynq_sample.json</span> <span class="pre">build/vta_config.json</span>
+<span class="pre">cd</span> <span class="pre">build</span>
+<span class="pre">cmake</span> <span class="pre">..</span>
+<span class="pre">make</span> <span class="pre">runtime</span> <span class="pre">vta</span> <span class="pre">-j2</span>
+<span class="pre">#</span> <span class="pre">Build</span> <span class="pre">VTA</span> <span class="pre">RPC</span> <span class="pre">server</span> <span class="pre">(takes</span> <span class="pre">1</span> <span class="pre">min)</span>
+<span class="pre">cd</span> <span class="pre">..</span>
+<span class="pre">sudo</span> <span class="pre">./apps/pynq_rpc/start_rpc_server.sh</span> <span class="pre">#</span> <span class="pre">pw</span> <span class="pre">is</span> <span class="pre">'xilinx'</span>
+<span class="pre">`</span></code></p>
+<p>You should see the following being displayed when starting the RPC server. In order to run the next examples, you’ll need to leave the RPC server running in an <cite>ssh</cite> session.
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">INFO:root:RPCServer:</span> <span class="pre">bind</span> <span class="pre">to</span> <span class="pre">0.0.0.0:9091</span>
+<span class="pre">`</span></code></p>
+<p>Tips regarding the Pynq RPC Server:
+* The RPC server should be listening on port <cite>9091</cite>. If not, an earlier process might have terminated unexpectedly and it’s recommended in this case to just reboot the Pynq, and re-run the RPC server.
+* To kill the RPC server, just send the <cite>Ctrl + c</cite> command. You can re-run it with <cite>sudo ./apps/pynq_rpc/start_rpc_server.sh</cite>.
+* If unresponsive, the board can be rebooted by power-cycling it with the physical power switch.</p>
+<p>### Testing your Pynq-based Hardware Setup</p>
+<p>Before running the examples on your development machine, you’ll need to configure your host environment as follows:
+<code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">#</span> <span class="pre">On</span> <span class="pre">the</span> <span class="pre">Host-side</span>
+<span class="pre">export</span> <span class="pre">VTA_PYNQ_RPC_HOST=192.168.2.99</span>
+<span class="pre">export</span> <span class="pre">VTA_PYNQ_RPC_PORT=9091</span>
+<span class="pre">`</span></code></p>
+<p>In addition, you’ll need to edit the <cite>vta_config.json</cite> file on the host to indicate that we are targeting the Pynq platform, by setting the <cite>TARGET</cite> field to <cite>“pynq”</cite>.
+Alternatively, you can copy the default <cite>vta/config/pynq_sample.json</cite> into the TVM root as <cite>vta_config.json</cite>.
+&gt; Note: in contrast to our simulation setup, there are no libraries to compile on the host side since the host offloads all of the computation to the Pynq board.</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">#</span> <span class="pre">On</span> <span class="pre">the</span> <span class="pre">Host-side</span>
+<span class="pre">cd</span> <span class="pre">&lt;tvm</span> <span class="pre">root&gt;</span>
+<span class="pre">cp</span> <span class="pre">vta/config/pynq_sample.json</span> <span class="pre">vta_config.json</span>
+<span class="pre">`</span></code></p>
+<p>This time again, we will run the 2D convolution testbench.
+Beforehand, we need to program the Pynq board FPGA with a VTA bitstream, and build the VTA runtime via RPC.
+The following <cite>test_program_rpc.py</cite> script will perform two operations:
+* FPGA programming, by downloading a pre-compiled bitstream from a [VTA bitstream repository](<a class="reference external" href="https://github.com/uwsaml/vta-distro">https://github.com/uwsaml/vta-distro</a>) that matches the default <cite>vta_config.json</cite> configuration set by the host, and sending it over to the Pynq via RPC to program the Pynq’s FPGA.
+* Runtime building on the Pynq, which needs to be run every time the <cite>vta_config.json</cite> configuration is modified. This ensures that the VTA software runtime that generates the accelerator’s executable via just-in-time (JIT) compilation matches the specifications of the VTA design that is programmed on the FPGA. The build process takes about 30 seconds to complete so be patient!</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">#</span> <span class="pre">On</span> <span class="pre">the</span> <span class="pre">Host-side</span>
+<span class="pre">python</span> <span class="pre">&lt;tvm</span> <span class="pre">root&gt;/vta/tests/python/pynq/test_program_rpc.py</span>
+<span class="pre">`</span></code></p>
+<p>&gt; Tip: You can track progress of the FPGA programming and the runtime rebuilding steps by looking at the RPC server’s logging messages in your Pynq <cite>ssh</cite> session.</p>
+<p>We are now ready to run the 2D convolution testbench in hardware.</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">#</span> <span class="pre">On</span> <span class="pre">the</span> <span class="pre">Host-side</span>
+<span class="pre">python</span> <span class="pre">&lt;tvm</span> <span class="pre">root&gt;/vta/tests/python/integration/test_benchmark_topi_conv2d.py</span>
+<span class="pre">`</span></code></p>
+<p>The performance metrics measured on the Pynq board will be reported for each convolutional layer.</p>
+<p>You can also try out our [VTA programming tutorials](<a class="reference external" href="https://docs.tvm.ai/vta/tutorials/index.html">https://docs.tvm.ai/vta/tutorials/index.html</a>).</p>
+<p>## VTA FPGA Toolchain Installation</p>
+<p>This third and last guide allows users to generate custom VTA bitstreams using free-to-use Xilinx compilation toolchains.</p>
+<p>### Xilinx Toolchain Installation</p>
+<p>We recommend using <cite>Vivado 2018.2</cite> since our scripts have been tested to work on this version of the Xilinx toolchains.
+Our guide is written for Linux (Ubuntu) installation.</p>
+<p>You’ll need to install Xilinx’ FPGA compilation toolchain, [Vivado HL WebPACK 2018.2](<a class="reference external" href="https://www.xilinx.com/products/design-tools/vivado.html">https://www.xilinx.com/products/design-tools/vivado.html</a>), which a license-free version of the Vivado HLx toolchain.</p>
+<p>#### Obtaining and Launching the Vivado GUI Installer</p>
+<ol class="arabic simple">
+<li><p>Go to the [download webpage](<a class="reference external" href="https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2018-2.html">https://www.xilinx.com/support/download/index.html/content/xilinx/en/downloadNav/vivado-design-tools/2018-2.html</a>), and download the Linux Self Extracting Web Installer for Vivado HLx 2018.2: WebPACK and Editions.</p></li>
+<li><p>You’ll have to sign in with a Xilinx account. This requires a Xilinx account creation that will take 2 minutes.</p></li>
+<li><p>Complete the Name and Address Verification by clicking “Next”, and you will get the opportunity to download a binary file, called <cite>Xilinx_Vivado_SDK_Web_2018.2_0614_1954_Lin64.bin</cite>.</p></li>
+</ol>
+<p>4. Now that the file is downloaded, go to your <cite>Downloads</cite> directory, and change the file permissions so it can be executed:
+<code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">chmod</span> <span class="pre">u+x</span> <span class="pre">Xilinx_Vivado_SDK_Web_2018.2_0614_1954_Lin64.bin</span>
+<span class="pre">`</span></code>
+5. Now you can execute the binary:
+<code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">./Xilinx_Vivado_SDK_Web_2018.2_0614_1954_Lin64.bin</span>
+<span class="pre">`</span></code></p>
+<p>#### Xilinx Vivado GUI Installer Steps</p>
+<p>At this point you’ve launched the Vivado 2017.1 Installer GUI program.</p>
+<ol class="arabic simple">
+<li><p>Click “Next” on the <em>Welcome</em> screen.</p></li>
+<li><p>On the <em>Select Install Type</em> screen, enter your Xilinx user credentials under the “User Authentication” box and select the “Download and Install Now” option before clicking “Next” .</p></li>
+<li><p>On the <em>Accept License Agreements</em> screen, accept all terms before clicking “Next”.</p></li>
+<li><p>On the <em>Select Edition to Install</em> screen, select the “Vivado HL WebPACK” before clicking “Next” .</p></li>
+<li><p>Under the <em>Vivado HL WebPACK</em> screen, before hitting “Next”, check the following options (the rest should be unchecked):
+* Design Tools -&gt; Vivado Design Suite -&gt; Vivado
+* Devices -&gt; Production Devices -&gt; SoCs -&gt; Zynq-7000 (if you are targeting the Pynq board)
+* Devices -&gt; Production Devices -&gt; SoCs -&gt; UltraScale+ MPSoC (if you are targeting the Ultra-96 board)</p></li>
+<li><p>Your total download size should be about 5GB and the amount of Disk Space Required 23GB.</p></li>
+<li><p>On the <em>Select Destination Directory</em> screen, set the installation directory before clicking “Next”. It might highlight some paths as red - that’s because the installer doesn’t have the permission to write to the directory. In that case select a path that doesn’t require special write permissions (e.g. your home directory).</p></li>
+<li><p>On the <em>Installation Summary</em> screen, hit “Install”.</p></li>
+<li><p>An <em>Installation Progress</em> window will pop-up to track progress of the download and the installation.</p></li>
+<li><p>This process will take about 20-30 minutes depending on your connection speed.</p></li>
+<li><p>A pop-up window will inform you that the installation completed successfully. Click “OK”.</p></li>
+<li><p>Finally the <em>Vivado License Manager</em> will launch. Select “Get Free ISE WebPACK, ISE/Vivado IP or PetaLinux License” and click “Connect Now” to complete the license registration process.</p></li>
+</ol>
+<p>#### Environment Setup</p>
+<p>The last step is to update your <cite>~/.bashrc</cite> with the following lines. This will include all of the Xilinx binary paths so you can launch compilation scripts from the command line.
+<code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">#</span> <span class="pre">Xilinx</span> <span class="pre">Vivado</span> <span class="pre">2018.2</span> <span class="pre">environment</span>
+<span class="pre">export</span> <span class="pre">XILINX_VIVADO=${XILINX_PATH}/Vivado/2018.2</span>
+<span class="pre">export</span> <span class="pre">PATH=${XILINX_VIVADO}/bin:${PATH}</span>
+<span class="pre">`</span></code></p>
+<p>### Custom VTA Bitstream Compilation</p>
+<p>High-level hardware parameters are listed in the VTA configuration file and can be customized by the user.
+For this custom VTA bitstream compilation exercise, we’ll change the frequency of our design, so it can be clocked a little faster.
+* Set the <cite>HW_FREQ</cite> field to <cite>142</cite>. The Pynq board supports 100, 142, 167 and 200MHz clocks. Note that the higher the frequency, the harder it will be to close timing. Increasing the frequency can lead to timing violation and thus faulty hardware execution.
+* Set the <cite>HW_CLK_TARGET</cite> to <cite>6</cite>. This parameters refers to the target clock period in nano seconds for HLS - a lower clock period leads to more aggressive pipelining to achieve timing closure at higher frequencies. Technically a 142MHz clock would require a 7ns target, but we intentionally lower the clock target to 6ns to more aggressively pipeline our design.</p>
+<p>Bitstream generation is driven by a top-level <cite>Makefile</cite> under <cite>&lt;tvm root&gt;/vta/hardware/xilinx/</cite>.</p>
+<p>If you just want to simulate the VTA design in software emulation to make sure that it is functional, enter:
+<code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">cd</span> <span class="pre">&lt;tvm</span> <span class="pre">root&gt;/vta/hardware/xilinx</span>
+<span class="pre">make</span> <span class="pre">ip</span> <span class="pre">MODE=sim</span>
+<span class="pre">`</span></code></p>
+<p>If you just want to generate the HLS-based VTA IP cores without launching the entire design place and route, enter:
+<code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">make</span> <span class="pre">ip</span>
+<span class="pre">`</span></code>
+You’ll be able to view the HLS synthesis reports under <cite>&lt;tvm root&gt;/vta/build/hardware/xilinx/hls/</cite> <cite>&lt;configuration&gt;/&lt;block&gt;/solution0/syn/report/&lt;block&gt;_csynth.rpt</cite>
+&gt; Note: The <cite>&lt;configuration&gt;</cite> name is a string that summarizes the VTA configuration parameters listed in the <cite>vta_config.json</cite>. The <cite>&lt;block&gt;</cite> name refers to the specific module (or HLS function) that compose the high-level VTA pipeline.</p>
+<p>Finally to run the full hardware compilation and generate the VTA bitstream, run:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">make</span>
+<span class="pre">`</span></code></p>
+<p>This process is lengthy, and can take around up to an hour to complete depending on your machine’s specs.
+We recommend setting the <cite>VTA_HW_COMP_THREADS</cite> variable in the Makefile to take full advantage of all the cores on your development machine.</p>
+<p>Once the compilation completes, the generated bitstream can be found under <cite>&lt;tvm root&gt;/vta/build/hardware/xilinx/vivado/&lt;configuration&gt;/export/vta.bit</cite>.</p>
+<p>### Use the Custom Bitstream</p>
+<p>We can program the new VTA FPGA bitstream by setting the bitstream path of the <cite>vta.program_fpga()</cite> function in the tutorial examples, or in the <cite>test_program_rpc.py</cite> script.</p>
+<p><code class="docutils literal notranslate"><span class="pre">`python</span>
+<span class="pre">vta.program_fpga(remote,</span> <span class="pre">bitstream=&quot;&lt;tvm</span> <span class="pre">root&gt;/vta/build/hardware/xilinx/vivado/&lt;configuration&gt;/export/vta.bit&quot;)</span>
+<span class="pre">`</span></code></p>
+<p>Instead of downloading a pre-built bitstream from the VTA bitstream repository, TVM will instead use the new bitstream you just generated, which is a VTA design clocked at a higher frequency.
+Do you observe a noticeable performance increase on the ImageNet classification example?</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dev/index.html" class="btn btn-neutral float-right" title="VTA Design and Developer Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="VTA: Deep Learning Accelerator Stack" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2017, tvm developers
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75982049-2', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

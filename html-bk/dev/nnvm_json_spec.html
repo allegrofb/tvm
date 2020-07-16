@@ -1,0 +1,525 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>NNVM Graph JSON Specification &mdash; tvm 0.5.dev documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/tvm_theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="}" href="nnvm_overview.html" />
+    <link rel="prev" title="}" href="runtime.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/tvm-logo-small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vta/index.html">VTA: Deep Learning Accelerator Stack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deploy/index.html">Deploy and Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute/index.html">Contribute to TVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../langref/index.html">Language Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_links.html">Links to C++ and JS API References</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Design and Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="runtime.html">}</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime.html#id20">});</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime.html#id33">};</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime.html#id40">};</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">NNVM Graph JSON Specification</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#getting-started">Getting started</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#nodes">nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#arg-nodes">arg_nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#heads">heads</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#node-row-ptr">node_row_ptr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attrs">attrs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="nnvm_overview.html">}</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hybrid_script.html">Hybrid Frontend Developer Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nnvm_top.html">NNVM Core Tensor Operators</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tvm</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Design and Developer Guide</a> &raquo;</li>
+        
+      <li>NNVM Graph JSON Specification</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/dev/nnvm_json_spec.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nnvm-graph-json-specification">
+<h1>NNVM Graph JSON Specification<a class="headerlink" href="#nnvm-graph-json-specification" title="Permalink to this headline">¶</a></h1>
+<p>NNVM uses JSON for graph serialization. This allows NNVM graph to be
+exported to any backend either natively supported or by third-party
+without any dependency such as protobuf.</p>
+<div class="section" id="getting-started">
+<h2>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
+<p>A serialized NNVM graph in JSON format can be deserialized by any JSON
+parser.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># python</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;model.json&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+  <span class="n">graph</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">['nodes',</span> <span class="pre">'arg_nodes',</span> <span class="pre">'heads',</span> <span class="pre">'node_row_ptr']</span></code></p>
+<p>Actually, the following keys are valid in JSON graph.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 45%" />
+<col style="width: 14%" />
+<col style="width: 41%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Keys</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference external" href="#nodes">nodes</a></p></td>
+<td><p>Yes</p></td>
+<td><p>The nodes in graph.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="#arg_nodes">arg_nodes</a></p></td>
+<td><p>Yes</p></td>
+<td><p>Indices of input nodes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="#heads">heads</a></p></td>
+<td><p>Yes</p></td>
+<td><p>Indices of output nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference external" href="#node_row_ptr">node_row_ptr</a></p></td>
+<td><p>Optional</p></td>
+<td><p>Depth first search row indices.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference external" href="#attr">attr</a></p></td>
+<td><p>Optional</p></td>
+<td><p>Additional information.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="nodes">
+<h2>nodes<a class="headerlink" href="#nodes" title="Permalink to this headline">¶</a></h2>
+<p>Explained by the name itself, <code class="docutils literal notranslate"><span class="pre">nodes</span></code> are either placeholders or
+computational nodes in NNVM graph. The <code class="docutils literal notranslate"><span class="pre">nodes</span></code> are stored in list.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nodes</span> <span class="o">=</span> <span class="n">graph</span><span class="p">[</span><span class="s1">&#39;nodes&#39;</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">nodes</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">53</span>
+<span class="p">{</span><span class="s1">&#39;inputs&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;op&#39;</span><span class="p">:</span> <span class="s1">&#39;null&#39;</span><span class="p">}</span>
+<span class="p">{</span><span class="s1">&#39;inputs&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="s1">&#39;attrs&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;channels&#39;</span><span class="p">:</span> <span class="s1">&#39;64&#39;</span><span class="p">,</span>
+<span class="s1">&#39;padding&#39;</span><span class="p">:</span> <span class="s1">&#39;(1, 1)&#39;</span><span class="p">,</span> <span class="s1">&#39;layout&#39;</span><span class="p">:</span> <span class="s1">&#39;NCHW&#39;</span><span class="p">,</span> <span class="s1">&#39;kernel_size&#39;</span><span class="p">:</span> <span class="s1">&#39;[3, 3]&#39;</span><span class="p">,</span> <span class="s1">&#39;groups&#39;</span><span class="p">:</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span>
+<span class="s1">&#39;strides&#39;</span><span class="p">:</span> <span class="s1">&#39;(1, 1)&#39;</span><span class="p">,</span> <span class="s1">&#39;use_bias&#39;</span><span class="p">:</span> <span class="s1">&#39;True&#39;</span><span class="p">,</span> <span class="s1">&#39;dilation&#39;</span><span class="p">:</span> <span class="s1">&#39;(1, 1)&#39;</span><span class="p">},</span>
+<span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;conv1_1&#39;</span><span class="p">,</span> <span class="s1">&#39;op&#39;</span><span class="p">:</span> <span class="s1">&#39;conv2d&#39;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>The following keys are valid in each node:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 36%" />
+<col style="width: 41%" />
+<col style="width: 23%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Keys</p></th>
+<th class="head"><p>Required</p></th>
+<th class="head"><p>Descript
+ion</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>op</p></td>
+<td><p>Yes</p></td>
+<td><p>The
+operator
+type
+name,
+‘null’
+is used
+if it’s
+a
+placehol
+der/vari
+able/inp
+ut.</p></td>
+</tr>
+<tr class="row-odd"><td><p>name</p></td>
+<td><p>Yes</p></td>
+<td><p>The
+given
+name of
+the
+node,
+defined
+by user
+composin
+g
+the
+network.</p></td>
+</tr>
+<tr class="row-even"><td><p>inputs</p></td>
+<td><p>Yes</p></td>
+<td><p>List of
+Entry
+of the
+input
+nodes,
+can be
+empty
+list [].
+Entry is
+a list
+of
+[nose_i
+d,
+index,
+version]</p></td>
+</tr>
+<tr class="row-odd"><td><p>attrs</p></td>
+<td><p>Optional</p></td>
+<td><p>Extra
+attribut
+es
+for the
+specific
+operator
+.</p></td>
+</tr>
+<tr class="row-even"><td><p>control_deps</p></td>
+<td><p>Optional</p></td>
+<td><p>Control
+dependen
+cies,
+left
+blank
+unless
+specific
+ally
+used.</p></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">attrs</span></code> for operators is a dictionary. Key-value pair examples:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 33%" />
+<col style="width: 19%" />
+<col style="width: 19%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Keys</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Operator</p></th>
+<th class="head"><p>Descript
+ion</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>‘channels’</p></td>
+<td><p>‘64’</p></td>
+<td><p>conv2d</p></td>
+<td><p>Output
+channels
+for 2d
+convolut
+ion.</p></td>
+</tr>
+<tr class="row-odd"><td><p>‘kernel_size’</p></td>
+<td><p>‘[3, 3]’</p></td>
+<td><p>conv2d</p></td>
+<td><p>Convolut
+ion
+filter
+kernel
+size in
+(h, w),
+list and
+tuple
+both
+works.</p></td>
+</tr>
+<tr class="row-even"><td><p>‘use_bias’</p></td>
+<td><p>‘1’</p></td>
+<td><p>conv2d</p></td>
+<td><p>Whether
+use bias
+such
+that
+<cite>y = w
+* x + b</cite>
+.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Tips for parsing key-value pair:</p>
+<ul class="simple">
+<li><p>Both key and value are stored as strings.</p></li>
+<li><p>Boolean values need extra attention, convert to int is recommended since <cite>bool(‘0’) == True</cite> in python.</p></li>
+<li><p>For a full list of operator attributes, please refer to the core operator <a class="reference external" href="top.html">documentation</a>.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="arg-nodes">
+<h2>arg_nodes<a class="headerlink" href="#arg-nodes" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">arg_nodes</span></code> is a list of indices of nodes which is
+placeholder/variable/input to the graph.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="s1">&#39;arg_nodes&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">50</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">nodes[3]</span></code> is not in <code class="docutils literal notranslate"><span class="pre">arg_nodes</span></code> because it’s an
+internal node.</p>
+</div>
+<div class="section" id="heads">
+<h2>heads<a class="headerlink" href="#heads" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">heads</span></code> is a list of entries as the outlet/output of the graph.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">graph</span><span class="p">[</span><span class="s1">&#39;heads&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">52</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>This example indicating that there’s only one output in the graph, with
+index 52.</p>
+</div>
+<div class="section" id="node-row-ptr">
+<h2>node_row_ptr<a class="headerlink" href="#node-row-ptr" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">node_row_ptr</span></code> stores the history of forward path, so you can skip
+constructing the entire graph in inference tasks.</p>
+</div>
+<div class="section" id="attrs">
+<h2>attrs<a class="headerlink" href="#attrs" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">attrs</span></code> can contain version numbers or similar helpful informations.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="nnvm_overview.html" class="btn btn-neutral float-right" title="}" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="runtime.html" class="btn btn-neutral float-left" title="}" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2017, tvm developers
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75982049-2', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

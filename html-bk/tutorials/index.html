@@ -1,0 +1,511 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Tutorials &mdash; tvm 0.5.dev documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/tvm_theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Quick Start Tutorial for Compiling Deep Learning Models" href="nnvm_quick_start.html" />
+    <link rel="prev" title="Docker Images" href="../install/docker.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/tvm-logo-small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nnvm_quick_start.html">Quick Start Tutorial for Compiling Deep Learning Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cross_compilation_and_rpc.html">Cross Compilation and RPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_started.html">Get Started with TVM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tensor-expression-and-schedules">Tensor Expression and Schedules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="language/extern_op.html">External Tensor Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="language/tuple_inputs.html">Compute and Reduce with Tuple Inputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="language/reduction.html">Reduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="language/scan.html">Scan and Recurrent Kernel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="language/intrin_math.html">Intrinsics and Math Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="language/schedule_primitives.html">Schedule Primitives in TVM</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#optimize-tensor-operators">Optimize Tensor Operators</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="optimize/opt_conv_cuda.html">How to optimize convolution on GPU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optimize/opt_gemm.html">How to optimize GEMM on CPU</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#auto-tuning">Auto tuning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="autotvm/tune_simple_template.html">Writing tunable template and Using auto-tuner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autotvm/tune_conv2d_cuda.html">Tuning High Performance Convolution on NVIDIA GPUs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autotvm/tune_nnvm_cuda.html">Auto-tuning a convolutional network for NVIDIA GPU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autotvm/tune_nnvm_arm.html">Auto-tuning a convolutional network for ARM CPU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="autotvm/tune_nnvm_mobile_gpu.html">Auto-tuning a convolutional network for Mobile GPU</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#developer-tutorials">Developer Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dev/low_level_custom_pass.html">Writing a Customized Pass</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#topi-tvm-operator-inventory">TOPI: TVM Operator Inventory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="topi/intro_topi.html">Introduction to TOPI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#compile-deep-learning-models">Compile Deep Learning Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="nnvm/using_external_lib.html">Using External Libraries in NNVM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nnvm/from_coreml.html">Compile CoreML Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nnvm/from_onnx.html">Compile ONNX Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nnvm/get_started.html">Get Started with NNVM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nnvm/from_mxnet.html">Compile MXNet Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nnvm/from_keras.html">Compile Keras Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nnvm/deploy_model_on_rasp.html">Deploy the Pretrained Model on Raspberry Pi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nnvm/deploy_model_on_mali_gpu.html">Deploy the Pretrained Model on ARM Mali GPU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nnvm/from_darknet.html">Compile YOLO-V2 in DarkNet Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nnvm/deploy_ssd.html">Deploy Single Shot Multibox Detector(SSD) model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nnvm/from_tensorflow.html">Compile Tensorflow Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nnvm/from_mxnet_to_webgl.html">Deploy Deep Learning Models to OpenGL and WebGL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vta/index.html">VTA: Deep Learning Accelerator Stack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deploy/index.html">Deploy and Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute/index.html">Contribute to TVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../langref/index.html">Language Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_links.html">Links to C++ and JS API References</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Design and Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nnvm_top.html">NNVM Core Tensor Operators</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tvm</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Tutorials</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorials/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tutorials">
+<span id="sphx-glr-tutorials"></span><h1>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h1>
+<p>This page contains the tutorials about TVM.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="This example shows how to build a neural network with NNVM python frontend and generate runtime..."><div class="figure align-default" id="id1">
+<img alt="Quick Start Tutorial for Compiling Deep Learning Models" src="../_images/sphx_glr_nnvm_quick_start_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="nnvm_quick_start.html#sphx-glr-tutorials-nnvm-quick-start-py"><span class="std std-ref">Quick Start Tutorial for Compiling Deep Learning Models</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This tutorial introduces cross compilation and remote device execution with RPC in TVM."><div class="figure align-default" id="id2">
+<img alt="Cross Compilation and RPC" src="../_images/sphx_glr_cross_compilation_and_rpc_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="cross_compilation_and_rpc.html#sphx-glr-tutorials-cross-compilation-and-rpc-py"><span class="std std-ref">Cross Compilation and RPC</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This is an introduction tutorial to TVM. TVM is a domain specific language for efficient kernel..."><div class="figure align-default" id="id3">
+<img alt="Get Started with TVM" src="../_images/sphx_glr_get_started_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="get_started.html#sphx-glr-tutorials-get-started-py"><span class="std std-ref">Get Started with TVM</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-clear"></div><div class="section" id="tensor-expression-and-schedules">
+<span id="sphx-glr-tutorials-language"></span><h2>Tensor Expression and Schedules<a class="headerlink" href="#tensor-expression-and-schedules" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="While TVM supports transparent code generation, sometimes it is also helpful to incorporate man..."><div class="figure align-default" id="id4">
+<img alt="External Tensor Functions" src="../_images/sphx_glr_extern_op_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="language/extern_op.html#sphx-glr-tutorials-language-extern-op-py"><span class="std std-ref">External Tensor Functions</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Often we want to compute multiple outputs with the same shape within a single loop or perform r..."><div class="figure align-default" id="id5">
+<img alt="Compute and Reduce with Tuple Inputs" src="../_images/sphx_glr_tuple_inputs_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="language/tuple_inputs.html#sphx-glr-tutorials-language-tuple-inputs-py"><span class="std std-ref">Compute and Reduce with Tuple Inputs</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This is an introduction material on how to do reduction in TVM. Associative reduction operators..."><div class="figure align-default" id="id6">
+<img alt="Reduction" src="../_images/sphx_glr_reduction_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="language/reduction.html#sphx-glr-tutorials-language-reduction-py"><span class="std std-ref">Reduction</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This is an introduction material on how to do recurrent computing in TVM. Recurrent computing i..."><div class="figure align-default" id="id7">
+<img alt="Scan and Recurrent Kernel" src="../_images/sphx_glr_scan_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="language/scan.html#sphx-glr-tutorials-language-scan-py"><span class="std std-ref">Scan and Recurrent Kernel</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="While TVM supports basic arithmetic operations. In many cases usually we will need more complic..."><div class="figure align-default" id="id8">
+<img alt="Intrinsics and Math Functions" src="../_images/sphx_glr_intrin_math_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="language/intrin_math.html#sphx-glr-tutorials-language-intrin-math-py"><span class="std std-ref">Intrinsics and Math Functions</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="TVM is a domain specific language for efficient kernel construction."><div class="figure align-default" id="id9">
+<img alt="Schedule Primitives in TVM" src="../_images/sphx_glr_schedule_primitives_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="language/schedule_primitives.html#sphx-glr-tutorials-language-schedule-primitives-py"><span class="std std-ref">Schedule Primitives in TVM</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-clear"></div></div>
+<div class="section" id="optimize-tensor-operators">
+<span id="sphx-glr-tutorials-optimize"></span><h2>Optimize Tensor Operators<a class="headerlink" href="#optimize-tensor-operators" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="In this tutorial, we will demonstrate how to write a high performance convolution implementatio..."><div class="figure align-default" id="id10">
+<img alt="How to optimize convolution on GPU" src="../_images/sphx_glr_opt_conv_cuda_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="optimize/opt_conv_cuda.html#sphx-glr-tutorials-optimize-opt-conv-cuda-py"><span class="std std-ref">How to optimize convolution on GPU</span></a></span><a class="headerlink" href="#id10" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="(TL;DR) TVM provides abstract interfaces which allows users to depict an algorithm and the algo..."><div class="figure align-default" id="id11">
+<img alt="How to optimize GEMM on CPU" src="../_images/sphx_glr_opt_gemm_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="optimize/opt_gemm.html#sphx-glr-tutorials-optimize-opt-gemm-py"><span class="std std-ref">How to optimize GEMM on CPU</span></a></span><a class="headerlink" href="#id11" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-clear"></div></div>
+<div class="section" id="auto-tuning">
+<span id="sphx-glr-tutorials-autotvm"></span><h2>Auto tuning<a class="headerlink" href="#auto-tuning" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="This is an introduction tutorial to the auto-tuning module in tvm."><div class="figure align-default" id="id12">
+<img alt="Writing tunable template and Using auto-tuner" src="../_images/sphx_glr_tune_simple_template_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="autotvm/tune_simple_template.html#sphx-glr-tutorials-autotvm-tune-simple-template-py"><span class="std std-ref">Writing tunable template and Using auto-tuner</span></a></span><a class="headerlink" href="#id12" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This is an advanced tutorial for writing high performance tunable template for  NVIDIA GPU. By ..."><div class="figure align-default" id="id13">
+<img alt="Tuning High Performance Convolution on NVIDIA GPUs" src="../_images/sphx_glr_tune_conv2d_cuda_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="autotvm/tune_conv2d_cuda.html#sphx-glr-tutorials-autotvm-tune-conv2d-cuda-py"><span class="std std-ref">Tuning High Performance Convolution on NVIDIA GPUs</span></a></span><a class="headerlink" href="#id13" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Auto-tuning for specific devices and workloads is critical for getting the best performance. Th..."><div class="figure align-default" id="id14">
+<img alt="Auto-tuning a convolutional network for NVIDIA GPU" src="../_images/sphx_glr_tune_nnvm_cuda_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="autotvm/tune_nnvm_cuda.html#sphx-glr-tutorials-autotvm-tune-nnvm-cuda-py"><span class="std std-ref">Auto-tuning a convolutional network for NVIDIA GPU</span></a></span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Auto-tuning for a specific ARM device is critical for getting the best performance. This is a t..."><div class="figure align-default" id="id15">
+<img alt="Auto-tuning a convolutional network for ARM CPU" src="../_images/sphx_glr_tune_nnvm_arm_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="autotvm/tune_nnvm_arm.html#sphx-glr-tutorials-autotvm-tune-nnvm-arm-py"><span class="std std-ref">Auto-tuning a convolutional network for ARM CPU</span></a></span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Auto-tuning for a specific device is critical for getting the best performance. This is a tutor..."><div class="figure align-default" id="id16">
+<img alt="Auto-tuning a convolutional network for Mobile GPU" src="../_images/sphx_glr_tune_nnvm_mobile_gpu_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="autotvm/tune_nnvm_mobile_gpu.html#sphx-glr-tutorials-autotvm-tune-nnvm-mobile-gpu-py"><span class="std std-ref">Auto-tuning a convolutional network for Mobile GPU</span></a></span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-clear"></div></div>
+<div class="section" id="developer-tutorials">
+<span id="sphx-glr-tutorials-dev"></span><h2>Developer Tutorials<a class="headerlink" href="#developer-tutorials" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="TVM is a framework that abstracts away the heterogenity of machine learning accelerators. Somet..."><div class="figure align-default" id="id17">
+<img alt="Writing a Customized Pass" src="../_images/sphx_glr_low_level_custom_pass_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="dev/low_level_custom_pass.html#sphx-glr-tutorials-dev-low-level-custom-pass-py"><span class="std std-ref">Writing a Customized Pass</span></a></span><a class="headerlink" href="#id17" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-clear"></div></div>
+<div class="section" id="topi-tvm-operator-inventory">
+<span id="sphx-glr-tutorials-topi"></span><h2>TOPI: TVM Operator Inventory<a class="headerlink" href="#topi-tvm-operator-inventory" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="This is an introductory tutorial to TVM Operator Inventory (TOPI). TOPI provides numpy-style ge..."><div class="figure align-default" id="id18">
+<img alt="Introduction to TOPI" src="../_images/sphx_glr_intro_topi_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="topi/intro_topi.html#sphx-glr-tutorials-topi-intro-topi-py"><span class="std std-ref">Introduction to TOPI</span></a></span><a class="headerlink" href="#id18" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-clear"></div></div>
+<div class="section" id="compile-deep-learning-models">
+<span id="tutorial-nnvm"></span><span id="sphx-glr-tutorials-nnvm"></span><h2>Compile Deep Learning Models<a class="headerlink" href="#compile-deep-learning-models" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="This is a short tutorial on how to use external libraries such as cuDNN, or cuBLAS with NNVM."><div class="figure align-default" id="id19">
+<img alt="Using External Libraries in NNVM" src="../_images/sphx_glr_using_external_lib_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="nnvm/using_external_lib.html#sphx-glr-tutorials-nnvm-using-external-lib-py"><span class="std std-ref">Using External Libraries in NNVM</span></a></span><a class="headerlink" href="#id19" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This article is an introductory tutorial to deploy CoreML models with NNVM."><div class="figure align-default" id="id20">
+<img alt="Compile CoreML Models" src="../_images/sphx_glr_from_coreml_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="nnvm/from_coreml.html#sphx-glr-tutorials-nnvm-from-coreml-py"><span class="std std-ref">Compile CoreML Models</span></a></span><a class="headerlink" href="#id20" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This article is an introductory tutorial to deploy ONNX models with NNVM."><div class="figure align-default" id="id21">
+<img alt="Compile ONNX Models" src="../_images/sphx_glr_from_onnx_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="nnvm/from_onnx.html#sphx-glr-tutorials-nnvm-from-onnx-py"><span class="std std-ref">Compile ONNX Models</span></a></span><a class="headerlink" href="#id21" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This article is an introductory tutorial to workflow in NNVM."><div class="figure align-default" id="id22">
+<img alt="Get Started with NNVM" src="../_images/sphx_glr_get_started_thumb1.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="nnvm/get_started.html#sphx-glr-tutorials-nnvm-get-started-py"><span class="std std-ref">Get Started with NNVM</span></a></span><a class="headerlink" href="#id22" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This article is an introductory tutorial to deploy mxnet models with NNVM."><div class="figure align-default" id="id23">
+<img alt="Compile MXNet Models" src="../_images/sphx_glr_from_mxnet_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="nnvm/from_mxnet.html#sphx-glr-tutorials-nnvm-from-mxnet-py"><span class="std std-ref">Compile MXNet Models</span></a></span><a class="headerlink" href="#id23" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This article is an introductory tutorial to deploy keras models with NNVM."><div class="figure align-default" id="id24">
+<img alt="Compile Keras Models" src="../_images/sphx_glr_from_keras_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="nnvm/from_keras.html#sphx-glr-tutorials-nnvm-from-keras-py"><span class="std std-ref">Compile Keras Models</span></a></span><a class="headerlink" href="#id24" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This is an example of using NNVM to compile a ResNet model and deploy it on raspberry pi."><div class="figure align-default" id="id25">
+<img alt="Deploy the Pretrained Model on Raspberry Pi" src="../_images/sphx_glr_deploy_model_on_rasp_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="nnvm/deploy_model_on_rasp.html#sphx-glr-tutorials-nnvm-deploy-model-on-rasp-py"><span class="std std-ref">Deploy the Pretrained Model on Raspberry Pi</span></a></span><a class="headerlink" href="#id25" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This is an example of using NNVM to compile a ResNet model and deploy it on Firefly-RK3399 with..."><div class="figure align-default" id="id26">
+<img alt="Deploy the Pretrained Model on ARM Mali GPU" src="../_images/sphx_glr_deploy_model_on_mali_gpu_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="nnvm/deploy_model_on_mali_gpu.html#sphx-glr-tutorials-nnvm-deploy-model-on-mali-gpu-py"><span class="std std-ref">Deploy the Pretrained Model on ARM Mali GPU</span></a></span><a class="headerlink" href="#id26" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This article is an introductory tutorial to deploy darknet models with NNVM. All the required m..."><div class="figure align-default" id="id27">
+<img alt="Compile YOLO-V2 in DarkNet Models" src="../_images/sphx_glr_from_darknet_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="nnvm/from_darknet.html#sphx-glr-tutorials-nnvm-from-darknet-py"><span class="std std-ref">Compile YOLO-V2 in DarkNet Models</span></a></span><a class="headerlink" href="#id27" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This article is an introductory tutorial to deploy SSD models with TVM. We will use mxnet pretr..."><div class="figure align-default" id="id28">
+<img alt="Deploy Single Shot Multibox Detector(SSD) model" src="../_images/sphx_glr_deploy_ssd_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="nnvm/deploy_ssd.html#sphx-glr-tutorials-nnvm-deploy-ssd-py"><span class="std std-ref">Deploy Single Shot Multibox Detector(SSD) model</span></a></span><a class="headerlink" href="#id28" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="For us to begin with, tensorflow python module is required to be installed."><div class="figure align-default" id="id29">
+<img alt="Compile Tensorflow Models" src="../_images/sphx_glr_from_tensorflow_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="nnvm/from_tensorflow.html#sphx-glr-tutorials-nnvm-from-tensorflow-py"><span class="std std-ref">Compile Tensorflow Models</span></a></span><a class="headerlink" href="#id29" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="This example shows how to build a neural network with NNVM python frontend and generate runtime..."><div class="figure align-default" id="id30">
+<img alt="Deploy Deep Learning Models to OpenGL and WebGL" src="../_images/sphx_glr_from_mxnet_to_webgl_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="nnvm/from_mxnet_to_webgl.html#sphx-glr-tutorials-nnvm-from-mxnet-to-webgl-py"><span class="std std-ref">Deploy Deep Learning Models to OpenGL and WebGL</span></a></span><a class="headerlink" href="#id30" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-clear"></div><div class="sphx-glr-footer class sphx-glr-footer-gallery docutils container">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/3659f2cbdc70b1b2ab56a34c34ad649c/tutorials_python.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">tutorials_python.zip</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/f6fe90bc260670297f5023227b4d79b4/tutorials_jupyter.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">tutorials_jupyter.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="nnvm_quick_start.html" class="btn btn-neutral float-right" title="Quick Start Tutorial for Compiling Deep Learning Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../install/docker.html" class="btn btn-neutral float-left" title="Docker Images" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2017, tvm developers
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75982049-2', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

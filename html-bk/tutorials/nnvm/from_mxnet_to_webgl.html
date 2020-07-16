@@ -1,0 +1,794 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Deploy Deep Learning Models to OpenGL and WebGL &mdash; tvm 0.5.dev documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/tvm_theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="VTA: Deep Learning Accelerator Stack" href="../../vta/index.html" />
+    <link rel="prev" title="Compile Tensorflow Models" href="from_tensorflow.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/tvm-logo-small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../nnvm_quick_start.html">Quick Start Tutorial for Compiling Deep Learning Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cross_compilation_and_rpc.html">Cross Compilation and RPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../get_started.html">Get Started with TVM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#tensor-expression-and-schedules">Tensor Expression and Schedules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#optimize-tensor-operators">Optimize Tensor Operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#auto-tuning">Auto tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#developer-tutorials">Developer Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#topi-tvm-operator-inventory">TOPI: TVM Operator Inventory</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#compile-deep-learning-models">Compile Deep Learning Models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="using_external_lib.html">Using External Libraries in NNVM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="from_coreml.html">Compile CoreML Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="from_onnx.html">Compile ONNX Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="get_started.html">Get Started with NNVM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="from_mxnet.html">Compile MXNet Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="from_keras.html">Compile Keras Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deploy_model_on_rasp.html">Deploy the Pretrained Model on Raspberry Pi</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deploy_model_on_mali_gpu.html">Deploy the Pretrained Model on ARM Mali GPU</a></li>
+<li class="toctree-l3"><a class="reference internal" href="from_darknet.html">Compile YOLO-V2 in DarkNet Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deploy_ssd.html">Deploy Single Shot Multibox Detector(SSD) model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="from_tensorflow.html">Compile Tensorflow Models</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Deploy Deep Learning Models to OpenGL and WebGL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#download-a-pre-trained-resnet18-model">Download a Pre-trained Resnet18 Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#download-input-image">Download Input Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#compile-the-model">Compile the Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demo-1-deploy-locally">Demo 1: Deploy Locally</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demo-2-deploy-the-model-to-webgl-remotely-with-rpc">Demo 2: Deploy the Model to WebGL Remotely with RPC</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demo-3-deploy-the-model-to-webgl-systemlib">Demo 3: Deploy the Model to WebGL SystemLib</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../vta/index.html">VTA: Deep Learning Accelerator Stack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy/index.html">Deploy and Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribute to TVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../langref/index.html">Language Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_links.html">Links to C++ and JS API References</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Design and Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nnvm_top.html">NNVM Core Tensor Operators</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">Index</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tvm</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Tutorials</a> &raquo;</li>
+        
+      <li>Deploy Deep Learning Models to OpenGL and WebGL</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/tutorials/nnvm/from_mxnet_to_webgl.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-nnvm-from-mxnet-to-webgl-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="deploy-deep-learning-models-to-opengl-and-webgl">
+<span id="sphx-glr-tutorials-nnvm-from-mxnet-to-webgl-py"></span><h1>Deploy Deep Learning Models to OpenGL and WebGL<a class="headerlink" href="#deploy-deep-learning-models-to-opengl-and-webgl" title="Permalink to this headline">¶</a></h1>
+<p><strong>Author</strong>: <a class="reference external" href="https://github.com/phisiart">Zhixun Tan</a></p>
+<p>This example shows how to build a neural network with NNVM python frontend and
+generate runtime library for WebGL running in a browser with TVM.
+To run this notebook, you need to install tvm and nnvm.
+Notice that you need to build tvm with OpenGL.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>In this tutorial, we will download a pre-trained resnet18 model from Gluon
+Model Zoo, and run image classification in 3 different ways:</p>
+<ul class="simple">
+<li><p>Run locally:
+We will compile the model into a TVM library with OpenGL device code and
+directly run it locally.</p></li>
+<li><p>Run in a browser through RPC:
+We will compile the model into a JavaScript TVM library with WebGL device
+code, and upload it to an RPC server that is hosting JavaScript TVM runtime
+to run it.</p></li>
+<li><p>Export a JavaScript library and run in a browser:
+We will compile the model into a JavaScript TVM library with WebGL device
+code, combine it with JavaScript TVM runtime, and pack everything together.
+Then we will run it directly in a browser.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tvm</span>
+<span class="kn">import</span> <span class="nn">nnvm.compiler</span>
+<span class="kn">import</span> <span class="nn">nnvm.testing</span>
+
+<span class="c1"># This tutorial must be run with OpenGL backend enabled in TVM.</span>
+<span class="c1"># The NNVM CI does not enable OpenGL yet. But the user can run this script.</span>
+<span class="n">opengl_enabled</span> <span class="o">=</span> <a href="../../api/python/module.html#tvm.module.enabled" title="tvm.module.enabled" class="sphx-glr-backref-module-tvm-module sphx-glr-backref-type-py-function"><span class="n">tvm</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">enabled</span></a><span class="p">(</span><span class="s2">&quot;opengl&quot;</span><span class="p">)</span>
+
+<span class="c1"># To run the local demo, set this flag to True.</span>
+<span class="n">run_deploy_local</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># To run the RPC demo, set this flag to True.</span>
+<span class="n">run_deploy_rpc</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># To run the WebGL deploy demo, set this flag to True.</span>
+<span class="n">run_deploy_web</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="download-a-pre-trained-resnet18-model">
+<h2>Download a Pre-trained Resnet18 Model<a class="headerlink" href="#download-a-pre-trained-resnet18-model" title="Permalink to this headline">¶</a></h2>
+<p>Here we define 2 functions:</p>
+<ul class="simple">
+<li><p>A function that downloads a pre-trained resnet18 model from Gluon Model Zoo.
+The model that we download is in MXNet format, we then transform it into an
+NNVM computation graph.</p></li>
+<li><p>A function that downloads a file that contains the name of all the image
+classes in this model.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">load_mxnet_resnet</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Load a pretrained resnet model from MXNet and transform that into NNVM</span>
+<span class="sd">       format.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    net : nnvm.Symbol</span>
+<span class="sd">        The loaded resnet computation graph.</span>
+
+<span class="sd">    params : dict[str -&gt; NDArray]</span>
+<span class="sd">        The pretrained model parameters.</span>
+
+<span class="sd">    data_shape: tuple</span>
+<span class="sd">        The shape of the input tensor (an image).</span>
+
+<span class="sd">    out_shape: tuple</span>
+<span class="sd">        The shape of the output tensor (probability of all classes).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading pretrained resnet model from MXNet...&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Download a pre-trained mxnet resnet18_v1 model.</span>
+    <span class="kn">from</span> <span class="nn">mxnet.gluon.model_zoo.vision</span> <span class="kn">import</span> <span class="n">get_model</span>
+    <span class="n">block</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">(</span><span class="s1">&#39;resnet18_v1&#39;</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Transform the mxnet model into NNVM.</span>
+    <span class="c1"># We want a probability so add a softmax operator.</span>
+    <span class="n">sym</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">frontend</span><span class="o">.</span><span class="n">from_mxnet</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+    <span class="n">sym</span> <span class="o">=</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">sym</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Model loaded!&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sym</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">download_synset</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Download a dictionary from class index to name.</span>
+<span class="sd">    This lets us know what our prediction actually is.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    synset : dict[int -&gt; str]</span>
+<span class="sd">        The loaded synset.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Downloading synset...&quot;</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">mxnet</span> <span class="kn">import</span> <span class="n">gluon</span>
+
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://gist.githubusercontent.com/zhreshold/&quot;</span> <span class="o">+</span> \
+          <span class="s2">&quot;4d0b62f3d01426887599d4f7ede23ee5/raw/&quot;</span> <span class="o">+</span> \
+          <span class="s2">&quot;596b27d23537e5a1b5751d2b0481ef172f58b539/&quot;</span> <span class="o">+</span> \
+          <span class="s2">&quot;imagenet1000_clsid_to_human.txt&quot;</span>
+    <span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;synset.txt&quot;</span>
+
+    <span class="n">gluon</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">synset</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Synset downloaded!&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">synset</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="download-input-image">
+<h2>Download Input Image<a class="headerlink" href="#download-input-image" title="Permalink to this headline">¶</a></h2>
+<p>Here we define 2 functions that prepare an image that we want to perform
+classification on.</p>
+<ul class="simple">
+<li><p>A function that downloads a cat image.</p></li>
+<li><p>A function that performs preprocessing to an image so that it fits the
+format required by the resnet18 model.</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">download_image</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Download a cat image and resize it to 224x224 which fits resnet.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    image : PIL.Image.Image</span>
+<span class="sd">        The loaded and resized image.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Downloading cat image...&quot;</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+    <span class="kn">from</span> <span class="nn">mxnet</span> <span class="kn">import</span> <span class="n">gluon</span>
+    <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/dmlc/mxnet.js/blob/master/data/cat.png?raw=true&quot;</span>
+    <span class="n">img_name</span> <span class="o">=</span> <span class="s2">&quot;cat.jpg&quot;</span>
+
+    <span class="n">gluon</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">img_name</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_name</span><span class="p">)</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Cat image downloaded!&quot;</span><span class="p">)</span>
+
+    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="matplotlib.pyplot.imshow" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span></a><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">image</span>
+
+<span class="k">def</span> <span class="nf">transform_image</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Perform necessary preprocessing to input image.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    image : numpy.ndarray</span>
+<span class="sd">        The raw image.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    image : numpy.ndarray</span>
+<span class="sd">        The preprocessed image.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">image</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="o">-</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">123.</span><span class="p">,</span> <span class="mf">117.</span><span class="p">,</span> <span class="mf">104.</span><span class="p">])</span>
+    <span class="n">image</span> <span class="o">/=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">58.395</span><span class="p">,</span> <span class="mf">57.12</span><span class="p">,</span> <span class="mf">57.375</span><span class="p">])</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/arrays.html#numpy.newaxis" title="numpy.newaxis" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-data"><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span></a><span class="p">,</span> <span class="p">:]</span>
+    <span class="k">return</span> <span class="n">image</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="compile-the-model">
+<h2>Compile the Model<a class="headerlink" href="#compile-the-model" title="Permalink to this headline">¶</a></h2>
+<p>Here we define a function that invokes the NNVM compiler.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">compile_net</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="n">target_host</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">data_shape</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compiles an NNVM computation graph.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    net : nnvm.Graph</span>
+<span class="sd">        The NNVM computation graph.</span>
+
+<span class="sd">    target_host : str</span>
+<span class="sd">        The target to compile the host portion of the library.</span>
+
+<span class="sd">    target : str</span>
+<span class="sd">        The target to compile the device portion of the library.</span>
+
+<span class="sd">    data_shape : tuple</span>
+<span class="sd">        The shape of the input data (image).</span>
+
+<span class="sd">    params : dict[str -&gt; NDArray]</span>
+<span class="sd">        Model parameters.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    graph : Graph</span>
+<span class="sd">        The final execution graph.</span>
+
+<span class="sd">    libmod : tvm.Module</span>
+<span class="sd">        The module that comes with the execution graph</span>
+
+<span class="sd">    params : dict[str -&gt; NDArray]</span>
+<span class="sd">        The updated parameters of graph if params is passed.</span>
+<span class="sd">        This can be different from the params passed in.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Compiling the neural network...&quot;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">build_config</span><span class="p">(</span><span class="n">opt_level</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">deploy_graph</span><span class="p">,</span> <span class="n">lib</span><span class="p">,</span> <span class="n">deploy_params</span> <span class="o">=</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">build</span><span class="p">(</span>
+            <span class="n">net</span><span class="p">,</span>
+            <span class="n">target_host</span><span class="o">=</span><span class="n">target_host</span><span class="p">,</span>
+            <span class="n">target</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data_shape</span><span class="p">},</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Complilation completed!&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">deploy_graph</span><span class="p">,</span> <span class="n">lib</span><span class="p">,</span> <span class="n">deploy_params</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="demo-1-deploy-locally">
+<h2>Demo 1: Deploy Locally<a class="headerlink" href="#demo-1-deploy-locally" title="Permalink to this headline">¶</a></h2>
+<p>In this demo, we will compile the model targetting the local machine.</p>
+<p>Then we will demonstrate how to save the compiled model as a shared library
+and load it back.</p>
+<p>Finally, we will run the model.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">deploy_local</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Runs the demo that deploys a model locally.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Load resnet model.</span>
+    <span class="n">net</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">data_shape</span><span class="p">,</span> <span class="n">out_shape</span> <span class="o">=</span> <span class="n">load_mxnet_resnet</span><span class="p">()</span>
+
+    <span class="c1"># Compile the model.</span>
+    <span class="c1"># Note that we specify the the host target as &quot;llvm&quot;.</span>
+    <span class="n">deploy_graph</span><span class="p">,</span> <span class="n">lib</span><span class="p">,</span> <span class="n">deploy_params</span> <span class="o">=</span> <span class="n">compile_net</span><span class="p">(</span>
+        <span class="n">net</span><span class="p">,</span>
+        <span class="n">target_host</span><span class="o">=</span><span class="s2">&quot;llvm&quot;</span><span class="p">,</span>
+        <span class="n">target</span><span class="o">=</span><span class="s2">&quot;opengl&quot;</span><span class="p">,</span>
+        <span class="n">data_shape</span><span class="o">=</span><span class="n">data_shape</span><span class="p">,</span>
+        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="c1"># Save the compiled module.</span>
+    <span class="c1"># Note we need to save all three files returned from the NNVM compiler.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Saving the compiled module...&quot;</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">tvm.contrib</span> <span class="kn">import</span> <span class="n">util</span>
+    <span class="n">temp</span> <span class="o">=</span> <a href="../../api/python/contrib.html#tvm.contrib.util.tempdir" title="tvm.contrib.util.tempdir" class="sphx-glr-backref-module-tvm-contrib-util sphx-glr-backref-type-py-function"><span class="n">util</span><span class="o">.</span><span class="n">tempdir</span></a><span class="p">()</span>
+
+    <span class="n">path_lib</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s2">&quot;deploy_lib.so&quot;</span><span class="p">)</span>
+    <span class="n">path_graph_json</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s2">&quot;deploy_graph.json&quot;</span><span class="p">)</span>
+    <span class="n">path_params</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s2">&quot;deploy_param.params&quot;</span><span class="p">)</span>
+
+    <span class="n">lib</span><span class="o">.</span><span class="n">export_library</span><span class="p">(</span><span class="n">path_lib</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path_graph_json</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+        <span class="n">fo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">deploy_graph</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path_params</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+        <span class="n">fo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">nnvm</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">save_param_dict</span><span class="p">(</span><span class="n">deploy_params</span><span class="p">))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Saved files:&quot;</span><span class="p">,</span> <span class="n">temp</span><span class="o">.</span><span class="n">listdir</span><span class="p">())</span>
+
+    <span class="c1"># Load the module back.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading the module back...&quot;</span><span class="p">)</span>
+    <span class="n">loaded_lib</span> <span class="o">=</span> <a href="../../api/python/module.html#tvm.module.load" title="tvm.module.load" class="sphx-glr-backref-module-tvm-module sphx-glr-backref-type-py-function"><span class="n">tvm</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="n">path_lib</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path_graph_json</span><span class="p">)</span> <span class="k">as</span> <span class="n">fi</span><span class="p">:</span>
+        <span class="n">loaded_graph_json</span> <span class="o">=</span> <span class="n">fi</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path_params</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fi</span><span class="p">:</span>
+        <span class="n">loaded_params</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">fi</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Module loaded!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Run the model! We will perform prediction on an image.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running the graph...&quot;</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">tvm.contrib</span> <span class="kn">import</span> <span class="n">graph_runtime</span>
+
+    <span class="n">module</span> <span class="o">=</span> <a href="../../api/python/graph_runtime.html#tvm.contrib.graph_runtime.create" title="tvm.contrib.graph_runtime.create" class="sphx-glr-backref-module-tvm-contrib-graph_runtime sphx-glr-backref-type-py-function"><span class="n">graph_runtime</span><span class="o">.</span><span class="n">create</span></a><span class="p">(</span><span class="n">loaded_graph_json</span><span class="p">,</span> <span class="n">loaded_lib</span><span class="p">,</span> <span class="n">tvm</span><span class="o">.</span><span class="n">opengl</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">module</span><span class="o">.</span><span class="n">load_params</span><span class="p">(</span><span class="n">loaded_params</span><span class="p">)</span>
+
+    <span class="n">image</span> <span class="o">=</span> <span class="n">transform_image</span><span class="p">(</span><span class="n">download_image</span><span class="p">())</span>
+    <span class="n">input_data</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">),</span> <span class="n">ctx</span><span class="o">=</span><span class="n">tvm</span><span class="o">.</span><span class="n">opengl</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+    <span class="n">module</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">input_data</span><span class="p">)</span>
+    <span class="n">module</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+    <span class="c1"># Retrieve the output.</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tvm</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">out_shape</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">tvm</span><span class="o">.</span><span class="n">opengl</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+    <span class="n">top1</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.argmax" title="numpy.argmax" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">argmax</span></a><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">())</span>
+    <span class="n">synset</span> <span class="o">=</span> <span class="n">download_synset</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;TVM prediction top-1:&#39;</span><span class="p">,</span> <span class="n">top1</span><span class="p">,</span> <span class="n">synset</span><span class="p">[</span><span class="n">top1</span><span class="p">])</span>
+
+<span class="k">if</span> <span class="n">run_deploy_local</span> <span class="ow">and</span> <span class="n">opengl_enabled</span><span class="p">:</span>
+    <span class="n">deploy_local</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="demo-2-deploy-the-model-to-webgl-remotely-with-rpc">
+<h2>Demo 2: Deploy the Model to WebGL Remotely with RPC<a class="headerlink" href="#demo-2-deploy-the-model-to-webgl-remotely-with-rpc" title="Permalink to this headline">¶</a></h2>
+<p>Following the steps above, we can also compile the model for WebGL.
+TVM provides rpc module to help with remote deploying.</p>
+<p>When we deploy a model locally to OpenGL, the model consists of two parts:
+the host LLVM part and the device GLSL part. Now that we want to deploy to
+WebGL, we need to leverage Emscripten to transform LLVM into JavaScript. In
+order to do that, we will need to specify the host target as
+‘llvm -target=asmjs-unknown-emscripten -system-lib`. Then call Emscripten to
+compile the LLVM binary output into a JavaScript file.</p>
+<p>First, we need to manually start an RPC server. Please follow the instructions
+in <cite>tvm/web/README.md</cite>. After following the steps, you should have a web page
+opened in a browser, and a Python script running a proxy.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">deploy_rpc</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Runs the demo that deploys a model remotely through RPC.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">tvm</span> <span class="kn">import</span> <span class="n">rpc</span>
+    <span class="kn">from</span> <span class="nn">tvm.contrib</span> <span class="kn">import</span> <span class="n">util</span><span class="p">,</span> <span class="n">emscripten</span>
+
+    <span class="c1"># As usual, load the resnet18 model.</span>
+    <span class="n">net</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">data_shape</span><span class="p">,</span> <span class="n">out_shape</span> <span class="o">=</span> <span class="n">load_mxnet_resnet</span><span class="p">()</span>
+
+    <span class="c1"># Compile the model.</span>
+    <span class="c1"># Note that this time we are changing the target.</span>
+    <span class="c1"># This is because we want to translate the host library into JavaScript</span>
+    <span class="c1"># through Emscripten.</span>
+    <span class="n">graph</span><span class="p">,</span> <span class="n">lib</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">compile_net</span><span class="p">(</span>
+        <span class="n">net</span><span class="p">,</span>
+        <span class="n">target_host</span><span class="o">=</span><span class="s2">&quot;llvm -target=asmjs-unknown-emscripten -system-lib&quot;</span><span class="p">,</span>
+        <span class="n">target</span><span class="o">=</span><span class="s2">&quot;opengl&quot;</span><span class="p">,</span>
+        <span class="n">data_shape</span><span class="o">=</span><span class="n">data_shape</span><span class="p">,</span>
+        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="c1"># Now we want to deploy our model through RPC.</span>
+    <span class="c1"># First we ned to prepare the module files locally.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Saving the compiled module...&quot;</span><span class="p">)</span>
+
+    <span class="n">temp</span> <span class="o">=</span> <a href="../../api/python/contrib.html#tvm.contrib.util.tempdir" title="tvm.contrib.util.tempdir" class="sphx-glr-backref-module-tvm-contrib-util sphx-glr-backref-type-py-function"><span class="n">util</span><span class="o">.</span><span class="n">tempdir</span></a><span class="p">()</span>
+    <span class="n">path_obj</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s2">&quot;deploy.bc&quot;</span><span class="p">)</span> <span class="c1"># host LLVM part</span>
+    <span class="n">path_dso</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s2">&quot;deploy.js&quot;</span><span class="p">)</span> <span class="c1"># host JavaScript part</span>
+    <span class="n">path_gl</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s2">&quot;deploy.gl&quot;</span><span class="p">)</span> <span class="c1"># device GLSL part</span>
+    <span class="n">path_json</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s2">&quot;deploy.tvm_meta.json&quot;</span><span class="p">)</span>
+
+    <span class="n">lib</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path_obj</span><span class="p">)</span>
+    <a href="../../api/python/contrib.html#tvm.contrib.emscripten.create_js" title="tvm.contrib.emscripten.create_js" class="sphx-glr-backref-module-tvm-contrib-emscripten sphx-glr-backref-type-py-function"><span class="n">emscripten</span><span class="o">.</span><span class="n">create_js</span></a><span class="p">(</span><span class="n">path_dso</span><span class="p">,</span> <span class="n">path_obj</span><span class="p">,</span> <span class="n">side_module</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">lib</span><span class="o">.</span><span class="n">imported_modules</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path_gl</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Saved files:&quot;</span><span class="p">,</span> <span class="n">temp</span><span class="o">.</span><span class="n">listdir</span><span class="p">())</span>
+
+    <span class="c1"># Connect to the RPC server.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Connecting to RPC server...&quot;</span><span class="p">)</span>
+    <span class="n">proxy_host</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span>
+    <span class="n">proxy_port</span> <span class="o">=</span> <span class="mi">9090</span>
+    <span class="n">remote</span> <span class="o">=</span> <a href="../../api/python/rpc.html#tvm.rpc.connect" title="tvm.rpc.connect" class="sphx-glr-backref-module-tvm-rpc sphx-glr-backref-type-py-function"><span class="n">rpc</span><span class="o">.</span><span class="n">connect</span></a><span class="p">(</span><span class="n">proxy_host</span><span class="p">,</span> <span class="n">proxy_port</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s2">&quot;js&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Connected to RPC server!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Upload module to RPC server.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Uploading module to RPC server...&quot;</span><span class="p">)</span>
+    <span class="n">remote</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">path_dso</span><span class="p">,</span> <span class="s2">&quot;deploy.dso&quot;</span><span class="p">)</span>
+    <span class="n">remote</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">path_gl</span><span class="p">)</span>
+    <span class="n">remote</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">path_json</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Upload completed!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Load remote library.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Loading remote library...&quot;</span><span class="p">)</span>
+    <span class="n">fdev</span> <span class="o">=</span> <span class="n">remote</span><span class="o">.</span><span class="n">load_module</span><span class="p">(</span><span class="s2">&quot;deploy.gl&quot;</span><span class="p">)</span>
+    <span class="n">fhost</span> <span class="o">=</span> <span class="n">remote</span><span class="o">.</span><span class="n">load_module</span><span class="p">(</span><span class="s2">&quot;deploy.dso&quot;</span><span class="p">)</span>
+    <span class="n">fhost</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">fdev</span><span class="p">)</span>
+    <span class="n">rlib</span> <span class="o">=</span> <span class="n">fhost</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Remote library loaded!&quot;</span><span class="p">)</span>
+
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">remote</span><span class="o">.</span><span class="n">opengl</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Upload the parameters.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Uploading parameters...&quot;</span><span class="p">)</span>
+    <span class="n">rparams</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">tvm</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Parameters uploaded!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Create the remote runtime module.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Running remote module...&quot;</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">tvm.contrib</span> <span class="kn">import</span> <span class="n">graph_runtime</span>
+    <span class="n">module</span> <span class="o">=</span> <a href="../../api/python/graph_runtime.html#tvm.contrib.graph_runtime.create" title="tvm.contrib.graph_runtime.create" class="sphx-glr-backref-module-tvm-contrib-graph_runtime sphx-glr-backref-type-py-function"><span class="n">graph_runtime</span><span class="o">.</span><span class="n">create</span></a><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">rlib</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+
+    <span class="c1"># Set parameter.</span>
+    <span class="n">module</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="o">**</span><span class="n">rparams</span><span class="p">)</span>
+
+    <span class="c1"># Set input data.</span>
+    <span class="n">input_data</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.random.html#numpy.random.uniform" title="numpy.random.uniform" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span></a><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">data_shape</span><span class="p">)</span>
+    <span class="n">module</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">tvm</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">input_data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)))</span>
+
+    <span class="c1"># Run.</span>
+    <span class="n">module</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Remote module execution completed!&quot;</span><span class="p">)</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">tvm</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">out_shape</span><span class="p">,</span> <span class="n">ctx</span><span class="o">=</span><span class="n">ctx</span><span class="p">))</span>
+    <span class="c1"># Print first 10 elements of output.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+
+<span class="k">if</span> <span class="n">run_deploy_rpc</span> <span class="ow">and</span> <span class="n">opengl_enabled</span><span class="p">:</span>
+    <span class="n">deploy_rpc</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="demo-3-deploy-the-model-to-webgl-systemlib">
+<h2>Demo 3: Deploy the Model to WebGL SystemLib<a class="headerlink" href="#demo-3-deploy-the-model-to-webgl-systemlib" title="Permalink to this headline">¶</a></h2>
+<p>This time we are not using RPC. Instead, we will compile the model and link it
+with the entire tvm runtime into a single giant JavaScript file. Then we will
+run the model using JavaScript.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">deploy_web</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Runs the demo that deploys to web.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">base64</span>
+    <span class="kn">import</span> <span class="nn">json</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">import</span> <span class="nn">shutil</span>
+    <span class="kn">import</span> <span class="nn">SimpleHTTPServer</span><span class="o">,</span> <span class="nn">SocketServer</span>
+
+    <span class="kn">from</span> <span class="nn">tvm.contrib</span> <span class="kn">import</span> <span class="n">emscripten</span>
+
+    <span class="n">curr_path</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.dirname" title="os.path.dirname" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/os.path.html#os.path.abspath" title="os.path.abspath" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/os.path.html#os.path.expanduser" title="os.path.expanduser" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/os.html#os.getcwd" title="os.getcwd" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span></a><span class="p">())))</span>
+    <span class="n">working_dir</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.html#os.getcwd" title="os.getcwd" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span></a><span class="p">()</span>
+    <span class="n">output_dir</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">working_dir</span><span class="p">,</span> <span class="s2">&quot;resnet&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.exists" title="os.path.exists" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span></a><span class="p">(</span><span class="n">output_dir</span><span class="p">):</span>
+        <a href="https://docs.python.org/3/library/os.html#os.makedirs" title="os.makedirs" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">makedirs</span></a><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+
+    <span class="c1"># As usual, load the resnet18 model.</span>
+    <span class="n">net</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">data_shape</span><span class="p">,</span> <span class="n">out_shape</span> <span class="o">=</span> <span class="n">load_mxnet_resnet</span><span class="p">()</span>
+
+    <span class="c1"># As usual, compile the model.</span>
+    <span class="n">graph</span><span class="p">,</span> <span class="n">lib</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">compile_net</span><span class="p">(</span>
+        <span class="n">net</span><span class="p">,</span>
+        <span class="n">target_host</span><span class="o">=</span><span class="s2">&quot;llvm -target=asmjs-unknown-emscripten -system-lib&quot;</span><span class="p">,</span>
+        <span class="n">target</span><span class="o">=</span><span class="s2">&quot;opengl&quot;</span><span class="p">,</span>
+        <span class="n">data_shape</span><span class="o">=</span><span class="n">data_shape</span><span class="p">,</span>
+        <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="c1"># Now we save the model and link it with the TVM web runtime.</span>
+    <span class="n">path_lib</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;resnet.js&quot;</span><span class="p">)</span>
+    <span class="n">path_graph</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;resnet.json&quot;</span><span class="p">)</span>
+    <span class="n">path_params</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;resnet.params&quot;</span><span class="p">)</span>
+    <span class="n">path_data_shape</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;data_shape.json&quot;</span><span class="p">)</span>
+    <span class="n">path_out_shape</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;out_shape.json&quot;</span><span class="p">)</span>
+
+    <span class="n">lib</span><span class="o">.</span><span class="n">export_library</span><span class="p">(</span><span class="n">path_lib</span><span class="p">,</span> <a href="../../api/python/contrib.html#tvm.contrib.emscripten.create_js" title="tvm.contrib.emscripten.create_js" class="sphx-glr-backref-module-tvm-contrib-emscripten sphx-glr-backref-type-py-function"><span class="n">emscripten</span><span class="o">.</span><span class="n">create_js</span></a><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;USE_GLFW=3&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;USE_WEBGL2=1&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;-lglfw&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;TOTAL_MEMORY=1073741824&quot;</span><span class="p">,</span>
+    <span class="p">])</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path_graph</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+        <span class="n">fo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path_params</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+        <span class="n">fo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><a href="https://docs.python.org/3/library/base64.html#base64.b64encode" title="base64.b64encode" class="sphx-glr-backref-module-base64 sphx-glr-backref-type-py-function"><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span></a><span class="p">(</span><span class="n">nnvm</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">save_param_dict</span><span class="p">(</span><span class="n">params</span><span class="p">)))</span>
+
+    <a href="https://docs.python.org/3/library/shutil.html#shutil.copyfile" title="shutil.copyfile" class="sphx-glr-backref-module-shutil sphx-glr-backref-type-py-function"><span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">curr_path</span><span class="p">,</span> <span class="s2">&quot;../tvm/web/tvm_runtime.js&quot;</span><span class="p">),</span>
+                    <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;tvm_runtime.js&quot;</span><span class="p">))</span>
+    <a href="https://docs.python.org/3/library/shutil.html#shutil.copyfile" title="shutil.copyfile" class="sphx-glr-backref-module-shutil sphx-glr-backref-type-py-function"><span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span></a><span class="p">(</span><a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">curr_path</span><span class="p">,</span> <span class="s2">&quot;web/resnet.html&quot;</span><span class="p">),</span>
+                    <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;resnet.html&quot;</span><span class="p">))</span>
+
+    <span class="c1"># Now we want to save some extra files so that we can execute the model from</span>
+    <span class="c1"># JavaScript.</span>
+    <span class="c1"># - data shape</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path_data_shape</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+        <a href="https://docs.python.org/3/library/json.html#json.dump" title="json.dump" class="sphx-glr-backref-module-json sphx-glr-backref-type-py-function"><span class="n">json</span><span class="o">.</span><span class="n">dump</span></a><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data_shape</span><span class="p">),</span> <span class="n">fo</span><span class="p">)</span>
+    <span class="c1"># - out shape</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path_out_shape</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+        <a href="https://docs.python.org/3/library/json.html#json.dump" title="json.dump" class="sphx-glr-backref-module-json sphx-glr-backref-type-py-function"><span class="n">json</span><span class="o">.</span><span class="n">dump</span></a><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">out_shape</span><span class="p">),</span> <span class="n">fo</span><span class="p">)</span>
+    <span class="c1"># - input image</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">download_image</span><span class="p">()</span>
+    <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;data.png&quot;</span><span class="p">))</span>
+    <span class="c1"># - synset</span>
+    <span class="n">synset</span> <span class="o">=</span> <span class="n">download_synset</span><span class="p">()</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="s2">&quot;synset.json&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+        <a href="https://docs.python.org/3/library/json.html#json.dump" title="json.dump" class="sphx-glr-backref-module-json sphx-glr-backref-type-py-function"><span class="n">json</span><span class="o">.</span><span class="n">dump</span></a><span class="p">(</span><span class="n">synset</span><span class="p">,</span> <span class="n">fo</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Output files are in&quot;</span><span class="p">,</span> <span class="n">output_dir</span><span class="p">)</span>
+
+    <span class="c1"># Finally, we fire up a simple web server to serve all the exported files.</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Now running a simple server to serve the files...&quot;</span><span class="p">)</span>
+    <a href="https://docs.python.org/3/library/os.html#os.chdir" title="os.chdir" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">chdir</span></a><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="mi">8080</span>
+    <span class="n">handler</span> <span class="o">=</span> <span class="n">SimpleHTTPServer</span><span class="o">.</span><span class="n">SimpleHTTPRequestHandler</span>
+    <span class="n">httpd</span> <span class="o">=</span> <span class="n">SocketServer</span><span class="o">.</span><span class="n">TCPServer</span><span class="p">((</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">),</span> <span class="n">handler</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Please open http://localhost:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">port</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/resnet.html&quot;</span><span class="p">)</span>
+    <span class="n">httpd</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">run_deploy_web</span> <span class="ow">and</span> <span class="n">opengl_enabled</span><span class="p">:</span>
+    <span class="n">deploy_web</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-nnvm-from-mxnet-to-webgl-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/0e144f6d680b30ccd60aeb0bab8e3c32/from_mxnet_to_webgl.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">from_mxnet_to_webgl.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/5b6c80a3d261963d46c900106c354f3b/from_mxnet_to_webgl.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">from_mxnet_to_webgl.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../vta/index.html" class="btn btn-neutral float-right" title="VTA: Deep Learning Accelerator Stack" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="from_tensorflow.html" class="btn btn-neutral float-left" title="Compile Tensorflow Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2017, tvm developers
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75982049-2', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

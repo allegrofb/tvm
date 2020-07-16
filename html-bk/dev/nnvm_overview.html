@@ -1,0 +1,368 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>} &mdash; tvm 0.5.dev documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/tvm_theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Hybrid Frontend Developer Guide" href="hybrid_script.html" />
+    <link rel="prev" title="NNVM Graph JSON Specification" href="nnvm_json_spec.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/tvm-logo-small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vta/index.html">VTA: Deep Learning Accelerator Stack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deploy/index.html">Deploy and Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute/index.html">Contribute to TVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../langref/index.html">Language Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_links.html">Links to C++ and JS API References</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Design and Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="runtime.html">}</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime.html#id20">});</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime.html#id33">};</a></li>
+<li class="toctree-l2"><a class="reference internal" href="runtime.html#id40">};</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nnvm_json_spec.html">NNVM Graph JSON Specification</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">}</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hybrid_script.html">Hybrid Frontend Developer Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../nnvm_top.html">NNVM Core Tensor Operators</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tvm</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Design and Developer Guide</a> &raquo;</li>
+        
+      <li>}</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/dev/nnvm_overview.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p># NNVM Design Overview</p>
+<p>NNVM is a reusable graph IR stack for deep learning systems. It provides useful API to construct, represent and transform computation graphs to get most high-level optimization needed in deep learning.
+As a part of TVM stack for deep learning, NNVM also provides a shared compiler for deep learning frameworks to optimize, compile and deploy into different hardware backends via [TVM](<a class="reference external" href="https://github.com/dmlc/tvm">https://github.com/dmlc/tvm</a>)</p>
+<p>## Key Requirements and Design Choices</p>
+<ul class="simple">
+<li><p>Have minimum dependency in the deployment module.</p></li>
+<li><p>Being able to add new operators to the IR, in a decentralized fashion.</p></li>
+<li><p>Being able to add new optimization passes to the IR and applies to existing graphs.</p></li>
+</ul>
+<p>The item2 and 3 are particularly interesting if we compare it to a typical compiler IR. Compiler IR usually contains a fixed set of primitives(instructions), and use them as a contract between optimization pass designers. This design enables easy addition of new optimization passes, but not new operator(instruction). Because every time we add a new instruction, we need to modify the passes to accommodate these changes.</p>
+<p>Deep learning frameworks usually have a fixed operator interface(schema). These interfaces can contain properties like shape inference function, whether in-place computation can happen.  The operator interface is an again contract that makes it easy to add new an operator. But it is hard to add new passes in decentralized fashion a new optimization pass usually requires additional information, and this results in frequent changes of the centralized operator interface when we are exploring new optimizations. There is also a drawback of modularization. For example, a graph compiler for FPGA devices may not need the GPU device specific attributes.</p>
+<p>During our explorations in graph optimization and compilation, we find that it is important to quickly add both operators and passes to the framework without changing the core library.</p>
+<p>Here is a list of key elements in NNVM’s design</p>
+<ul class="simple">
+<li><p>Operator registry system to register and add new operators</p></li>
+<li><p>Operator attribute system provide property of operator in decentralized fashion</p></li>
+<li><p>A reusable IR data structure for optimization passes.</p></li>
+</ul>
+<p>The above list is more like the generic language part of NNVM, besides of that, we also provide a collection of core operator primitives, and graph optimization passes.   The core tensor operator primitives and optimizations already cover commonly deep learning workloads. This design allows the NNVM compiler to be directly used as optimization and compilation stack for frameworks. The extendible nature of NNVM makes new adjustment easy without constraining the backend providers.</p>
+<p>## Minimum Registration for a Symbolic Front-End
+To use NNVM to build language front end, a developer only needs to register minimum information about each operator.</p>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>c++
+NNVM_REGISTER_OP(add)
+.describe(“add two data together”)
+.set_num_inputs(2);</p>
+<p>NNVM_REGISTER_OP(conv2d)
+.describe(“take 2d convolution of input”)
+.set_num_inputs(2);</p>
+<p>NNVM_REGISTER_OP(assign)
+.describe(“assign second input argument to the first one”)
+.set_num_inputs(2);
+<a href="#id5"><span class="problematic" id="id6">``</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a></p>
+<p>Compiling the code with NNVM library. User can use the following interface to compose the computation graph in python, like the following code.</p>
+<p><a href="#id9"><span class="problematic" id="id10">``</span></a><a href="#id11"><span class="problematic" id="id12">`</span></a>python
+import nnvm.symbol as nn</p>
+<p># symbolic variable
+x = nn.Variable(‘x’)
+y = nn.Variable(‘y’)
+w = nn.Variable(‘w’)</p>
+<p>z = nn.conv2d(nn.elemwise_add(x, y), w, kernel_size=(2,2), name=’conv1’)
+<a href="#id13"><span class="problematic" id="id14">``</span></a><a href="#id15"><span class="problematic" id="id16">`</span></a></p>
+<p>The graph structure is interchangeable between the frontend and the backend.  Python interface is supported currently. More language support can be easily
+moved in the future.</p>
+<p>## Operator Attribute for More Extensions</p>
+<p>The minimum information provided by the operator is enough to get a front-end. However,   we need more knowledge about each operator to do transformations and executing the graph.
+A typical difference between neural nets’ computation graph and traditional compiler IR is that there are a lot more high-level operators. We cannot fix the set of operators in the IR.</p>
+<p>NNVM allow developers to register attributes of each operator. The attributes can include shape inference function, whether the operator can perform in-place calculation etc.</p>
+<p>This design to having an operator attribute registry is not uncommon in deep learning systems.
+For example, MXNet has a <code class="docutils literal notranslate"><span class="pre">`OpProperty`</span></code> class, Tensorflow has a <code class="docutils literal notranslate"><span class="pre">`OpDef`</span></code> and Caffe2 have a <code class="docutils literal notranslate"><span class="pre">`OperatorSchema`</span></code> class.
+However, the operator attribute interface listed in these frameworks only support a fixed number of defined attributes of interest to the system. If we want to extend the framework to add a new attribute in each operator, we need to change the operator registry.
+Eventually, the operator interface grows into to be very big and have to evolve in the centralized repo.</p>
+<p>In NNVM, we decided to change the design and support arbitrary type of operator attributes, without changing the interface registry. The minimum interface also makes it easier to share across multiple projects</p>
+<p>User can register new attribute, such as inplace property checking function as follows.
+<a href="#id17"><span class="problematic" id="id18">``</span></a><a href="#id19"><span class="problematic" id="id20">`</span></a>c++
+using FInplaceOption = std::function&lt;</p>
+<blockquote>
+<div><p>std::vector&lt;std::pair&lt;int, int&gt; &gt; (const NodeAttrs&amp; attrs)&gt;;</p>
+</div></blockquote>
+<p>// we can register attributes from multiple places.
+NNVM_REGISTER_OP(elemwise_add)
+.set_num_inputs(2);</p>
+<p>// register to tell first input can be calculate inplace with first output
+NNVM_REGISTER_OP(add)
+.set_attr&lt;FInplaceOption&gt;(“FInplaceOption”, [](const NodeAttrs&amp; attrs) {</p>
+<blockquote>
+<div><blockquote>
+<div><p>return std::vector&lt;std::pair&lt;int, int&gt; &gt;{{0, 0}};</p>
+</div></blockquote>
+<p>});</p>
+</div></blockquote>
+<p>NNVM_REGISTER_OP(exp)
+.set_num_inputs(1)
+.set_attr&lt;FInplaceOption&gt;(“FInplaceOption”, [](const NodeAttrs&amp; attrs) {</p>
+<blockquote>
+<div><blockquote>
+<div><p>return std::vector&lt;std::pair&lt;int, int&gt; &gt;{{0, 0}};</p>
+</div></blockquote>
+<p>});</p>
+</div></blockquote>
+<p><a href="#id21"><span class="problematic" id="id22">``</span></a><a href="#id23"><span class="problematic" id="id24">`</span></a></p>
+<p>We can query these attributes at arbitrary parts of the code, like the following parts. Under the hood, each attribute is stored in a columnar store, that can easily be retrieved table and do quick lookups.</p>
+<p><a href="#id25"><span class="problematic" id="id26">``</span></a><a href="#id27"><span class="problematic" id="id28">`</span></a>c++
+void MyFunction() {</p>
+<blockquote>
+<div><p>const Op* add = Op::Get(“add”);
+// if we need quick query, we can use static variable
+// attribute map contains attributes of all operators.
+static auto&amp; finplace_option_map = Op::GetAttr&lt;FInplaceOption&gt;(“FInplaceOption”);</p>
+<p>// quick look up attribute of add, O(1) time, vector index lookup internally.
+auto add_inplace = finplace_option_map[add];</p>
+</div></blockquote>
+<div class="section" id="id29">
+<h1>}<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h1>
+<p>Besides making the code minimum, this attribute store enables decentralization of projects.
+Before, all the attributes of operator have to sit on a centralized interface class.
+Now, everyone can register attributes of their own, take some other attributes they need from another project without changing the operator interface and core library</p>
+<p>## Graph and Pass</p>
+<p>We can use the additional information on attribute registry to do optimizations and get more information about the graph. Graph is the unit we manipulate in these steps. A Graph in NNVM contains
+two parts:
+- The computation graph structure
+- A attribute map from string to any type <code class="docutils literal notranslate"><span class="pre">`map&lt;string,</span> <span class="pre">shared_ptr&lt;any&gt;</span> <span class="pre">&gt;`</span></code></p>
+<p>The second attribute map is quite important, as we may need different kinds
+of information about the graph during the transformation process. Let it be
+shapes of each tensor, types of each tensor or the storage allocation plans.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">`Pass`</span></code> can take a graph with existing attribute information,
+and transform it to the same graph structure with more graph attributes or another graph.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="hybrid_script.html" class="btn btn-neutral float-right" title="Hybrid Frontend Developer Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="nnvm_json_spec.html" class="btn btn-neutral float-left" title="NNVM Graph JSON Specification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2017, tvm developers
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75982049-2', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

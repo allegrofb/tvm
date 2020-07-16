@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quick Start Tutorial for Compiling Deep Learning Models &mdash; tvm 0.5.dev documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/tvm_theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Cross Compilation and RPC" href="cross_compilation_and_rpc.html" />
+    <link rel="prev" title="Tutorials" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/tvm-logo-small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Quick Start Tutorial for Compiling Deep Learning Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview-for-supported-hardware-backend-of-tvm">Overview for Supported Hardware Backend of TVM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#define-neural-network-in-nnvm">Define Neural Network in NNVM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compilation">Compilation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-the-generate-library">Run the generate library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#save-and-load-compiled-module">Save and Load Compiled Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cross_compilation_and_rpc.html">Cross Compilation and RPC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="get_started.html">Get Started with TVM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#tensor-expression-and-schedules">Tensor Expression and Schedules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#optimize-tensor-operators">Optimize Tensor Operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#auto-tuning">Auto tuning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#developer-tutorials">Developer Tutorials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#topi-tvm-operator-inventory">TOPI: TVM Operator Inventory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#compile-deep-learning-models">Compile Deep Learning Models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vta/index.html">VTA: Deep Learning Accelerator Stack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deploy/index.html">Deploy and Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute/index.html">Contribute to TVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../langref/index.html">Language Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_links.html">Links to C++ and JS API References</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Design and Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nnvm_top.html">NNVM Core Tensor Operators</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tvm</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Tutorials</a> &raquo;</li>
+        
+      <li>Quick Start Tutorial for Compiling Deep Learning Models</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorials/nnvm_quick_start.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-nnvm-quick-start-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="quick-start-tutorial-for-compiling-deep-learning-models">
+<span id="tutorial-nnvm-quick-start"></span><span id="sphx-glr-tutorials-nnvm-quick-start-py"></span><h1>Quick Start Tutorial for Compiling Deep Learning Models<a class="headerlink" href="#quick-start-tutorial-for-compiling-deep-learning-models" title="Permalink to this headline">¶</a></h1>
+<p><strong>Author</strong>: <a class="reference external" href="https://github.com/kevinthesun">Yao Wang</a></p>
+<p>This example shows how to build a neural network with NNVM python frontend and
+generate runtime library for Nvidia GPU with TVM.
+Notice that you need to build TVM with cuda and llvm enabled.</p>
+<div class="section" id="overview-for-supported-hardware-backend-of-tvm">
+<h2>Overview for Supported Hardware Backend of TVM<a class="headerlink" href="#overview-for-supported-hardware-backend-of-tvm" title="Permalink to this headline">¶</a></h2>
+<p>The image below shows hardware backend currently supported by TVM:</p>
+<a class="reference internal image-reference" href="https://github.com/dmlc/web-data/raw/master/tvm/tutorial/tvm_support_list.png"><img alt="https://github.com/dmlc/web-data/raw/master/tvm/tutorial/tvm_support_list.png" class="align-center" src="https://github.com/dmlc/web-data/raw/master/tvm/tutorial/tvm_support_list.png" /></a>
+<p>In this tutorial, we’ll choose cuda and llvm as target backends.
+To begin with, let’s import NNVM and TVM.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">nnvm.compiler</span>
+<span class="kn">import</span> <span class="nn">nnvm.testing</span>
+<span class="kn">import</span> <span class="nn">tvm</span>
+<span class="kn">from</span> <span class="nn">tvm.contrib</span> <span class="kn">import</span> <span class="n">graph_runtime</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="define-neural-network-in-nnvm">
+<h2>Define Neural Network in NNVM<a class="headerlink" href="#define-neural-network-in-nnvm" title="Permalink to this headline">¶</a></h2>
+<p>First, let’s define a neural network with nnvm python frontend.
+For simplicity, we’ll use pre-defined resnet-18 network in NNVM.
+Parameters are initialized with Xavier initializer.
+NNVM also supports other model formats such as MXNet, CoreML, ONNX and
+Tensorflow.</p>
+<p>In this tutorial, we assume we will do inference on our device
+and the batch size is set to be 1. Input images are RGB color
+images of size 224 * 224. We can call the <code class="xref any docutils literal notranslate"><span class="pre">nnvm.symbol.debug_str</span></code>
+to show the network structure.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">batch_size</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">num_class</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">image_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)</span>
+<span class="n">data_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">batch_size</span><span class="p">,)</span> <span class="o">+</span> <span class="n">image_shape</span>
+<span class="n">out_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_class</span><span class="p">)</span>
+
+<span class="n">net</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">resnet</span><span class="o">.</span><span class="n">get_workload</span><span class="p">(</span>
+    <span class="n">layers</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">image_shape</span><span class="o">=</span><span class="n">image_shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">debug_str</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="compilation">
+<h2>Compilation<a class="headerlink" href="#compilation" title="Permalink to this headline">¶</a></h2>
+<p>Next step is to compile the model using the NNVM/TVM pipeline.
+Users can specify the optimization level of the compilation.
+Currently this value can be 0 to 3. The optimization passes include
+operator fusion, pre-computation, layout transformation and so on.</p>
+<p><a class="reference internal" href="../api/python/nnvm/compiler.html#nnvm.compiler.build" title="nnvm.compiler.build"><code class="xref any py py-func docutils literal notranslate"><span class="pre">nnvm.compiler.build</span></code></a> returns three components: the execution graph in
+json format, the TVM module library of compiled functions specifically
+for this graph on the target hardware, and the parameter blobs of
+the model. During the compilation, NNVM does the graph-level
+optimization while TVM does the tensor-level optimization, resulting
+in an optimized runtime module for model serving.</p>
+<p>We’ll first compile for Nvidia GPU. Behind the scene, <cite>nnvm.compiler.build</cite>
+first does a number of graph-level optimizations, e.g. pruning, fusing, etc.,
+then registers the operators (i.e. the nodes of the optimized graphs) to
+TVM implementations to generate a <cite>tvm.module</cite>.
+To generate the module library, TVM will first transfer the High level IR
+into the lower intrinsic IR of the specified target backend, which is CUDA
+in this example. Then the machine code will be generated as the module library.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">opt_level</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">target</span> <span class="o">=</span> <a href="../api/python/target.html#tvm.target.cuda" title="tvm.target.cuda" class="sphx-glr-backref-module-tvm-target sphx-glr-backref-type-py-function"><span class="n">tvm</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">cuda</span></a><span class="p">()</span>
+<span class="k">with</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">build_config</span><span class="p">(</span><span class="n">opt_level</span><span class="o">=</span><span class="n">opt_level</span><span class="p">):</span>
+    <span class="n">graph</span><span class="p">,</span> <span class="n">lib</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">build</span><span class="p">(</span>
+        <span class="n">net</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">data_shape</span><span class="p">},</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-the-generate-library">
+<h2>Run the generate library<a class="headerlink" href="#run-the-generate-library" title="Permalink to this headline">¶</a></h2>
+<p>Now we can create graph runtime and run the module on Nvidia GPU.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># create random input</span>
+<span class="n">ctx</span> <span class="o">=</span> <a href="../api/python/ndarray.html#tvm.gpu" title="tvm.gpu" class="sphx-glr-backref-module-tvm sphx-glr-backref-type-py-function"><span class="n">tvm</span><span class="o">.</span><span class="n">gpu</span></a><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.random.html#numpy.random.uniform" title="numpy.random.uniform" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span></a><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">data_shape</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+<span class="c1"># create module</span>
+<span class="n">module</span> <span class="o">=</span> <a href="../api/python/graph_runtime.html#tvm.contrib.graph_runtime.create" title="tvm.contrib.graph_runtime.create" class="sphx-glr-backref-module-tvm-contrib-graph_runtime sphx-glr-backref-type-py-function"><span class="n">graph_runtime</span><span class="o">.</span><span class="n">create</span></a><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">lib</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+<span class="c1"># set input and parameters</span>
+<span class="n">module</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="n">module</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+<span class="c1"># run</span>
+<span class="n">module</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="c1"># get output</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tvm</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">out_shape</span><span class="p">))</span>
+<span class="c1"># convert to numpy</span>
+<span class="n">out</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">()</span>
+
+<span class="c1"># Print first 10 elements of output</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="save-and-load-compiled-module">
+<h2>Save and Load Compiled Module<a class="headerlink" href="#save-and-load-compiled-module" title="Permalink to this headline">¶</a></h2>
+<p>We can also save the graph, lib and parameters into files and load them
+back in deploy environment.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># save the graph, lib and params into separate files</span>
+<span class="kn">from</span> <span class="nn">tvm.contrib</span> <span class="kn">import</span> <span class="n">util</span>
+
+<span class="n">temp</span> <span class="o">=</span> <a href="../api/python/contrib.html#tvm.contrib.util.tempdir" title="tvm.contrib.util.tempdir" class="sphx-glr-backref-module-tvm-contrib-util sphx-glr-backref-type-py-function"><span class="n">util</span><span class="o">.</span><span class="n">tempdir</span></a><span class="p">()</span>
+<span class="n">path_lib</span> <span class="o">=</span> <span class="n">temp</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s2">&quot;deploy_lib.tar&quot;</span><span class="p">)</span>
+<span class="n">lib</span><span class="o">.</span><span class="n">export_library</span><span class="p">(</span><span class="n">path_lib</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s2">&quot;deploy_graph.json&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+    <span class="n">fo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s2">&quot;deploy_param.params&quot;</span><span class="p">),</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
+    <span class="n">fo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">nnvm</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">save_param_dict</span><span class="p">(</span><span class="n">params</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">listdir</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># load the module back.</span>
+<span class="n">loaded_json</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s2">&quot;deploy_graph.json&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">loaded_lib</span> <span class="o">=</span> <a href="../api/python/module.html#tvm.module.load" title="tvm.module.load" class="sphx-glr-backref-module-tvm-module sphx-glr-backref-type-py-function"><span class="n">tvm</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">load</span></a><span class="p">(</span><span class="n">path_lib</span><span class="p">)</span>
+<span class="n">loaded_params</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s2">&quot;deploy_param.params&quot;</span><span class="p">),</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="n">input_data</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.random.html#numpy.random.uniform" title="numpy.random.uniform" class="sphx-glr-backref-module-numpy-random sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span></a><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">data_shape</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">))</span>
+
+<span class="n">module</span> <span class="o">=</span> <a href="../api/python/graph_runtime.html#tvm.contrib.graph_runtime.create" title="tvm.contrib.graph_runtime.create" class="sphx-glr-backref-module-tvm-contrib-graph_runtime sphx-glr-backref-type-py-function"><span class="n">graph_runtime</span><span class="o">.</span><span class="n">create</span></a><span class="p">(</span><span class="n">loaded_json</span><span class="p">,</span> <span class="n">loaded_lib</span><span class="p">,</span> <a href="../api/python/ndarray.html#tvm.gpu" title="tvm.gpu" class="sphx-glr-backref-module-tvm sphx-glr-backref-type-py-function"><span class="n">tvm</span><span class="o">.</span><span class="n">gpu</span></a><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">module</span><span class="o">.</span><span class="n">load_params</span><span class="p">(</span><span class="n">loaded_params</span><span class="p">)</span>
+<span class="n">module</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">input_data</span><span class="p">)</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-nnvm-quick-start-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/9ef78a56d77129768f85c15dbfaad7aa/nnvm_quick_start.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">nnvm_quick_start.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/b17f4d010256a63f7f110d5ce29acff3/nnvm_quick_start.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">nnvm_quick_start.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="cross_compilation_and_rpc.html" class="btn btn-neutral float-right" title="Cross Compilation and RPC" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2017, tvm developers
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75982049-2', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

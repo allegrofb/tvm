@@ -1,0 +1,596 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ResNet Inference Example &mdash; tvm 0.5.dev documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/tvm_theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2D Convolution Optimization" href="convolution_opt.html" />
+    <link rel="prev" title="Matrix Multiply Blocking" href="matrix_multiply_opt.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/tvm-logo-small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">VTA: Deep Learning Accelerator Stack</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../install.html">VTA Installation Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dev/index.html">VTA Design and Developer Guide</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">VTA Tutorials</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="vta_get_started.html">Get Started with VTA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="matrix_multiply.html">Simple Matrix Multiply</a></li>
+<li class="toctree-l3"><a class="reference internal" href="matrix_multiply_opt.html">Matrix Multiply Blocking</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">ResNet Inference Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#import-libraries">Import Libraries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#download-resnet-model">Download ResNet Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setup-the-pynq-board-s-rpc-server">Setup the Pynq Board’s RPC Server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#build-the-resnet-runtime">Build the ResNet Runtime</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-resnet-18-inference-on-a-sample-image">Run ResNet-18 inference on a sample image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-a-youtube-video-image-classifier">Run a Youtube Video Image Classifier</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="convolution_opt.html">2D Convolution Optimization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#literature">Literature</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy/index.html">Deploy and Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribute to TVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../langref/index.html">Language Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/python/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_links.html">Links to C++ and JS API References</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Design and Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nnvm_top.html">NNVM Core Tensor Operators</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">Index</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tvm</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">VTA: Deep Learning Accelerator Stack</a> &raquo;</li>
+        
+          <li><a href="index.html">VTA Tutorials</a> &raquo;</li>
+        
+      <li>ResNet Inference Example</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/vta/tutorials/resnet.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-vta-tutorials-resnet-py"><span class="std std-ref">here</span></a>     to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="resnet-inference-example">
+<span id="sphx-glr-vta-tutorials-resnet-py"></span><h1>ResNet Inference Example<a class="headerlink" href="#resnet-inference-example" title="Permalink to this headline">¶</a></h1>
+<p><strong>Author</strong>: <a class="reference external" href="https://homes.cs.washington.edu/~moreau/">Thierry Moreau</a></p>
+<p>This tutorial provides an end-to-end demo, on how to run ResNet-18 inference
+onto the VTA accelerator design to perform ImageNet classification tasks.</p>
+<div class="section" id="import-libraries">
+<h2>Import Libraries<a class="headerlink" href="#import-libraries" title="Permalink to this headline">¶</a></h2>
+<p>We start by importing the tvm, vta, nnvm libraries to run this example.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <a href="https://docs.python.org/3/library/io.html#io.BytesIO" title="io.BytesIO" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">BytesIO</span></a>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">import</span> <span class="nn">tvm</span>
+<span class="kn">from</span> <span class="nn">tvm</span> <span class="kn">import</span> <span class="n">rpc</span><span class="p">,</span> <span class="n">autotvm</span>
+<span class="kn">from</span> <span class="nn">tvm.contrib</span> <span class="kn">import</span> <span class="n">graph_runtime</span><span class="p">,</span> <span class="n">util</span>
+<span class="kn">from</span> <span class="nn">tvm.contrib.download</span> <span class="kn">import</span> <span class="n">download</span>
+<span class="kn">import</span> <span class="nn">nnvm.compiler</span>
+<span class="kn">import</span> <span class="nn">vta</span>
+<span class="kn">import</span> <span class="nn">vta.testing</span>
+
+<span class="c1"># Load VTA parameters from the vta/config/vta_config.json file</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">vta</span><span class="o">.</span><span class="n">get_env</span><span class="p">()</span>
+
+<span class="c1"># Helper to crop an image to a square (224, 224)</span>
+<span class="c1"># Takes in an Image object, returns an Image object</span>
+<span class="k">def</span> <span class="nf">thumbnailify</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">crop</span> <span class="o">=</span> <span class="p">((</span><span class="n">w</span><span class="o">-</span><span class="n">h</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="o">+</span><span class="n">pad</span><span class="p">,</span> <span class="n">pad</span><span class="p">,</span> <span class="n">h</span><span class="o">+</span><span class="p">(</span><span class="n">w</span><span class="o">-</span><span class="n">h</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="o">-</span><span class="n">pad</span><span class="p">,</span> <span class="n">h</span><span class="o">-</span><span class="n">pad</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">crop</span><span class="p">)</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">image</span>
+
+<span class="c1"># Helper function to read in image</span>
+<span class="c1"># Takes in Image object, returns an ND array</span>
+<span class="k">def</span> <span class="nf">process_image</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="c1"># Convert to neural network input format</span>
+    <span class="n">image</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="o">-</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">123.</span><span class="p">,</span> <span class="mf">117.</span><span class="p">,</span> <span class="mf">104.</span><span class="p">])</span>
+    <span class="n">image</span> <span class="o">/=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">58.395</span><span class="p">,</span> <span class="mf">57.12</span><span class="p">,</span> <span class="mf">57.375</span><span class="p">])</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="p">[</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/arrays.html#numpy.newaxis" title="numpy.newaxis" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-data"><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span></a><span class="p">,</span> <span class="p">:]</span>
+
+    <span class="k">return</span> <span class="n">tvm</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">))</span>
+
+<span class="c1"># Classification helper function</span>
+<span class="c1"># Takes in the graph runtime, and an image, and returns top result and time</span>
+<span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
+    <span class="n">timer</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">time_evaluator</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">tcost</span> <span class="o">=</span> <span class="n">timer</span><span class="p">()</span>
+    <span class="n">tvm_output</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tvm</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">1000</span><span class="p">,),</span> <span class="s2">&quot;float32&quot;</span><span class="p">,</span> <span class="n">remote</span><span class="o">.</span><span class="n">cpu</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+    <span class="n">top</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.argmax" title="numpy.argmax" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">argmax</span></a><span class="p">(</span><span class="n">tvm_output</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">())</span>
+    <span class="n">tcost</span> <span class="o">=</span> <span class="s2">&quot;t=</span><span class="si">{0:.2f}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tcost</span><span class="o">.</span><span class="n">mean</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tcost</span> <span class="o">+</span> <span class="s2">&quot; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">synset</span><span class="p">[</span><span class="n">top</span><span class="p">])</span>
+
+<span class="c1"># Helper function to compile the NNVM graph</span>
+<span class="c1"># Takes in a path to a graph file, params file, and device target</span>
+<span class="c1"># Returns the NNVM graph object, a compiled library object, and the params dict</span>
+<span class="k">def</span> <span class="nf">generate_graph</span><span class="p">(</span><span class="n">graph_fn</span><span class="p">,</span> <span class="n">params_fn</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;vta&quot;</span><span class="p">):</span>
+    <span class="c1"># Measure build start time</span>
+    <span class="n">build_start</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
+
+    <span class="c1"># Derive the TVM target</span>
+    <span class="n">target</span> <span class="o">=</span> <a href="../../api/python/target.html#tvm.target.create" title="tvm.target.create" class="sphx-glr-backref-module-tvm-target sphx-glr-backref-type-py-function"><span class="n">tvm</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">create</span></a><span class="p">(</span><span class="s2">&quot;llvm -device=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+
+    <span class="c1"># Derive the LLVM compiler flags</span>
+    <span class="c1"># When targetting the Pynq, cross-compile to ARMv7 ISA</span>
+    <span class="k">if</span> <span class="n">env</span><span class="o">.</span><span class="n">TARGET</span> <span class="o">==</span> <span class="s2">&quot;sim&quot;</span><span class="p">:</span>
+        <span class="n">target_host</span> <span class="o">=</span> <span class="s2">&quot;llvm&quot;</span>
+    <span class="k">elif</span> <span class="n">env</span><span class="o">.</span><span class="n">TARGET</span> <span class="o">==</span> <span class="s2">&quot;pynq&quot;</span><span class="p">:</span>
+        <span class="n">target_host</span> <span class="o">=</span> <span class="s2">&quot;llvm -mtriple=armv7-none-linux-gnueabihf -mcpu=cortex-a9 -mattr=+neon&quot;</span>
+
+    <span class="c1"># Load the ResNet-18 graph and parameters</span>
+    <span class="n">sym</span> <span class="o">=</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">load_json</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">graph_fn</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">load_param_dict</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">params_fn</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+    <span class="c1"># Populate the shape and data type dictionary</span>
+    <span class="n">shape_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">)}</span>
+    <span class="n">dtype_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="s1">&#39;float32&#39;</span><span class="p">}</span>
+    <span class="n">shape_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">shape</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+    <span class="n">dtype_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">params</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+
+    <span class="c1"># Apply NNVM graph optimization passes</span>
+    <span class="n">sym</span> <span class="o">=</span> <span class="n">vta</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">clean_cast</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span>
+    <span class="n">sym</span> <span class="o">=</span> <span class="n">vta</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">clean_conv_fuse</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">device_name</span> <span class="o">==</span> <span class="s2">&quot;vta&quot;</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">env</span><span class="o">.</span><span class="n">BLOCK_IN</span> <span class="o">==</span> <span class="n">env</span><span class="o">.</span><span class="n">BLOCK_OUT</span>
+        <span class="n">sym</span> <span class="o">=</span> <span class="n">vta</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">sym</span><span class="p">,</span> <span class="n">shape_dict</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">BATCH</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">BLOCK_OUT</span><span class="p">)</span>
+
+    <span class="c1"># Compile NNVM graph</span>
+    <span class="k">with</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">build_config</span><span class="p">(</span><span class="n">opt_level</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">device_name</span> <span class="o">!=</span> <span class="s2">&quot;vta&quot;</span><span class="p">:</span>
+            <span class="n">graph</span><span class="p">,</span> <span class="n">lib</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">build</span><span class="p">(</span>
+                <span class="n">sym</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">shape_dict</span><span class="p">,</span> <span class="n">dtype_dict</span><span class="p">,</span>
+                <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">target_host</span><span class="o">=</span><span class="n">target_host</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">vta</span><span class="o">.</span><span class="n">build_config</span><span class="p">():</span>
+                <span class="n">graph</span><span class="p">,</span> <span class="n">lib</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">nnvm</span><span class="o">.</span><span class="n">compiler</span><span class="o">.</span><span class="n">build</span><span class="p">(</span>
+                    <span class="n">sym</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">shape_dict</span><span class="p">,</span> <span class="n">dtype_dict</span><span class="p">,</span>
+                    <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">target_host</span><span class="o">=</span><span class="n">target_host</span><span class="p">)</span>
+
+    <span class="c1"># Save the compiled inference graph library</span>
+    <span class="k">assert</span> <a href="../../api/python/module.html#tvm.module.enabled" title="tvm.module.enabled" class="sphx-glr-backref-module-tvm-module sphx-glr-backref-type-py-function"><span class="n">tvm</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">enabled</span></a><span class="p">(</span><span class="s2">&quot;rpc&quot;</span><span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <a href="../../api/python/contrib.html#tvm.contrib.util.tempdir" title="tvm.contrib.util.tempdir" class="sphx-glr-backref-module-tvm-contrib-util sphx-glr-backref-type-py-function"><span class="n">util</span><span class="o">.</span><span class="n">tempdir</span></a><span class="p">()</span>
+    <span class="n">lib</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s2">&quot;graphlib.o&quot;</span><span class="p">))</span>
+
+    <span class="c1"># Send the inference library over to the remote RPC server</span>
+    <span class="n">remote</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">temp</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="s2">&quot;graphlib.o&quot;</span><span class="p">))</span>
+    <span class="n">lib</span> <span class="o">=</span> <span class="n">remote</span><span class="o">.</span><span class="n">load_module</span><span class="p">(</span><span class="s2">&quot;graphlib.o&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Measure build time</span>
+    <span class="n">build_time</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <span class="n">build_start</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ResNet-18 inference graph built in </span><span class="si">{0:.2f}</span><span class="s2">s!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">build_time</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">graph</span><span class="p">,</span> <span class="n">lib</span><span class="p">,</span> <span class="n">params</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="download-resnet-model">
+<h2>Download ResNet Model<a class="headerlink" href="#download-resnet-model" title="Permalink to this headline">¶</a></h2>
+<p>Download the necessary files to run ResNet-18.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Obtain ResNet model and download them into _data dir</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://github.com/uwsaml/web-data/raw/master/vta/models/&quot;</span>
+<span class="n">categ_fn</span> <span class="o">=</span> <span class="s1">&#39;synset.txt&#39;</span>
+<span class="n">graph_fn</span> <span class="o">=</span> <span class="s1">&#39;resnet18_qt8.json&#39;</span>
+<span class="n">params_fn</span> <span class="o">=</span> <span class="s1">&#39;resnet18_qt8.params&#39;</span>
+
+<span class="c1"># Create data dir</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;_data/&quot;</span>
+<span class="k">if</span> <span class="ow">not</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.exists" title="os.path.exists" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span></a><span class="p">(</span><span class="n">data_dir</span><span class="p">):</span>
+    <a href="https://docs.python.org/3/library/os.html#os.makedirs" title="os.makedirs" class="sphx-glr-backref-module-os sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">makedirs</span></a><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+
+<span class="c1"># Download files</span>
+<span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="p">[</span><span class="n">categ_fn</span><span class="p">,</span> <span class="n">graph_fn</span><span class="p">,</span> <span class="n">params_fn</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="ow">not</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.isfile" title="os.path.isfile" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span></a><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+        <span class="n">download</span><span class="p">(</span><a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">file</span><span class="p">),</span> <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">file</span><span class="p">))</span>
+
+<span class="c1"># Read in ImageNet Categories</span>
+<span class="n">synset</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">categ_fn</span><span class="p">))</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+<span class="c1"># Download pre-tuned op parameters of conv2d for ARM CPU used in VTA</span>
+<span class="n">autotvm</span><span class="o">.</span><span class="n">tophub</span><span class="o">.</span><span class="n">check_backend</span><span class="p">(</span><span class="s1">&#39;vta&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setup-the-pynq-board-s-rpc-server">
+<h2>Setup the Pynq Board’s RPC Server<a class="headerlink" href="#setup-the-pynq-board-s-rpc-server" title="Permalink to this headline">¶</a></h2>
+<p>Build the RPC server’s VTA runtime and program the Pynq FPGA.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Measure build start time</span>
+<span class="n">reconfig_start</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span>
+
+<span class="c1"># We read the Pynq RPC host IP address and port number from the OS environment</span>
+<span class="n">host</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;VTA_PYNQ_RPC_HOST&quot;</span><span class="p">,</span> <span class="s2">&quot;192.168.2.99&quot;</span><span class="p">)</span>
+<span class="n">port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;VTA_PYNQ_RPC_PORT&quot;</span><span class="p">,</span> <span class="s2">&quot;9091&quot;</span><span class="p">))</span>
+
+<span class="c1"># We configure both the bitstream and the runtime system on the Pynq</span>
+<span class="c1"># to match the VTA configuration specified by the vta_config.json file.</span>
+<span class="k">if</span> <span class="n">env</span><span class="o">.</span><span class="n">TARGET</span> <span class="o">==</span> <span class="s2">&quot;pynq&quot;</span><span class="p">:</span>
+    <span class="c1"># Make sure that TVM was compiled with RPC=1</span>
+    <span class="k">assert</span> <a href="../../api/python/module.html#tvm.module.enabled" title="tvm.module.enabled" class="sphx-glr-backref-module-tvm-module sphx-glr-backref-type-py-function"><span class="n">tvm</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">enabled</span></a><span class="p">(</span><span class="s2">&quot;rpc&quot;</span><span class="p">)</span>
+    <span class="n">remote</span> <span class="o">=</span> <a href="../../api/python/rpc.html#tvm.rpc.connect" title="tvm.rpc.connect" class="sphx-glr-backref-module-tvm-rpc sphx-glr-backref-type-py-function"><span class="n">rpc</span><span class="o">.</span><span class="n">connect</span></a><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+
+    <span class="c1"># Reconfigure the JIT runtime</span>
+    <span class="n">vta</span><span class="o">.</span><span class="n">reconfig_runtime</span><span class="p">(</span><span class="n">remote</span><span class="p">)</span>
+
+    <span class="c1"># Program the FPGA with a pre-compiled VTA bitstream.</span>
+    <span class="c1"># You can program the FPGA with your own custom bitstream</span>
+    <span class="c1"># by passing the path to the bitstream file instead of None.</span>
+    <span class="n">vta</span><span class="o">.</span><span class="n">program_fpga</span><span class="p">(</span><span class="n">remote</span><span class="p">,</span> <span class="n">bitstream</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="c1"># Report on reconfiguration time</span>
+    <span class="n">reconfig_time</span> <span class="o">=</span> <a href="https://docs.python.org/3/library/time.html#time.time" title="time.time" class="sphx-glr-backref-module-time sphx-glr-backref-type-py-function"><span class="n">time</span><span class="o">.</span><span class="n">time</span></a><span class="p">()</span> <span class="o">-</span> <span class="n">reconfig_start</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reconfigured FPGA and RPC runtime in </span><span class="si">{0:.2f}</span><span class="s2">s!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">reconfig_time</span><span class="p">))</span>
+
+<span class="c1"># In simulation mode, host the RPC server locally.</span>
+<span class="k">elif</span> <span class="n">env</span><span class="o">.</span><span class="n">TARGET</span> <span class="o">==</span> <span class="s2">&quot;sim&quot;</span><span class="p">:</span>
+    <span class="n">remote</span> <span class="o">=</span> <a href="../../api/python/rpc.html#tvm.rpc.LocalSession" title="tvm.rpc.LocalSession" class="sphx-glr-backref-module-tvm-rpc sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">rpc</span><span class="o">.</span><span class="n">LocalSession</span></a><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="build-the-resnet-runtime">
+<h2>Build the ResNet Runtime<a class="headerlink" href="#build-the-resnet-runtime" title="Permalink to this headline">¶</a></h2>
+<p>Build the ResNet graph runtime, and configure the parameters.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set ``device=vtacpu`` to run inference on the CPU</span>
+<span class="c1"># or ``device=vta`` to run inference on the FPGA.</span>
+<span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;vta&quot;</span>
+
+<span class="c1"># Device context</span>
+<span class="n">ctx</span> <span class="o">=</span> <span class="n">remote</span><span class="o">.</span><span class="n">ext_dev</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">device</span> <span class="o">==</span> <span class="s2">&quot;vta&quot;</span> <span class="k">else</span> <span class="n">remote</span><span class="o">.</span><span class="n">cpu</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Build the graph runtime</span>
+<span class="n">graph</span><span class="p">,</span> <span class="n">lib</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">generate_graph</span><span class="p">(</span><a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">graph_fn</span><span class="p">),</span>
+                                    <a href="https://docs.python.org/3/library/os.path.html#os.path.join" title="os.path.join" class="sphx-glr-backref-module-os-path sphx-glr-backref-type-py-function"><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span></a><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">params_fn</span><span class="p">),</span>
+                                    <span class="n">device</span><span class="p">)</span>
+<span class="n">m</span> <span class="o">=</span> <a href="../../api/python/graph_runtime.html#tvm.contrib.graph_runtime.create" title="tvm.contrib.graph_runtime.create" class="sphx-glr-backref-module-tvm-contrib-graph_runtime sphx-glr-backref-type-py-function"><span class="n">graph_runtime</span><span class="o">.</span><span class="n">create</span></a><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">lib</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+
+<span class="c1"># Set the parameters</span>
+<span class="n">m</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-resnet-18-inference-on-a-sample-image">
+<h2>Run ResNet-18 inference on a sample image<a class="headerlink" href="#run-resnet-18-inference-on-a-sample-image" title="Permalink to this headline">¶</a></h2>
+<p>Perform image classification on test image.
+You can change the test image URL to any image of your choosing.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read in test image</span>
+<span class="n">image_url</span> <span class="o">=</span> <span class="s1">&#39;https://homes.cs.washington.edu/~moreau/media/vta/cat.jpg&#39;</span>
+<span class="c1"># Read in test image</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><a href="https://docs.python.org/3/library/io.html#io.BytesIO" title="io.BytesIO" class="sphx-glr-backref-module-io sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">BytesIO</span></a><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">))</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
+<span class="c1"># Show Image</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="matplotlib.pyplot.imshow" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span></a><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<span class="c1"># Set the input</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">process_image</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">set_input</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
+
+<span class="c1"># Perform inference</span>
+<span class="n">timer</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">time_evaluator</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">number</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">tcost</span> <span class="o">=</span> <span class="n">timer</span><span class="p">()</span>
+
+<span class="c1"># Get classification results</span>
+<span class="n">tvm_output</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tvm</span><span class="o">.</span><span class="n">nd</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">1000</span><span class="p">,),</span> <span class="s2">&quot;float32&quot;</span><span class="p">,</span> <span class="n">remote</span><span class="o">.</span><span class="n">cpu</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+<span class="n">top_categories</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.argsort" title="numpy.argsort" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">argsort</span></a><span class="p">(</span><span class="n">tvm_output</span><span class="o">.</span><span class="n">asnumpy</span><span class="p">())</span>
+
+<span class="c1"># Report top-5 classification results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ResNet-18 Prediction #1:&quot;</span><span class="p">,</span> <span class="n">synset</span><span class="p">[</span><span class="n">top_categories</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;                     #2:&quot;</span><span class="p">,</span> <span class="n">synset</span><span class="p">[</span><span class="n">top_categories</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;                     #3:&quot;</span><span class="p">,</span> <span class="n">synset</span><span class="p">[</span><span class="n">top_categories</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;                     #4:&quot;</span><span class="p">,</span> <span class="n">synset</span><span class="p">[</span><span class="n">top_categories</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;                     #5:&quot;</span><span class="p">,</span> <span class="n">synset</span><span class="p">[</span><span class="n">top_categories</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">]])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Performed inference in </span><span class="si">{0:.2f}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tcost</span><span class="o">.</span><span class="n">mean</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-a-youtube-video-image-classifier">
+<h2>Run a Youtube Video Image Classifier<a class="headerlink" href="#run-a-youtube-video-image-classifier" title="Permalink to this headline">¶</a></h2>
+<p>Perform image classification on test stream on 1 frame every 48 frames.
+Comment the <cite>if False:</cite> out to run the demo</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Early exit - remove for Demo</span>
+<span class="k">if</span> <span class="kc">False</span><span class="p">:</span>
+
+    <span class="kn">import</span> <span class="nn">cv2</span>
+    <span class="kn">import</span> <span class="nn">pafy</span>
+    <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">clear_output</span>
+
+    <span class="c1"># Helper to crop an image to a square (224, 224)</span>
+    <span class="c1"># Takes in an Image object, returns an Image object</span>
+    <span class="k">def</span> <span class="nf">thumbnailify</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
+        <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">crop</span> <span class="o">=</span> <span class="p">((</span><span class="n">w</span><span class="o">-</span><span class="n">h</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="o">+</span><span class="n">pad</span><span class="p">,</span> <span class="n">pad</span><span class="p">,</span> <span class="n">h</span><span class="o">+</span><span class="p">(</span><span class="n">w</span><span class="o">-</span><span class="n">h</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="o">-</span><span class="n">pad</span><span class="p">,</span> <span class="n">h</span><span class="o">-</span><span class="n">pad</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">crop</span><span class="p">(</span><span class="n">crop</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">224</span><span class="p">,</span> <span class="mi">224</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">image</span>
+
+    <span class="c1"># 16:16 inches</span>
+    <a href="https://matplotlib.org/api/matplotlib_configuration_api.html#matplotlib.rcParams" title="matplotlib.rcParams" class="sphx-glr-backref-module-matplotlib sphx-glr-backref-type-py-data"><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span></a><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">]</span>
+
+    <span class="c1"># Stream the video in</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://www.youtube.com/watch?v=PJlmYh27MHg&amp;t=2s&quot;</span>
+    <span class="n">video</span> <span class="o">=</span> <span class="n">pafy</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">best</span> <span class="o">=</span> <span class="n">video</span><span class="o">.</span><span class="n">getbest</span><span class="p">(</span><span class="n">preftype</span><span class="o">=</span><span class="s2">&quot;mp4&quot;</span><span class="p">)</span>
+    <span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="n">best</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="c1"># Process one frame out of every 48 for variety</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">guess</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">while</span><span class="p">(</span><span class="n">count</span><span class="o">&lt;</span><span class="mi">2400</span><span class="p">):</span>
+
+        <span class="c1"># Capture frame-by-frame</span>
+        <span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+        <span class="c1"># Process one every 48 frames</span>
+        <span class="k">if</span> <span class="n">count</span> <span class="o">%</span> <span class="mi">48</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+            <span class="c1"># Crop and resize</span>
+            <span class="n">thumb</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-np-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">thumbnailify</span><span class="p">(</span><span class="n">frame</span><span class="p">))</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">process_image</span><span class="p">(</span><span class="n">thumb</span><span class="p">)</span>
+            <span class="n">guess</span> <span class="o">=</span> <span class="n">classify</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
+
+            <span class="c1"># Insert guess in frame</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">thumb</span><span class="p">,(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">200</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="mi">50</span><span class="p">)</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">guess</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">15</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="p">(</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">256</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">LINE_AA</span><span class="p">)</span>
+
+            <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.imshow.html#matplotlib.pyplot.imshow" title="matplotlib.pyplot.imshow" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span></a><span class="p">(</span><span class="n">thumb</span><span class="p">)</span>
+            <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axis.html#matplotlib.pyplot.axis" title="matplotlib.pyplot.axis" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">axis</span></a><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+            <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="matplotlib.pyplot.show" class="sphx-glr-backref-module-matplotlib-pyplot sphx-glr-backref-type-py-function"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+            <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span> <span class="o">==</span> <span class="nb">ord</span><span class="p">(</span><span class="s1">&#39;q&#39;</span><span class="p">):</span>
+                <span class="k">break</span>
+            <span class="n">clear_output</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># When everything done, release the capture</span>
+    <span class="n">cap</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-vta-tutorials-resnet-py">
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/0800672e73cbf93c9b4d3a64730a1725/resnet.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">resnet.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/ed17953ae29e1c2b031fbf7367d3e793/resnet.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">resnet.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="convolution_opt.html" class="btn btn-neutral float-right" title="2D Convolution Optimization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="matrix_multiply_opt.html" class="btn btn-neutral float-left" title="Matrix Multiply Blocking" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2017, tvm developers
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75982049-2', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

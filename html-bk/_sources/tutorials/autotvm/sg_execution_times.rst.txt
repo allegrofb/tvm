@@ -1,0 +1,20 @@
+
+:orphan:
+
+.. _sphx_glr_tutorials_autotvm_sg_execution_times:
+
+Computation times
+=================
+**00:02.066** total execution time for **tutorials_autotvm** files:
+
++-----------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_tutorials_autotvm_tune_conv2d_cuda.py` (``tune_conv2d_cuda.py``)         | 00:02.016 | 0.0 MB |
++-----------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_tutorials_autotvm_tune_simple_template.py` (``tune_simple_template.py``) | 00:00.036 | 0.0 MB |
++-----------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_tutorials_autotvm_tune_nnvm_arm.py` (``tune_nnvm_arm.py``)               | 00:00.005 | 0.0 MB |
++-----------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_tutorials_autotvm_tune_nnvm_mobile_gpu.py` (``tune_nnvm_mobile_gpu.py``) | 00:00.005 | 0.0 MB |
++-----------------------------------------------------------------------------------------+-----------+--------+
+| :ref:`sphx_glr_tutorials_autotvm_tune_nnvm_cuda.py` (``tune_nnvm_cuda.py``)             | 00:00.004 | 0.0 MB |
++-----------------------------------------------------------------------------------------+-----------+--------+

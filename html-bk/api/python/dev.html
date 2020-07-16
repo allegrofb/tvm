@@ -1,0 +1,1922 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Developer API &mdash; tvm 0.5.dev documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/tvm_theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="TOPI" href="topi.html" />
+    <link rel="prev" title="Additional Contrib APIs" href="contrib.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html">
+          
+
+          
+            
+            <img src="../../_static/tvm-logo-small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../vta/index.html">VTA: Deep Learning Accelerator Stack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../deploy/index.html">Deploy and Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute/index.html">Contribute to TVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../langref/index.html">Language Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Python API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tvm.html">tvm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intrin.html">tvm.intrin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tensor.html">tvm.tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="schedule.html">tvm.schedule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="target.html">tvm.target</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build.html">tvm.build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="module.html">tvm.module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ndarray.html">tvm.ndarray</a></li>
+<li class="toctree-l2"><a class="reference internal" href="container.html">tvm.container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="function.html">tvm.Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="autotvm.html">tvm.autotvm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_runtime.html">tvm.contrib.graph_runtime</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rpc.html">tvm.rpc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bridge.html">Framework Bridge APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="contrib.html">Additional Contrib APIs</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Developer API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-tvm.node">tvm.node</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-tvm.expr">tvm.expr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-tvm.codegen">tvm.codegen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-tvm.stmt">tvm.stmt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tvm-ir-pass">tvm.ir_pass</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-tvm.ir_builder">tvm.ir_builder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-tvm.make">tvm.make</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="topi.html">TOPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vta/index.html">VTA API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nnvm/index.html">NNVM API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hybrid.html">tvm.hybrid</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api_links.html">Links to C++ and JS API References</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../dev/index.html">Design and Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../nnvm_top.html">NNVM Core Tensor Operators</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../genindex.html">Index</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">tvm</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Python API</a> &raquo;</li>
+        
+      <li>Developer API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api/python/dev.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="developer-api">
+<h1>Developer API<a class="headerlink" href="#developer-api" title="Permalink to this headline">¶</a></h1>
+<p>This page contains modules that are used by developers of TVM.
+Many of these APIs are PackedFunc registered in C++ backend.</p>
+<div class="section" id="module-tvm.node">
+<span id="tvm-node"></span><h2>tvm.node<a class="headerlink" href="#module-tvm.node" title="Permalink to this headline">¶</a></h2>
+<p>Node is the base class of all TVM AST.</p>
+<p>Normally user do not need to touch this api.</p>
+<dl class="py class">
+<dt id="tvm.node.NodeBase">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.node.</code><code class="sig-name descname">NodeBase</code><a class="headerlink" href="#tvm.node.NodeBase" title="Permalink to this definition">¶</a></dt>
+<dd><p>NodeBase is the base class of all TVM language AST object.</p>
+<dl class="py method">
+<dt id="tvm.node.NodeBase.same_as">
+<code class="sig-name descname">same_as</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.node.NodeBase.same_as" title="Permalink to this definition">¶</a></dt>
+<dd><p>check object identity equality</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="tvm.node.Node">
+<code class="sig-prename descclassname">tvm.node.</code><code class="sig-name descname">Node</code><a class="headerlink" href="#tvm.node.Node" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">tvm._ffi.node.NodeBase</span></code></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="tvm.register_node">
+<code class="sig-prename descclassname">tvm.</code><code class="sig-name descname">register_node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">type_key</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.register_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>register node type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>type_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em> or </em><em>cls</em>) – The type key of the node</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tvm.expr">
+<span id="tvm-expr"></span><h2>tvm.expr<a class="headerlink" href="#module-tvm.expr" title="Permalink to this headline">¶</a></h2>
+<p>Expression AST Node in TVM.</p>
+<p>User do not need to deal with expression AST node directly.
+But they can be helpful for developer to do quick proptyping.
+While not displayed in the document and python file.
+Each expression node have subfields that can be visited from python side.</p>
+<p>For example, you can use addexp.a to get the left operand of an Add node.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">2</span>
+<span class="k">assert</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">tvm</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">Add</span><span class="p">))</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">a</span> <span class="o">==</span> <span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="tvm.expr.Add">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Add</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left hand operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right hand operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Add.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Add.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.And">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">And</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.And" title="Permalink to this definition">¶</a></dt>
+<dd><p>And node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left hand operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right hand operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.And.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.And.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.BinaryOpExpr">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">BinaryOpExpr</code><a class="headerlink" href="#tvm.expr.BinaryOpExpr" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="tvm.expr.BinaryOpExpr.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.BinaryOpExpr.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Broadcast">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Broadcast</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">lanes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Broadcast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Broadcast node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The value of the expression.</p></li>
+<li><p><strong>lanes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The lanes of the expression.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Broadcast.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Broadcast.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Call">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Call</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtype</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">args</span></em>, <em class="sig-param"><span class="n">call_type</span></em>, <em class="sig-param"><span class="n">func</span></em>, <em class="sig-param"><span class="n">value_index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The return data type</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The name of the function</p></li>
+<li><p><strong>args</strong> (<em>list of Expr</em>) – The input arguments to the call</p></li>
+<li><p><strong>call_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The type of the call</p></li>
+<li><p><strong>func</strong> (<a class="reference internal" href="tensor.html#tvm.tensor.Operation" title="tvm.tensor.Operation"><em>Operation</em></a><em>, </em><em>optional</em>) – Operation if call_type is Halide</p></li>
+<li><p><strong>value_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The output value index</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Call.Extern">
+<code class="sig-name descname">Extern</code><em class="property"> = 0</em><a class="headerlink" href="#tvm.expr.Call.Extern" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tvm.expr.Call.ExternCPlusPlus">
+<code class="sig-name descname">ExternCPlusPlus</code><em class="property"> = 1</em><a class="headerlink" href="#tvm.expr.Call.ExternCPlusPlus" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tvm.expr.Call.Halide">
+<code class="sig-name descname">Halide</code><em class="property"> = 3</em><a class="headerlink" href="#tvm.expr.Call.Halide" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tvm.expr.Call.Intrinsic">
+<code class="sig-name descname">Intrinsic</code><em class="property"> = 4</em><a class="headerlink" href="#tvm.expr.Call.Intrinsic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tvm.expr.Call.PureExtern">
+<code class="sig-name descname">PureExtern</code><em class="property"> = 2</em><a class="headerlink" href="#tvm.expr.Call.PureExtern" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tvm.expr.Call.PureIntrinsic">
+<code class="sig-name descname">PureIntrinsic</code><em class="property"> = 5</em><a class="headerlink" href="#tvm.expr.Call.PureIntrinsic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tvm.expr.Call.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Call.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Cast">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Cast</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtype</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Cast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cast expression.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The data type</p></li>
+<li><p><strong>value</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The value of the function.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Cast.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Cast.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.CmpExpr">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">CmpExpr</code><a class="headerlink" href="#tvm.expr.CmpExpr" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="tvm.expr.CmpExpr.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.CmpExpr.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.ConstExpr">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">ConstExpr</code><a class="headerlink" href="#tvm.expr.ConstExpr" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="tvm.expr.ConstExpr.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.ConstExpr.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Div">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Div</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Div" title="Permalink to this definition">¶</a></dt>
+<dd><p>Div node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left hand operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right hand operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Div.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Div.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.EQ">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">EQ</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.EQ" title="Permalink to this definition">¶</a></dt>
+<dd><p>EQ node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left hand operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right hand operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.EQ.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.EQ.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.EqualOp">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">EqualOp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.EqualOp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deferred equal operator.</p>
+<p>This is used to support sugar that a == b can either
+mean NodeBase.same_as or NodeBase.equal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – Left operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – Right operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="tvm.expr.EqualOp.asnode">
+<code class="sig-name descname">asnode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.EqualOp.asnode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tvm.expr.EqualOp.same_as">
+<code class="sig-name descname">same_as</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">/</em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.EqualOp.same_as" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self==value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Expr">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Expr</code><a class="headerlink" href="#tvm.expr.Expr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class of all tvm Expressions</p>
+<dl class="py attribute">
+<dt id="tvm.expr.Expr.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Expr.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.ExprOp">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">ExprOp</code><a class="headerlink" href="#tvm.expr.ExprOp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt id="tvm.expr.ExprOp.astype">
+<code class="sig-name descname">astype</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtype</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.ExprOp.astype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cast the expression to other type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The type of new expression</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>expr</strong> – Expression with new type</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr">Expr</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tvm.expr.ExprOp.equal">
+<code class="sig-name descname">equal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">other</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.ExprOp.equal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build an equal check expression with other expr.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The other expression</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ret</strong> – The equality expression.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr">Expr</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.FloatImm">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">FloatImm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtype</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.FloatImm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Float constant.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The data type</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – The constant value.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.FloatImm.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.FloatImm.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.GE">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">GE</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.GE" title="Permalink to this definition">¶</a></dt>
+<dd><p>GE node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left hand operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right hand operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.GE.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.GE.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.GT">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">GT</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.GT" title="Permalink to this definition">¶</a></dt>
+<dd><p>GT node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left hand operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right hand operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.GT.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.GT.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.IntImm">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">IntImm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtype</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.IntImm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Int constant.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The data type</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The constant value.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.IntImm.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.IntImm.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.LE">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">LE</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.LE" title="Permalink to this definition">¶</a></dt>
+<dd><p>LE node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left hand operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right hand operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.LE.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.LE.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.LT">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">LT</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.LT" title="Permalink to this definition">¶</a></dt>
+<dd><p>LT node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left hand operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right hand operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.LT.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.LT.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Let">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Let</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">var</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">body</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Let" title="Permalink to this definition">¶</a></dt>
+<dd><p>Let node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var</strong> (<a class="reference internal" href="#tvm.expr.Var" title="tvm.expr.Var"><em>Var</em></a>) – The variable in the binding.</p></li>
+<li><p><strong>value</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The value in to be binded.</p></li>
+<li><p><strong>body</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The body expression.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Let.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Let.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Load">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Load</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtype</span></em>, <em class="sig-param"><span class="n">buffer_var</span></em>, <em class="sig-param"><span class="n">index</span></em>, <em class="sig-param"><span class="n">predicate</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The data type.</p></li>
+<li><p><strong>buffer_var</strong> (<a class="reference internal" href="#tvm.expr.Var" title="tvm.expr.Var"><em>Var</em></a>) – The buffer variable in the load expression.</p></li>
+<li><p><strong>index</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The index in the load.</p></li>
+<li><p><strong>predicate</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The load predicate.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Load.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Load.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.LogicalExpr">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">LogicalExpr</code><a class="headerlink" href="#tvm.expr.LogicalExpr" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="tvm.expr.LogicalExpr.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.LogicalExpr.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Max">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Max</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Max node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left hand operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right hand operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Max.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Max.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Min">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Min</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Min node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left hand operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right hand operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Min.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Min.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Mod">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Mod</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Mod" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mod node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left hand operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right hand operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Mod.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Mod.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Mul">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Mul</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Mul" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mul node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left hand operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right hand operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Mul.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Mul.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.NE">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">NE</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.NE" title="Permalink to this definition">¶</a></dt>
+<dd><p>NE node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left hand operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right hand operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.NE.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.NE.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Not">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Not</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Not" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The input value</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Not.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Not.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.NotEqualOp">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">NotEqualOp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.NotEqualOp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deferred NE operator.</p>
+<p>This is used to support sugar that a != b can either
+mean not NodeBase.same_as or make.NE.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – Left operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – Right operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt id="tvm.expr.NotEqualOp.asnode">
+<code class="sig-name descname">asnode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.NotEqualOp.asnode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert node.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tvm.expr.NotEqualOp.same_as">
+<code class="sig-name descname">same_as</code><span class="sig-paren">(</span><em class="sig-param">value</em>, <em class="sig-param">/</em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.NotEqualOp.same_as" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self==value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Or">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Or</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Or" title="Permalink to this definition">¶</a></dt>
+<dd><p>Or node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left hand operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right hand operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Or.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Or.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Ramp">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Ramp</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base</span></em>, <em class="sig-param"><span class="n">stride</span></em>, <em class="sig-param"><span class="n">lanes</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Ramp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ramp node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The base expression.</p></li>
+<li><p><strong>stride</strong> (<em>ramp stride</em>) – The stride of the ramp.</p></li>
+<li><p><strong>lanes</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The lanes of the expression.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Ramp.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Ramp.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Reduce">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Reduce</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">combiner</span></em>, <em class="sig-param"><span class="n">src</span></em>, <em class="sig-param"><span class="n">rdom</span></em>, <em class="sig-param"><span class="n">condition</span></em>, <em class="sig-param"><span class="n">value_index</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Reduce" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduce node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>combiner</strong> (<em>CommReducer</em>) – The combiner.</p></li>
+<li><p><strong>src</strong> (<em>list of Expr</em>) – The source expression.</p></li>
+<li><p><strong>rdom</strong> (<em>list of IterVar</em>) – The iteration domain</p></li>
+<li><p><strong>condition</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The reduce condition.</p></li>
+<li><p><strong>value_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The value index.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Reduce.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Reduce.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Select">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Select</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">condition</span></em>, <em class="sig-param"><span class="n">true_value</span></em>, <em class="sig-param"><span class="n">false_value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Select" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>condition</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The condition expression.</p></li>
+<li><p><strong>true_value</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The value to take when condition is true.</p></li>
+<li><p><strong>false_value</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The value to take when condition is false.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Select.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Select.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Shuffle">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Shuffle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vectors</span></em>, <em class="sig-param"><span class="n">indices</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Shuffle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shuffle node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vectors</strong> (<em>Array of Expr</em>) – The vectors</p></li>
+<li><p><strong>indices</strong> (<em>Array of indices</em>) – The indices</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Shuffle.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Shuffle.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.StringImm">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">StringImm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.StringImm" title="Permalink to this definition">¶</a></dt>
+<dd><p>String constant.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The value of the function.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.StringImm.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.StringImm.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Sub">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Sub</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">a</span></em>, <em class="sig-param"><span class="n">b</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Sub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sub node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The left hand operand.</p></li>
+<li><p><strong>b</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The right hand operand.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Sub.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Sub.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.UIntImm">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">UIntImm</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtype</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.UIntImm" title="Permalink to this definition">¶</a></dt>
+<dd><p>UInt constant.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The data type</p></li>
+<li><p><strong>value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The constant value.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.UIntImm.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.UIntImm.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.expr.Var">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.expr.</code><code class="sig-name descname">Var</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">dtype</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.expr.Var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Symbolic variable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The name</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The data type</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.expr.Var.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.expr.Var.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-tvm.codegen">
+<span id="tvm-codegen"></span><h2>tvm.codegen<a class="headerlink" href="#module-tvm.codegen" title="Permalink to this headline">¶</a></h2>
+<p>Code generation related functions.</p>
+<dl class="py function">
+<dt id="tvm.codegen.build_module">
+<code class="sig-prename descclassname">tvm.codegen.</code><code class="sig-name descname">build_module</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lowered_func</span></em>, <em class="sig-param"><span class="n">target</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.codegen.build_module" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build lowered_func into Module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lowered_func</strong> (<a class="reference internal" href="container.html#tvm.container.LoweredFunc" title="tvm.container.LoweredFunc"><em>LoweredFunc</em></a>) – The lowered function</p></li>
+<li><p><strong>target</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The target module type.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>module</strong> – The corressponding module.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="module.html#tvm.module.Module" title="tvm.module.Module">Module</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tvm.stmt">
+<span id="tvm-stmt"></span><h2>tvm.stmt<a class="headerlink" href="#module-tvm.stmt" title="Permalink to this headline">¶</a></h2>
+<p>Statement AST Node in TVM.</p>
+<p>User do not need to deal with AST node directly.
+But they can be helpful for developer to do quick proptyping.
+While not displayed in the document and python file.
+Each statement node have subfields that can be visited from python side.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="s2">&quot;array&quot;</span><span class="p">,</span> <span class="n">tvm</span><span class="o">.</span><span class="n">handle</span><span class="p">)</span>
+<span class="n">st</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">make</span><span class="o">.</span><span class="n">Store</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">st</span><span class="p">,</span> <span class="n">tvm</span><span class="o">.</span><span class="n">stmt</span><span class="o">.</span><span class="n">Store</span><span class="p">)</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">buffer_var</span> <span class="o">==</span> <span class="n">a</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="tvm.stmt.Allocate">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">Allocate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">buffer_var</span></em>, <em class="sig-param"><span class="n">dtype</span></em>, <em class="sig-param"><span class="n">extents</span></em>, <em class="sig-param"><span class="n">condition</span></em>, <em class="sig-param"><span class="n">body</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.Allocate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allocate node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>buffer_var</strong> (<a class="reference internal" href="#tvm.expr.Var" title="tvm.expr.Var"><em>Var</em></a>) – The buffer variable.</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The data type of the buffer.</p></li>
+<li><p><strong>extents</strong> (<em>list of Expr</em>) – The extents of the allocate</p></li>
+<li><p><strong>condition</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The condition.</p></li>
+<li><p><strong>body</strong> (<a class="reference internal" href="#tvm.stmt.Stmt" title="tvm.stmt.Stmt"><em>Stmt</em></a>) – The body statement.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.stmt.Allocate.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.stmt.Allocate.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.stmt.AssertStmt">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">AssertStmt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">condition</span></em>, <em class="sig-param"><span class="n">message</span></em>, <em class="sig-param"><span class="n">body</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.AssertStmt" title="Permalink to this definition">¶</a></dt>
+<dd><p>AssertStmt node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>condition</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The assert condition.</p></li>
+<li><p><strong>message</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The error message.</p></li>
+<li><p><strong>body</strong> (<a class="reference internal" href="#tvm.stmt.Stmt" title="tvm.stmt.Stmt"><em>Stmt</em></a>) – The body statement.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.stmt.AssertStmt.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.stmt.AssertStmt.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.stmt.AttrStmt">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">AttrStmt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">attr_key</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">body</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.AttrStmt" title="Permalink to this definition">¶</a></dt>
+<dd><p>AttrStmt node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>node</strong> (<em>Node</em>) – The node to annotate the attribute</p></li>
+<li><p><strong>attr_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Attribute type key.</p></li>
+<li><p><strong>value</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The value of the attribute</p></li>
+<li><p><strong>body</strong> (<a class="reference internal" href="#tvm.stmt.Stmt" title="tvm.stmt.Stmt"><em>Stmt</em></a>) – The body statement.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.stmt.AttrStmt.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.stmt.AttrStmt.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.stmt.Block">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">Block</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">first</span></em>, <em class="sig-param"><span class="n">rest</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.Block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Block node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>first</strong> (<a class="reference internal" href="#tvm.stmt.Stmt" title="tvm.stmt.Stmt"><em>Stmt</em></a>) – The first statement.</p></li>
+<li><p><strong>rest</strong> (<a class="reference internal" href="#tvm.stmt.Stmt" title="tvm.stmt.Stmt"><em>Stmt</em></a>) – The following statement.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.stmt.Block.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.stmt.Block.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.stmt.Evaluate">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">Evaluate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.Evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The expression to be evalued.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.stmt.Evaluate.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.stmt.Evaluate.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.stmt.For">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">For</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">loop_var</span></em>, <em class="sig-param"><span class="n">min_val</span></em>, <em class="sig-param"><span class="n">extent</span></em>, <em class="sig-param"><span class="n">for_type</span></em>, <em class="sig-param"><span class="n">device_api</span></em>, <em class="sig-param"><span class="n">body</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.For" title="Permalink to this definition">¶</a></dt>
+<dd><p>For node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>loop_var</strong> (<a class="reference internal" href="#tvm.expr.Var" title="tvm.expr.Var"><em>Var</em></a>) – The loop variable.</p></li>
+<li><p><strong>min_val</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The begining value.</p></li>
+<li><p><strong>extent</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The length of the loop.</p></li>
+<li><p><strong>for_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The for type.</p></li>
+<li><p><strong>device_api</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The device api type.</p></li>
+<li><p><strong>body</strong> (<a class="reference internal" href="#tvm.stmt.Stmt" title="tvm.stmt.Stmt"><em>Stmt</em></a>) – The body statement.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.stmt.For.Parallel">
+<code class="sig-name descname">Parallel</code><em class="property"> = 1</em><a class="headerlink" href="#tvm.stmt.For.Parallel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tvm.stmt.For.Serial">
+<code class="sig-name descname">Serial</code><em class="property"> = 0</em><a class="headerlink" href="#tvm.stmt.For.Serial" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tvm.stmt.For.Unrolled">
+<code class="sig-name descname">Unrolled</code><em class="property"> = 3</em><a class="headerlink" href="#tvm.stmt.For.Unrolled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tvm.stmt.For.Vectorized">
+<code class="sig-name descname">Vectorized</code><em class="property"> = 2</em><a class="headerlink" href="#tvm.stmt.For.Vectorized" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="tvm.stmt.For.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.stmt.For.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.stmt.Free">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">Free</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">buffer_var</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.Free" title="Permalink to this definition">¶</a></dt>
+<dd><p>Free node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>buffer_var</strong> (<a class="reference internal" href="#tvm.expr.Var" title="tvm.expr.Var"><em>Var</em></a>) – The buffer variable.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.stmt.Free.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.stmt.Free.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.stmt.IfThenElse">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">IfThenElse</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">condition</span></em>, <em class="sig-param"><span class="n">then_case</span></em>, <em class="sig-param"><span class="n">else_case</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.IfThenElse" title="Permalink to this definition">¶</a></dt>
+<dd><p>IfThenElse node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>condition</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The expression</p></li>
+<li><p><strong>then_case</strong> (<a class="reference internal" href="#tvm.stmt.Stmt" title="tvm.stmt.Stmt"><em>Stmt</em></a>) – The statement to execute if condition is true.</p></li>
+<li><p><strong>else_case</strong> (<a class="reference internal" href="#tvm.stmt.Stmt" title="tvm.stmt.Stmt"><em>Stmt</em></a>) – The statement to execute if condition is false.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.stmt.IfThenElse.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.stmt.IfThenElse.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.stmt.LetStmt">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">LetStmt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">var</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">body</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.LetStmt" title="Permalink to this definition">¶</a></dt>
+<dd><p>LetStmt node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var</strong> (<a class="reference internal" href="#tvm.expr.Var" title="tvm.expr.Var"><em>Var</em></a>) – The variable in the binding.</p></li>
+<li><p><strong>value</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The value in to be binded.</p></li>
+<li><p><strong>body</strong> (<a class="reference internal" href="#tvm.stmt.Stmt" title="tvm.stmt.Stmt"><em>Stmt</em></a>) – The body statement.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.stmt.LetStmt.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.stmt.LetStmt.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.stmt.Prefetch">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">Prefetch</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em>, <em class="sig-param"><span class="n">value_index</span></em>, <em class="sig-param"><span class="n">dtype</span></em>, <em class="sig-param"><span class="n">bounds</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.Prefetch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prefetch node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<a class="reference internal" href="tensor.html#tvm.tensor.Operation" title="tvm.tensor.Operation"><em>Operation</em></a>) – The operation to create the function.</p></li>
+<li><p><strong>value_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The output value index</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The data type to be prefetched.</p></li>
+<li><p><strong>bounds</strong> (<em>list of Range</em>) – The bounds to be prefetched.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.stmt.Prefetch.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.stmt.Prefetch.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.stmt.ProducerConsumer">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">ProducerConsumer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em>, <em class="sig-param"><span class="n">is_producer</span></em>, <em class="sig-param"><span class="n">body</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.ProducerConsumer" title="Permalink to this definition">¶</a></dt>
+<dd><p>ProducerConsumer node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<a class="reference internal" href="tensor.html#tvm.tensor.Operation" title="tvm.tensor.Operation"><em>Operation</em></a>) – The Operation.</p></li>
+<li><p><strong>is_producer</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Whether if the node is producer.</p></li>
+<li><p><strong>body</strong> (<a class="reference internal" href="#tvm.stmt.Stmt" title="tvm.stmt.Stmt"><em>Stmt</em></a>) – The body statement.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.stmt.ProducerConsumer.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.stmt.ProducerConsumer.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.stmt.Provide">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">Provide</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em>, <em class="sig-param"><span class="n">value_index</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">args</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.Provide" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<a class="reference internal" href="tensor.html#tvm.tensor.Operation" title="tvm.tensor.Operation"><em>Operation</em></a>) – The operation to create the function.</p></li>
+<li><p><strong>value_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The output value index</p></li>
+<li><p><strong>value</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The value to be stored.</p></li>
+<li><p><strong>args</strong> (<em>list of Expr</em>) – The index arguments of the Provide.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.stmt.Provide.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.stmt.Provide.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.stmt.Realize">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">Realize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">func</span></em>, <em class="sig-param"><span class="n">value_index</span></em>, <em class="sig-param"><span class="n">dtype</span></em>, <em class="sig-param"><span class="n">bounds</span></em>, <em class="sig-param"><span class="n">condition</span></em>, <em class="sig-param"><span class="n">body</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.Realize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Realize node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>func</strong> (<a class="reference internal" href="tensor.html#tvm.tensor.Operation" title="tvm.tensor.Operation"><em>Operation</em></a>) – The operation to create the function.</p></li>
+<li><p><strong>value_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – The output value index</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The data type of the operation.</p></li>
+<li><p><strong>bounds</strong> (<em>list of range</em>) – The bound of realize</p></li>
+<li><p><strong>condition</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The realize condition.</p></li>
+<li><p><strong>body</strong> (<a class="reference internal" href="#tvm.stmt.Stmt" title="tvm.stmt.Stmt"><em>Stmt</em></a>) – The realize body</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.stmt.Realize.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.stmt.Realize.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.stmt.Stmt">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">Stmt</code><a class="headerlink" href="#tvm.stmt.Stmt" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py attribute">
+<dt id="tvm.stmt.Stmt.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.stmt.Stmt.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.stmt.Store">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">Store</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">buffer_var</span></em>, <em class="sig-param"><span class="n">value</span></em>, <em class="sig-param"><span class="n">index</span></em>, <em class="sig-param"><span class="n">predicate</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.Store" title="Permalink to this definition">¶</a></dt>
+<dd><p>Store node.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>buffer_var</strong> (<a class="reference internal" href="#tvm.expr.Var" title="tvm.expr.Var"><em>Var</em></a>) – The buffer Variable.</p></li>
+<li><p><strong>value</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The value we want to store.</p></li>
+<li><p><strong>index</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The index in the store expression.</p></li>
+<li><p><strong>predicate</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The store predicate.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt id="tvm.stmt.Store.handle">
+<code class="sig-name descname">handle</code><a class="headerlink" href="#tvm.stmt.Store.handle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="tvm.stmt.stmt_list">
+<code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">stmt_list</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stmt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.stmt_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make list of stmt from blocks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stmt</strong> (<em>A block statement</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>stmt_list</strong> – The unpacked list of statements</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list of Stmt</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="tvm.stmt.stmt_seq">
+<code class="sig-prename descclassname">tvm.stmt.</code><code class="sig-name descname">stmt_seq</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.stmt.stmt_seq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make sequence of statements</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>args</strong> (<em>list of Expr</em><em> or </em><a class="reference internal" href="#tvm.expr.Var" title="tvm.expr.Var"><em>Var</em></a>) – List of statements to be combined as sequence.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>stmt</strong> – The combined statement.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tvm.stmt.Stmt" title="tvm.stmt.Stmt">Stmt</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="tvm-ir-pass">
+<h2>tvm.ir_pass<a class="headerlink" href="#tvm-ir-pass" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.Inline</span></code></p></td>
+<td><p>TVM PackedFunc Inline.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.Simplify</span></code></p></td>
+<td><p>TVM PackedFunc Simplify.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.ConvertSSA</span></code></p></td>
+<td><p>TVM PackedFunc ConvertSSA.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.VerifySSA</span></code></p></td>
+<td><p>TVM PackedFunc VerifySSA.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.CanonicalSimplify</span></code></p></td>
+<td><p>TVM PackedFunc CanonicalSimplify.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.StorageFlatten</span></code></p></td>
+<td><p>TVM PackedFunc StorageFlatten.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.VectorizeLoop</span></code></p></td>
+<td><p>TVM PackedFunc VectorizeLoop.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.UnrollLoop</span></code></p></td>
+<td><p>TVM PackedFunc UnrollLoop.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.ThreadSync</span></code></p></td>
+<td><p>TVM PackedFunc ThreadSync.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.StorageRewrite</span></code></p></td>
+<td><p>TVM PackedFunc StorageRewrite.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.MakeAPI</span></code></p></td>
+<td><p>TVM PackedFunc MakeAPI.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.SplitHostDevice</span></code></p></td>
+<td><p>TVM PackedFunc SplitHostDevice.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.InjectVirtualThread</span></code></p></td>
+<td><p>TVM PackedFunc InjectVirtualThread.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.LoopPartition</span></code></p></td>
+<td><p>TVM PackedFunc LoopPartition.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.RemoveNoOp</span></code></p></td>
+<td><p>TVM PackedFunc RemoveNoOp.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.SplitPipeline</span></code></p></td>
+<td><p>TVM PackedFunc SplitPipeline.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.LowerThreadAllreduce</span></code></p></td>
+<td><p>TVM PackedFunc LowerThreadAllreduce.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.LowerIntrin</span></code></p></td>
+<td><p>TVM PackedFunc LowerIntrin.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.LowerTVMBuiltin</span></code></p></td>
+<td><p>TVM PackedFunc LowerTVMBuiltin.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tvm.ir_pass.NarrowChannelAccess</span></code></p></td>
+<td><p>TVM PackedFunc NarrowChannelAccess.</p></td>
+</tr>
+</tbody>
+</table>
+<span class="target" id="module-tvm.ir_pass"></span><p>Namespace of IR pass functions.</p>
+<p>This namespace is used for developers. While you do not see any declarations.
+The functions are automatically exported from C++ side via PackedFunc.</p>
+<p>Each api is a PackedFunc that can be called in a positional argument manner.
+You can read “include/tvm/pass.h” for the function signature of these functions.</p>
+</div>
+<div class="section" id="module-tvm.ir_builder">
+<span id="tvm-ir-builder"></span><h2>tvm.ir_builder<a class="headerlink" href="#module-tvm.ir_builder" title="Permalink to this headline">¶</a></h2>
+<p>Developer API of IR node builder make function.</p>
+<dl class="py class">
+<dt id="tvm.ir_builder.BufferVar">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.ir_builder.</code><code class="sig-name descname">BufferVar</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">builder</span></em>, <em class="sig-param"><span class="n">buffer_var</span></em>, <em class="sig-param"><span class="n">content_type</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.ir_builder.BufferVar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Buffer variable with content type, makes load store easily.</p>
+<p>Do not create it directly, create use IRBuilder.</p>
+<p class="rubric">Examples</p>
+<p>In the follow example, x is BufferVar.
+<code class="code docutils literal notranslate"><span class="pre">x[0]</span> <span class="pre">=</span> <span class="pre">...</span></code> directly emit a store to the IRBuilder,
+<code class="code docutils literal notranslate"><span class="pre">x[10]</span></code> translates to Load.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The following code generate IR for x[0] = x[</span>
+<span class="n">ib</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">ir_builder</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">ib</span><span class="o">.</span><span class="n">pointer</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+<span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#tvm.ir_builder.IRBuilder.pointer" title="tvm.ir_builder.IRBuilder.pointer"><code class="xref py py-class docutils literal notranslate"><span class="pre">IRBuilder.pointer</span></code></a>, <a class="reference internal" href="#tvm.ir_builder.IRBuilder.buffer_ptr" title="tvm.ir_builder.IRBuilder.buffer_ptr"><code class="xref py py-class docutils literal notranslate"><span class="pre">IRBuilder.buffer_ptr</span></code></a>, <a class="reference internal" href="#tvm.ir_builder.IRBuilder.allocate" title="tvm.ir_builder.IRBuilder.allocate"><code class="xref py py-class docutils literal notranslate"><span class="pre">IRBuilder.allocate</span></code></a></p>
+</div>
+<dl class="py method">
+<dt id="tvm.ir_builder.BufferVar.asnode">
+<code class="sig-name descname">asnode</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tvm.ir_builder.BufferVar.asnode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert value to node</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.ir_builder.IRBuilder">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.ir_builder.</code><code class="sig-name descname">IRBuilder</code><a class="headerlink" href="#tvm.ir_builder.IRBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Auxiliary builder to build IR for testing and dev.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ib</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">ir_builder</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<span class="n">n</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="s2">&quot;n&quot;</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">ib</span><span class="o">.</span><span class="n">allocate</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">ib</span><span class="o">.</span><span class="n">for_range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;i&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">i</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">ib</span><span class="o">.</span><span class="n">if_scope</span><span class="p">((</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="c1"># The result stmt.</span>
+<span class="n">stmt</span> <span class="o">=</span> <span class="n">ib</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="tvm.ir_builder.IRBuilder.allocate">
+<code class="sig-name descname">allocate</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtype</span></em>, <em class="sig-param"><span class="n">shape</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'buf'</span></em>, <em class="sig-param"><span class="n">scope</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.ir_builder.IRBuilder.allocate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a allocate statement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The content data type.</p></li>
+<li><p><strong>shape</strong> (<em>tuple of Expr</em>) – The shape of array to be allocated.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – The name of the buffer.</p></li>
+<li><p><strong>scope</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – The scope of the buffer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>buffer</strong> – The buffer var representing the buffer.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tvm.ir_builder.BufferVar" title="tvm.ir_builder.BufferVar">BufferVar</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tvm.ir_builder.IRBuilder.buffer_ptr">
+<code class="sig-name descname">buffer_ptr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">buf</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.ir_builder.IRBuilder.buffer_ptr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create pointer variable corresponds to buffer ptr.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>buf</strong> (<a class="reference internal" href="schedule.html#tvm.schedule.Buffer" title="tvm.schedule.Buffer"><em>Buffer</em></a>) – The buffer to be extracted.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ptr</strong> – The buffer var representing the buffer.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tvm.ir_builder.BufferVar" title="tvm.ir_builder.BufferVar">BufferVar</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tvm.ir_builder.IRBuilder.else_scope">
+<code class="sig-name descname">else_scope</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tvm.ir_builder.IRBuilder.else_scope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an else scope.</p>
+<p>This can only be used right after an if scope.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>else_scope</strong> – The result else scope.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tvm.ir_builder.WithScope" title="tvm.ir_builder.WithScope">WithScope</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ib</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">ir_builder</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<span class="n">i</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">ib</span><span class="o">.</span><span class="n">pointer</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">ib</span><span class="o">.</span><span class="n">if_scope</span><span class="p">((</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="k">with</span> <span class="n">ib</span><span class="o">.</span><span class="n">else_scope</span><span class="p">():</span>
+    <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tvm.ir_builder.IRBuilder.emit">
+<code class="sig-name descname">emit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">stmt</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.ir_builder.IRBuilder.emit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emit a statement to the end of current scope.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>stmt</strong> (<a class="reference internal" href="#tvm.stmt.Stmt" title="tvm.stmt.Stmt"><em>Stmt</em></a><em> or </em><em>callable.</em>) – The statement to be emitted or callable that build stmt given body.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tvm.ir_builder.IRBuilder.for_range">
+<code class="sig-name descname">for_range</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">begin</span></em>, <em class="sig-param"><span class="n">end</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'i'</span></em>, <em class="sig-param"><span class="n">dtype</span><span class="o">=</span><span class="default_value">'int32'</span></em>, <em class="sig-param"><span class="n">for_type</span><span class="o">=</span><span class="default_value">'serial'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.ir_builder.IRBuilder.for_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a for iteration scope.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>begin</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The min iteration scope.</p></li>
+<li><p><strong>end</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The end iteration scope</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – The name of iteration variable, if no input names,
+using typical index names i, j, k, then i_nidx</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – The data type of iteration variable.</p></li>
+<li><p><strong>for_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – The special tag on the for loop.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>loop_scope</strong> – The for scope, when enters returns loop_var</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>With.Scope of Var</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ib</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">ir_builder</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">ib</span><span class="o">.</span><span class="n">pointer</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">ib</span><span class="o">.</span><span class="n">for_range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;i&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">i</span><span class="p">:</span>
+    <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tvm.ir_builder.IRBuilder.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tvm.ir_builder.IRBuilder.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the builded IR.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>stmt</strong> – The result statement.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tvm.stmt.Stmt" title="tvm.stmt.Stmt">Stmt</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tvm.ir_builder.IRBuilder.if_scope">
+<code class="sig-name descname">if_scope</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cond</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.ir_builder.IRBuilder.if_scope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an if scope.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cond</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The condition.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>if_scope</strong> – The result if scope.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tvm.ir_builder.WithScope" title="tvm.ir_builder.WithScope">WithScope</a></p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ib</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">ir_builder</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<span class="n">i</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">ib</span><span class="o">.</span><span class="n">pointer</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">ib</span><span class="o">.</span><span class="n">if_scope</span><span class="p">((</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tvm.ir_builder.IRBuilder.likely">
+<code class="sig-name descname">likely</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">expr</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.ir_builder.IRBuilder.likely" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add likely tag for expression.
+:param expr: The expression. Usually a condition expression.
+:type expr: Expr</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>expr</strong> – The expression will likely tag.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr">Expr</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tvm.ir_builder.IRBuilder.new_scope">
+<code class="sig-name descname">new_scope</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tvm.ir_builder.IRBuilder.new_scope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create new scope,</p>
+<p>this is useful to set boundary of attr and allocate.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>new_scope</strong> – The result new scope.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tvm.ir_builder.WithScope" title="tvm.ir_builder.WithScope">WithScope</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tvm.ir_builder.IRBuilder.pointer">
+<code class="sig-name descname">pointer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">content_type</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">'ptr'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.ir_builder.IRBuilder.pointer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create pointer variable with content type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>content_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The content data type.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – The name of the pointer.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>ptr</strong> – The buffer var representing the buffer.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tvm.ir_builder.BufferVar" title="tvm.ir_builder.BufferVar">BufferVar</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="tvm.ir_builder.IRBuilder.scope_attr">
+<code class="sig-name descname">scope_attr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">node</span></em>, <em class="sig-param"><span class="n">attr_key</span></em>, <em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.ir_builder.IRBuilder.scope_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an AttrStmt at current scope.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>attr_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The key of the attribute type.</p></li>
+<li><p><strong>node</strong> (<em>Node</em>) – The attribute node to annottate on.</p></li>
+<li><p><strong>value</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – Attribute value.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ib</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">ir_builder</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<span class="n">i</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="s2">&quot;i&quot;</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">ib</span><span class="o">.</span><span class="n">pointer</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+<span class="n">ib</span><span class="o">.</span><span class="n">scope_attr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;storage_scope&quot;</span><span class="p">,</span> <span class="s2">&quot;global&quot;</span><span class="p">)</span>
+<span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="tvm.ir_builder.WithScope">
+<em class="property">class </em><code class="sig-prename descclassname">tvm.ir_builder.</code><code class="sig-name descname">WithScope</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">enter_value</span></em>, <em class="sig-param"><span class="n">exit_cb</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.ir_builder.WithScope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Auxiliary scope  with</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="tvm.ir_builder.create">
+<code class="sig-prename descclassname">tvm.ir_builder.</code><code class="sig-name descname">create</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#tvm.ir_builder.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new IRBuilder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>builder</strong> – The created IRBuilder</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference internal" href="#tvm.ir_builder.IRBuilder" title="tvm.ir_builder.IRBuilder">IRBuilder</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-tvm.make">
+<span id="tvm-make"></span><h2>tvm.make<a class="headerlink" href="#module-tvm.make" title="Permalink to this headline">¶</a></h2>
+<p>namespace of IR node builder make function</p>
+<p>This namespace is used for developers. While you do not see any declarations.
+The functions are automatically exported from C++ side via PackedFunc.</p>
+<p>Each api is a PackedFunc that can be called in a positional argument manner.
+You can use make function to build the IR node.</p>
+<dl class="py function">
+<dt id="tvm.make.node">
+<code class="sig-prename descclassname">tvm.make.</code><code class="sig-name descname">node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">type_key</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.make.node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a new DSL node by its type key and fields</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_key</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The type key of the node.</p></li>
+<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – The fields of the node.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>node</strong> – The corresponding DSL Node</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Node</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the created node is instance of AttrsNode, then
+the creator function will also run bound checks and
+default value setup as supported by Attrs.</p>
+</div>
+<p class="rubric">Example</p>
+<p>The following code constructs a IntImm object</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">tvm</span><span class="o">.</span><span class="n">make</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s2">&quot;IntImm&quot;</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int32&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tvm</span><span class="o">.</span><span class="n">expr</span><span class="o">.</span><span class="n">IntImm</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="tvm.make.range_by_min_extent">
+<code class="sig-prename descclassname">tvm.make.</code><code class="sig-name descname">range_by_min_extent</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">min_value</span></em>, <em class="sig-param"><span class="n">extent</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.make.range_by_min_extent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a Range by min and extent.</p>
+<p>This constructs a range in [min_value, min_value + extent)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>min_value</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The minimum value of the range.</p></li>
+<li><p><strong>extent</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The extent of the range.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>rng</strong> – The constructed range.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="container.html#tvm.container.Range" title="tvm.container.Range">Range</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="tvm.make.static_cast">
+<code class="sig-prename descclassname">tvm.make.</code><code class="sig-name descname">static_cast</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dtype</span></em>, <em class="sig-param"><span class="n">expr</span></em><span class="sig-paren">)</span><a class="headerlink" href="#tvm.make.static_cast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cast expr to dtype.</p>
+<p>If expr is scalar and dtype is a corresponding vector
+type, a Broadcast is generated. Otherwise it is a Cast.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – The target data type.</p></li>
+<li><p><strong>expr</strong> (<a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr"><em>Expr</em></a>) – The expression to be casted.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>casted</strong> – The casted expression.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#tvm.expr.Expr" title="tvm.expr.Expr">Expr</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="topi.html" class="btn btn-neutral float-right" title="TOPI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="contrib.html" class="btn btn-neutral float-left" title="Additional Contrib APIs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2017, tvm developers
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75982049-2', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

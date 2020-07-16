@@ -1,0 +1,387 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>HLS Backend Example &mdash; tvm 0.5.dev documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/tvm_theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/tvm-logo-small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vta/index.html">VTA: Deep Learning Accelerator Stack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Deploy and Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute/index.html">Contribute to TVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../langref/index.html">Language Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_links.html">Links to C++ and JS API References</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Design and Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nnvm_top.html">NNVM Core Tensor Operators</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tvm</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>HLS Backend Example</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/deploy/aws_fpga.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hls-backend-example">
+<h1>HLS Backend Example<a class="headerlink" href="#hls-backend-example" title="Permalink to this headline">¶</a></h1>
+<p>TVM supports Xilinx FPGA board with SDAccel.  Here is a tutorial for how to deploy TVM to AWS F1 FPGA instance.</p>
+<p><strong>*Note*</strong>: This feature is still experimental.  We cannot use SDAccel to deploy an end to end neural networks for now.</p>
+<p>We use two python scripts for this tutorial.</p>
+<ul class="simple">
+<li><p>build.py - a script to synthesize FPGA bitstream.</p></li>
+</ul>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>python
+import tvm</p>
+<p>tgt_host=”llvm”
+tgt=”sdaccel”</p>
+<p>n = tvm.var(“n”)
+A = tvm.placeholder((n,), name=’A’)
+B = tvm.placeholder((n,), name=’B’)
+C = tvm.compute(A.shape, lambda i: A[i] + B[i], name=”C”)</p>
+<p>s = tvm.create_schedule(C.op)
+px, x = s[C].split(C.op.axis[0], nparts=1)</p>
+<p>s[C].bind(px, tvm.thread_axis(“pipeline”))</p>
+<p>fadd = tvm.build(s, [A, B, C], tgt, target_host=tgt_host, name=”myadd”)</p>
+<p>fadd.save(“myadd.o”)
+fadd.imported_modules[0].save(“myadd.xclbin”)</p>
+<p>tvm.contrib.cc.create_shared(“myadd.so”, [“myadd.o”])
+<a href="#id5"><span class="problematic" id="id6">``</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a></p>
+<ul class="simple">
+<li><p>run.py - a script to use FPGA as an accelerator.</p></li>
+</ul>
+<p><a href="#id9"><span class="problematic" id="id10">``</span></a><a href="#id11"><span class="problematic" id="id12">`</span></a>python
+import tvm
+import numpy as np
+import os</p>
+<p>tgt=”sdaccel”</p>
+<p>fadd = tvm.module.load(“myadd.so”)
+if os.environ.get(“XCL_EMULATION_MODE”):</p>
+<blockquote>
+<div><p>fadd_dev = tvm.module.load(“myadd.xclbin”)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>else:</dt><dd><p>fadd_dev = tvm.module.load(“myadd.awsxclbin”)</p>
+</dd>
+</dl>
+<p>fadd.import_module(fadd_dev)</p>
+<p>ctx = tvm.context(tgt, 0)</p>
+<p>n = 1024
+a = tvm.nd.array(np.random.uniform(size=n).astype(“float32”), ctx)
+b = tvm.nd.array(np.random.uniform(size=n).astype(“float32”), ctx)
+c = tvm.nd.array(np.zeros(n, dtype=”float32”), ctx)</p>
+<p>fadd(a, b, c)
+np.testing.assert_allclose(c.asnumpy(), a.asnumpy() + b.asnumpy())
+<a href="#id13"><span class="problematic" id="id14">``</span></a><a href="#id15"><span class="problematic" id="id16">`</span></a></p>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Launch an instance using the FPGA Developer AMI.  We don’t need an F1 instance for emulation and synthesis, so it is recommended to use a lower cost instance for them.</p></li>
+<li><p>Setup AWS FPGA development kit.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/aws/aws-fpga.git</span>
+<span class="pre">cd</span> <span class="pre">aws-fpga</span>
+<span class="pre">source</span> <span class="pre">sdaccel_setup.sh</span>
+<span class="pre">source</span> <span class="pre">${XILINX_SDX}/settings64.sh</span>
+<span class="pre">`</span></code></p>
+<ul class="simple">
+<li><p>Setup TVM with OpenCL enabled.</p></li>
+</ul>
+</div>
+<div class="section" id="emulation">
+<h2>Emulation<a class="headerlink" href="#emulation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Create emconfig.json for emulation.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">emconfigutil</span> <span class="pre">--platform</span> <span class="pre">${AWS_PLATFORM}</span> <span class="pre">--nd</span> <span class="pre">1</span>
+<span class="pre">`</span></code></p>
+<ul class="simple">
+<li><p>Copy emconfig.json to the python binary directory.  It is because the current Xilinx toolkit assumes that both host binary and the emconfig.json file are in the same path.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">cp</span> <span class="pre">emconfig.json</span> <span class="pre">$(dirname</span> <span class="pre">$(which</span> <span class="pre">python))</span>
+<span class="pre">`</span></code></p>
+<ul class="simple">
+<li><p>Run software emulation</p></li>
+</ul>
+<p><a href="#id17"><span class="problematic" id="id18">``</span></a><a href="#id19"><span class="problematic" id="id20">`</span></a>bash
+export XCL_EMULATION_MODE=1
+export XCL_TARGET=sw_emu</p>
+<p>python build.py
+python run.py
+<a href="#id21"><span class="problematic" id="id22">``</span></a><a href="#id23"><span class="problematic" id="id24">`</span></a></p>
+<ul class="simple">
+<li><p>Run hardware emulation</p></li>
+</ul>
+<p><a href="#id25"><span class="problematic" id="id26">``</span></a><a href="#id27"><span class="problematic" id="id28">`</span></a>bash
+export XCL_EMULATION_MODE=1
+export XCL_TARGET=hw_emu</p>
+<p>python build.py
+python run.py
+<a href="#id29"><span class="problematic" id="id30">``</span></a><a href="#id31"><span class="problematic" id="id32">`</span></a></p>
+</div>
+<div class="section" id="synthesis">
+<h2>Synthesis<a class="headerlink" href="#synthesis" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Run synthesis with the following script.</p></li>
+</ul>
+<p><a href="#id33"><span class="problematic" id="id34">``</span></a><a href="#id35"><span class="problematic" id="id36">`</span></a>bash
+unset XCL_EMULATION_MODE
+export XCL_TARGET=hw</p>
+<p>python build.py
+<a href="#id37"><span class="problematic" id="id38">``</span></a><a href="#id39"><span class="problematic" id="id40">`</span></a></p>
+<ul class="simple">
+<li><p>Create AWS FPGA image and upload it to AWS S3.</p></li>
+</ul>
+<p><a href="#id41"><span class="problematic" id="id42">``</span></a>`
+${SDACCEL_DIR}/tools/create_sdaccel_afi.sh -xclbin=myadd.xclbin -o=myadd </p>
+<blockquote>
+<div><p>-s3_bucket=&lt;bucket-name&gt; -s3_dcp_key=&lt;dcp-folder-name&gt; -s3_logs_key=&lt;logs-folder-name&gt;</p>
+</div></blockquote>
+<p><a href="#id43"><span class="problematic" id="id44">``</span></a>`
+This also generates an awsxclbin file, which is necessary to use the AWS FPGA image on F1 instances.</p>
+</div>
+<div class="section" id="run">
+<h2>Run<a class="headerlink" href="#run" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Launch Amazon EC2 F1 instance.</p></li>
+<li><p>Copy <cite>myadd.so</cite>, <cite>myadd.awsxclbin</cite>, and <cite>run.py</cite> to the F1 instance.</p></li>
+<li><p>Setup AWS FPGA development kit.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/aws/aws-fpga.git</span>
+<span class="pre">cd</span> <span class="pre">aws-fpga</span>
+<span class="pre">source</span> <span class="pre">sdaccel_setup.sh</span>
+<span class="pre">`</span></code></p>
+<ul class="simple">
+<li><p>Setup TVM with OpenCL enabled.</p></li>
+<li><p>Become root and setup environment variables.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">sudo</span> <span class="pre">sh</span>
+<span class="pre">source</span> <span class="pre">${INSTALL_ROOT}/setup.sh</span>
+<span class="pre">`</span></code></p>
+<ul class="simple">
+<li><p>Run</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">python</span> <span class="pre">run.py</span>
+<span class="pre">`</span></code></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2017, tvm developers
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75982049-2', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>

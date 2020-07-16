@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>AOCL Backend Example &mdash; tvm 0.5.dev documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/tvm_theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-binder.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery-dataframe.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html">
+          
+
+          
+            
+            <img src="../_static/tvm-logo-small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.dev
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vta/index.html">VTA: Deep Learning Accelerator Stack</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Deploy and Integration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute/index.html">Contribute to TVM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../langref/index.html">Language Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/python/index.html">Python API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_links.html">Links to C++ and JS API References</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dev/index.html">Design and Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nnvm_top.html">NNVM Core Tensor Operators</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">tvm</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>AOCL Backend Example</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/deploy/aocl_fpga.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="aocl-backend-example">
+<h1>AOCL Backend Example<a class="headerlink" href="#aocl-backend-example" title="Permalink to this headline">¶</a></h1>
+<p>TVM supports Intel FPGA SDK for OpenCL also known as AOCL.  Here is a tutorial for how to use TVM with AOCL.</p>
+<p><strong>*Note*</strong>: This feature is still experimental.  We cannot use AOCL to deploy an end to end neural networks for now.  In addition, we only tested compilation for emulation mode of AOCL.</p>
+<p>We use two python scripts for this tutorial.</p>
+<ul class="simple">
+<li><p>build.py - a script to synthesize FPGA bitstream.</p></li>
+</ul>
+<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
+import tvm</p>
+<p>tgt_host=”llvm”
+tgt=”aocl_sw_emu”</p>
+<p>n = tvm.var(“n”)
+A = tvm.placeholder((n,), name=’A’)
+B = tvm.placeholder((n,), name=’B’)
+C = tvm.compute(A.shape, lambda i: A[i] + B[i], name=”C”)</p>
+<p>s = tvm.create_schedule(C.op)
+px, x = s[C].split(C.op.axis[0], nparts=1)</p>
+<p>s[C].bind(px, tvm.thread_axis(“pipeline”))</p>
+<p>fadd = tvm.build(s, [A, B, C], tgt, target_host=tgt_host, name=”myadd”)</p>
+<p>fadd.save(“myadd.o”)
+fadd.imported_modules[0].save(“myadd.aocx”)</p>
+<p>tvm.contrib.cc.create_shared(“myadd.so”, [“myadd.o”])
+<a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+<ul class="simple">
+<li><p>run.py - a script to use FPGA as an accelerator.</p></li>
+</ul>
+<p><a href="#id7"><span class="problematic" id="id8">``</span></a>`
+import tvm
+import numpy as np
+import os</p>
+<p>tgt=”aocl_sw_emu”</p>
+<p>fadd = tvm.module.load(“myadd.so”)
+fadd_dev = tvm.module.load(“myadd.aocx”)
+fadd.import_module(fadd_dev)</p>
+<p>ctx = tvm.context(tgt, 0)</p>
+<p>n = 1024
+a = tvm.nd.array(np.random.uniform(size=n).astype(“float32”), ctx)
+b = tvm.nd.array(np.random.uniform(size=n).astype(“float32”), ctx)
+c = tvm.nd.array(np.zeros(n, dtype=”float32”), ctx)</p>
+<p>fadd(a, b, c)
+np.testing.assert_allclose(c.asnumpy(), a.asnumpy() + b.asnumpy())
+<a href="#id9"><span class="problematic" id="id10">``</span></a><a href="#id11"><span class="problematic" id="id12">`</span></a></p>
+<div class="section" id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Install AOCL 17.1 on Ubuntu 16.04.4 LTS.</p></li>
+<li><p>Install BSP for your FPGA device.</p></li>
+<li><p>Install FPGA device driver.</p></li>
+<li><p>Create an ICD file at /etc/OpenCL/vendors/Altera.icd so that the OpenCL platform can be found.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">/opt/intelFPGA/17.1/hld/linux64/lib/libalteracl.so</span>
+<span class="pre">`</span></code>
+- Create an FCD file for example at /opt/Intel/OpenCL/Boards/s5_ref.fcd so that your FPGA device can be found.
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">/opt/intelFPGA/17.1/hld/board/s5_ref/linux64/lib/libaltera_s5_ref_mmd.so</span>
+<span class="pre">`</span></code>
+- Setup TVM with AOCL and OpenCL enabled.</p>
+</div>
+<div class="section" id="emulation">
+<h2>Emulation<a class="headerlink" href="#emulation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Run software emulation</p></li>
+</ul>
+<p><a href="#id13"><span class="problematic" id="id14">``</span></a>`
+export CL_CONTEXT_EMULATOR_DEVICE_INTELFPGA=1</p>
+<p>python build.py
+python run.py
+<a href="#id15"><span class="problematic" id="id16">``</span></a><a href="#id17"><span class="problematic" id="id18">`</span></a></p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Run on FPGA devices (not tested)</dt><dd><ul>
+<li><p>Change tgt value to “aocl -device=s5_ref” on build.py and run.py</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p><a href="#id19"><span class="problematic" id="id20">``</span></a>`
+unset CL_CONTEXT_EMULATOR_DEVICE_INTELFPGA</p>
+<p>python build.py
+python run.py
+<a href="#id21"><span class="problematic" id="id22">``</span></a><a href="#id23"><span class="problematic" id="id24">`</span></a></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2017, tvm developers
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+    <!-- Theme Analytics -->
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-75982049-2', 'auto');
+    ga('send', 'pageview');
+    </script>
+
+    
+   
+
+</body>
+</html>
